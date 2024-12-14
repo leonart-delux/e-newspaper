@@ -11,4 +11,11 @@ router.get("/login-register", (req, res) => {
     });
 });
 
+router.get("/forgot-password", (req, res) => {
+    res.render("vwAccount/forgot-password", {
+        title: "Forgot Password", 
+        layout: "main", 
+    });
+});
+
 export default router;
