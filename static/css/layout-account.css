@@ -1,0 +1,66 @@
+.account-container {
+}
+.account-container__content {
+    width: 1320px;
+    margin: auto;
+}
+.account-container__content__sidebar{
+    width: 300px;
+    background-color: #FFFFFF;
+}
+.account-container__content__sidebar img{
+    width:30px;
+    height:30px;
+}
+.account-container__content__content {
+    width: 960px;
+    background-color: #FFFFFF;
+
+}
+
+.account-container__content__sidebar__section--brief-info{
+}
+.account-container__content__sidebar__section--brief-info div {
+    font-weight: bold;
+    color: #464E5F;
+    margin-bottom: 1em;
+}
+.account-container__content__sidebar__section--brief-info span {
+    color: #7E8299;
+}
+
+.account-container__content__sidebar__section{
+    border-bottom: 1px solid gray;
+    padding: 1.5rem 1.5rem 1rem;
+}
+
+.account-container__content__sidebar__section--link a{
+    color: #333333;
+    font-weight: bold;
+    text-decoration: none ;
+
+}
+.account-container__content__sidebar__section--link div {
+    margin: 20px 0;
+}
+
+.footer{
+
+}
+
+.footer__category-link{
+    border-bottom: 2px solid crimson;
+}
+.footer__category-link a{
+    color: #464E5F;
+    font-size: 13px;
+    padding: 0 10px;
+}
+.footer__contact-link a{
+    color: #464E5F;
+    font-weight: bold;
+}
+.footer img{
+    width:30px;
+    height:30px;
+}
