@@ -3,7 +3,7 @@ import { engine } from 'express-handlebars';
 import hbs_section from 'express-handlebars-sections';
 import session from 'express-session';
 
-import accountRouter from './routes/account.route.js';
+import authRouter from './routes/auth.route.js';
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.set('view engine', 'hbs');
 app.set('views', './views');
 app.use('/static', express.static('static'));
 
-app.use('/', accountRouter);
+app.use('/', authRouter);
 
 app.listen(3000, function () {
     console.log('Server started on http://localhost:3000');
