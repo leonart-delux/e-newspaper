@@ -31,7 +31,6 @@ export default {
         const ret = await db('writers')
             .where('user_id', user.id).first();
         ret !== undefined ? user.pseudonym = ret.pseudonym : '';
-        console.log(user);
         return user;
     },
 
@@ -43,8 +42,18 @@ export default {
         return db('subscribe_request').insert(entity);
     },
 
+    updatePseudonym(userId, entity) {
+        return db('writers').where('user_id', userId).update(entity);
+    },
+
     updateUser(userId, entity) {
-        return db('users').patch(userId, entity);
+        return db('users').where('id', userId).update(entity);
+    },
+    addUser(entity) {
+        return db('users').insert(entity);
+    },
+    isAvailableEmail(email) {
+        return db('users').where('email', email).first();
     },
 
 }
