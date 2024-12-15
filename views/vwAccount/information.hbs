@@ -9,6 +9,18 @@
     </div>
     <div style="width: 800px; margin: auto" class="user-information mt-3">
         <div class="row py-3">
+            <span class="col-2">Bút danh</span>
+            <div class="col-8 user-information__value">Nhất Kỳ Viên Phương</div>
+            <div class="col-2 ">
+                <button type="button" class="user-information__btn-update " data-toggle="modal"
+                        data-target="#updatePseudonymModal">
+                    <span class="">
+                    Thay đổi
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row py-3 ">
             <span class="col-2">Họ và tên:</span>
             <div class="col-8">
                 <div class=" user-information__value">nguy****@gmail.com</div>
@@ -39,18 +51,6 @@
             </div>
         </div>
         <div class="row py-3">
-            <span class="col-2">Điện thoại:</span>
-            <div class="col-8 user-information__value">Chưa có số điện thoại</div>
-            <div class="col-2">
-                <button type="button" class="user-information__btn-update" data-toggle="modal"
-                        data-target="#updatePhoneNumberModal">
-                    <span>
-                    Cập nhật
-                    </span>
-                </button>
-            </div>
-        </div>
-        <div class="row py-3">
             <span class="col-2">Mật khẩu:</span>
             <div class="col-8 user-information__value">**********</div>
             <div class="col-2">
@@ -63,13 +63,13 @@
             </div>
         </div>
         <div class="row py-3">
-            <span class="col-2">Giới tính:</span>
-            <div class="col-8 user-information__value">Chưa có giới tính</div>
-            <div class="col-2">
-                <button type="button" class="user-information__btn-update" data-toggle="modal"
+            <span class="col-2">Vai Trò</span>
+            <div class="col-8 user-information__value">Độc giả</div>
+            <div class="col-2 ">
+                <button type="button" class="user-information__btn-update " data-toggle="modal"
                         data-target="#updateGenderModal">
-                    <span>
-                    Cập nhật
+                    <span >
+                    Thay đổi
                     </span>
                 </button>
             </div>
@@ -90,6 +90,36 @@
         </div>
     </div>
     <!-- Modal -->
+    <div class="modal fade" id="updatePseudonymModal" tabindex="-1" aria-labelledby="updatePseudonymModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="updatePseudonymModal">CẬP NHẬT BÚT DANH</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" name="pseudonym" id="pseudonym" class="form-control p-2 border-0 mt-2"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập bút danh"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="updateFullName" class="btn btn-primary">
+                                <span class="font-weight-bold">
+                                    LƯU THAY ĐỔI
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="updateFullNameModal" tabindex="-1" aria-labelledby="updateFullNameModal"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -159,42 +189,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="updatePhoneNumberModal" tabindex="-1" aria-labelledby="updatePhoneNumberModal"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bolder" id="updatePhoneNumberModal">CẬP NHẬT SỐ ĐIỆN THOẠI</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <input type="password" name="password" id="password" class="form-control p-2 border-0"
-                                   style="background-color:#EAEEF2 " placeholder="Nhập mật khẩu"
-                                   aria-describedby="helpId">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="phoneNumber" id="phoneNumber"
-                                   class="form-control p-2 border-0 mt-2"
-                                   style="background-color:#EAEEF2 " placeholder="Nhập số điện thoại"
-                                   aria-describedby="helpId">
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" id="updateFullName" class="btn btn-primary">
-                                <span class="font-weight-bold">
-                                    LƯU THAY ĐỔI
-                                </span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="updatePasswordModal" tabindex="-1" aria-labelledby="updatePasswordModal"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -217,42 +211,6 @@
                                    class="form-control p-2 border-0 mt-2"
                                    style="background-color:#EAEEF2 " placeholder="Nhập mật khẩu mới"
                                    aria-describedby="helpId">
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" id="updateFullName" class="btn btn-primary">
-                                <span class="font-weight-bold">
-                                    LƯU THAY ĐỔI
-                                </span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="updateGenderModal" tabindex="-1" aria-labelledby="updateGenderModal"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bolder" id="updateGenderModal">CẬP NHẬT GIỚI TÍNH</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group d-flex justify-content-center">
-                            <label for="gender-male " class="ml-4">
-                                <input type="radio" id="gender-male" name="gender" value="Nam" class="mr-2">Nam
-                            </label>
-                            <label for="gender-female " class="ml-4">
-                                <input type="radio" id="gender-female" name="gender" value="Nữ" class="mr-2"> Nữ
-                            </label>
-                            <label for="gender-other " class="ml-4">
-                                <input type="radio" id="gender-other" name="gender" value="Khác" class="mr-2"> Khác (Gay
-                                thì chọn cái này)</label>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="submit" id="updateFullName" class="btn btn-primary">
@@ -297,8 +255,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 <div class="bg-white mt-4" style="border-radius: 10px">
     <div class="p-4 " style="border-bottom: 1px solid #EEEEEE">
@@ -340,3 +296,7 @@
         </div>
     </div>
 </div>
+
+{{#section 'js'}}
+
+{{/section}}
