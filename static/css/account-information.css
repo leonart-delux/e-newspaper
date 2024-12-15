@@ -1,0 +1,20 @@
+.user-information span {
+    color: #B5B5C3;
+    font-weight: bold;
+}
+.user-information__value {
+    font-weight: bold;
+
+}
+
+.user-information__btn-update {
+    border: 0;
+    background-color: transparent;
+
+}
+.user-information__btn-update span{
+    color: #7E8299;
+    text-decoration: underline;
+    font-weight: bold;
+
+}
