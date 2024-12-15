@@ -7,6 +7,8 @@
 .account-container__content__sidebar{
     width: 300px;
     background-color: #FFFFFF;
+    border-radius: 10px;
+
 }
 .account-container__content__sidebar img{
     width:30px;
@@ -30,7 +32,7 @@
 }
 
 .account-container__content__sidebar__section{
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #EEEEEE;
     padding: 1.5rem 1.5rem 1rem;
 }
 
