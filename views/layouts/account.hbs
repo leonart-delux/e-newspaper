@@ -29,13 +29,13 @@
         <div class="account-container__content__sidebar__section">
             <div class=" account-container__content__sidebar__section--link">
                 <div class="mt-1 ">
-                <a href="#" style="color: #ED1C24">
+                <a href="/account/information" style="color: #ED1C24">
                     {{#if this.information}}
                         <img src="/static/images/user.png " class="mr-2">
                         Thông tin tài khoản
                     </a>
                     {{else}}
-                        <a>
+                        <a href="/account/information">
                             <img src="/static/images/user (1).png " class="mr-2">
                             Thông tin tài khoản
                         </a>
@@ -52,8 +52,17 @@
 
                 </div>
                 <div>
+                    {{#if this.premium}}
+                        <a href="/account/premium" style="color: #ED1C24"><img src="/static/images/premium (1).png" class="mr-2">Premium</a>
+                    {{else}}
+                        <a href="/account/premium"><img src="/static/images/premium.png" class="mr-2">Premium</a>
+                    {{/if}}
+                </div>
+
+                <div>
                     <a href="#"><img src="/static/images/logout.png" class="mr-2">Đăng xuất</a>
                 </div>
+
             </div>
 
         </div>
