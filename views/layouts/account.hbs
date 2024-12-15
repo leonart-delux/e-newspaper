@@ -16,12 +16,12 @@
     <h3 class="font-weight-bold text-white ">WebSite Name</h3>
 </div>
 <div class="account-container__content justify-content-between mt-5 d-flex">
-    <div class="account-container__content__sidebar ">
+    <div class="account-container__content__sidebar  pb-3">
         <div class=" account-container__content__sidebar__section">
-            <div class=" rounded  account-container__content__sidebar__section--brief-info mt-2">
+            <div class="  account-container__content__sidebar__section--brief-info mt-2">
                 <h5 class="font-weight-bold text-secondary mb-4 ">nguy****@gmail.com</h5>
-                <div class=" ">Email:<span>nguy****@gmail.com</span></div>
-                <div class=" ">Số điện thoại:<span>0999</span></div>
+                <div class=" ">Email: <span>nguy****@gmail.com</span></div>
+                <div class=" ">Số điện thoại: <span>0999</span></div>
                 <div class=" ">Ngày tham gia: <span>14/12/2024</span></div>
             </div>
         </div>
@@ -29,10 +29,27 @@
         <div class="account-container__content__sidebar__section">
             <div class=" account-container__content__sidebar__section--link">
                 <div class="mt-1 ">
-                    <a href="#"><img src="/static/images/user.png " class="mr-2">Thông tin tài khoản</a>
+                <a href="#" style="color: #ED1C24">
+                    {{#if this.information}}
+                        <img src="/static/images/user.png " class="mr-2">
+                        Thông tin tài khoản
+                    </a>
+                    {{else}}
+                        <a>
+                            <img src="/static/images/user (1).png " class="mr-2">
+                            Thông tin tài khoản
+                        </a>
+                    {{/if}}
                 </div>
                 <div>
-                    <a href="#"><img src="/static/images/heart.png" class="mr-2">Tin đã lưu</a>
+                    {{#if this.saveArticle}}
+                        <a href="#" style="color: #ED1C24"><img src="/static/images/heart.png" class="mr-2">Tin đã
+                            lưu</a>
+                    {{else}}
+                        <a href="#"><img src="/static/images/heart (1).png" class="mr-2">Tin đã lưu</a>
+                    {{/if}}
+
+
                 </div>
                 <div>
                     <a href="#"><img src="/static/images/logout.png" class="mr-2">Đăng xuất</a>
@@ -43,7 +60,7 @@
     </div>
 
 
-    <div class="account-container__content__content rounded">
+    <div class="account-container__content__content rounded bg-transparent">
         {{{body}}}
     </div>
 
@@ -54,7 +71,7 @@
         <a href="/" class="font-weight-bolder">Thế giới </a>
         <a href="/" class="font-weight-bolder">Pháp luật </a>
     </div>
-    <div class="row mt-3 pb-3" style="border-bottom: 1px solid  #464E5F">
+    <div class="row mt-3 pb-3" style="border-bottom: 1px solid  #EEEEEE">
         <div class="col-5 flex-column justify-content-between">
             <div>Tổng biên tập: Lê Thế Chữ</div>
             <div>Giấy phép hoạt động báo điện tử tiếng Việt, tiếng Anh Số 561/GP-BTTTT, cấp ngày 25-11-2022.</div>
@@ -93,7 +110,7 @@
                 <img src="/static/images/social.png"/>
             </a>
             <a>
-                <img src="/static/images/facebook.png"  style="width: 26px;height: 26px;margin-left: -2px"/>
+                <img src="/static/images/facebook.png" style="width: 26px;height: 26px;margin-left: -2px"/>
             </a>
             <a>
                 <img src="/static/images/instagram.png" style="width: 26px;height: 26px"/>
