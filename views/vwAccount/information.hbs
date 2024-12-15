@@ -1,1 +1,342 @@
-Hello
+{{#section 'css'}}
+    <link rel="stylesheet"
+          href="/static/css/account-information.css">
+{{/section}}
+
+<div class="bg-white " style="border-radius: 10px">
+    <div class="p-4 " style="border-bottom: 1px solid #EEEEEE">
+        <h4 style="font-weight: bold; " class=" ">Báo Tuổi Già cam kết bảo mật thông tin</h4>
+    </div>
+    <div style="width: 800px; margin: auto" class="user-information mt-3">
+        <div class="row py-3">
+            <span class="col-2">Họ và tên:</span>
+            <div class="col-8">
+                <div class=" user-information__value">nguy****@gmail.com</div>
+                <div>
+                    (Tên hiển thị khi tham gia bình luận)
+                </div>
+            </div>
+
+            <div class="col-2">
+                <button type="button" class="user-information__btn-update" data-toggle="modal"
+                        data-target="#updateFullNameModal">
+                    <span>
+                    Cập nhật
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row py-3">
+            <span class="col-2">Email:</span>
+            <div class="col-8 user-information__value">nguy****@gmail.com</div>
+            <div class="col-2">
+                <button type="button" class="user-information__btn-update" data-toggle="modal"
+                        data-target="#updateEmailModal">
+                    <span>
+                    Cập nhật
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row py-3">
+            <span class="col-2">Điện thoại:</span>
+            <div class="col-8 user-information__value">Chưa có số điện thoại</div>
+            <div class="col-2">
+                <button type="button" class="user-information__btn-update" data-toggle="modal"
+                        data-target="#updatePhoneNumberModal">
+                    <span>
+                    Cập nhật
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row py-3">
+            <span class="col-2">Mật khẩu:</span>
+            <div class="col-8 user-information__value">**********</div>
+            <div class="col-2">
+                <button type="button" class="user-information__btn-update" data-toggle="modal"
+                        data-target="#updatePasswordModal">
+                    <span>
+                    Cập nhật
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row py-3">
+            <span class="col-2">Giới tính:</span>
+            <div class="col-8 user-information__value">Chưa có giới tính</div>
+            <div class="col-2">
+                <button type="button" class="user-information__btn-update" data-toggle="modal"
+                        data-target="#updateGenderModal">
+                    <span>
+                    Cập nhật
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row py-3">
+            <span class="col-2">Ngày sinh:</span>
+            <div class="col-8 user-information__value">Cập nhật chính xác ngày sinh để có cơ hội nhận được những bất ngờ
+                từ báo Tuổi Già
+            </div>
+            <div class="col-2">
+                <button type="button" class="user-information__btn-update" data-toggle="modal"
+                        data-target="#updateBirthDayModal">
+                    <span>
+                    Cập nhật
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="updateFullNameModal" tabindex="-1" aria-labelledby="updateFullNameModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="updateFullNameModal">CẬP NHẬT HỌ VÀ TÊN</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="password" name="password" id="password" class="form-control p-2 border-0"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập mật khẩu"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="fullName" id="fullName" class="form-control p-2 border-0 mt-2"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập họ tên"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="updateFullName" class="btn btn-primary">
+                                <span class="font-weight-bold">
+                                    LƯU THAY ĐỔI
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateEmailModal" tabindex="-1" aria-labelledby="updateEmailModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="updateEmailModal">CẬP NHẬT EMAIL</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="password" name="password" id="password" class="form-control p-2 border-0"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập mật khẩu"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="email" id="email" class="form-control p-2 border-0 mt-2"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập email"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="updateFullName" class="btn btn-primary">
+                                <span class="font-weight-bold">
+                                    LƯU THAY ĐỔI
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updatePhoneNumberModal" tabindex="-1" aria-labelledby="updatePhoneNumberModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="updatePhoneNumberModal">CẬP NHẬT SỐ ĐIỆN THOẠI</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="password" name="password" id="password" class="form-control p-2 border-0"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập mật khẩu"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="phoneNumber" id="phoneNumber"
+                                   class="form-control p-2 border-0 mt-2"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập số điện thoại"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="updateFullName" class="btn btn-primary">
+                                <span class="font-weight-bold">
+                                    LƯU THAY ĐỔI
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updatePasswordModal" tabindex="-1" aria-labelledby="updatePasswordModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="updatePasswordModal">CẬP NHẬT MẬT KHẨU</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="password" name="password" id="password" class="form-control p-2 border-0"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập mật khẩu cũ"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="newPassword" id="newPassword"
+                                   class="form-control p-2 border-0 mt-2"
+                                   style="background-color:#EAEEF2 " placeholder="Nhập mật khẩu mới"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="updateFullName" class="btn btn-primary">
+                                <span class="font-weight-bold">
+                                    LƯU THAY ĐỔI
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateGenderModal" tabindex="-1" aria-labelledby="updateGenderModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="updateGenderModal">CẬP NHẬT GIỚI TÍNH</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group d-flex justify-content-center">
+                            <label for="gender-male " class="ml-4">
+                                <input type="radio" id="gender-male" name="gender" value="Nam" class="mr-2">Nam
+                            </label>
+                            <label for="gender-female " class="ml-4">
+                                <input type="radio" id="gender-female" name="gender" value="Nữ" class="mr-2"> Nữ
+                            </label>
+                            <label for="gender-other " class="ml-4">
+                                <input type="radio" id="gender-other" name="gender" value="Khác" class="mr-2"> Khác (Gay
+                                thì chọn cái này)</label>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="updateFullName" class="btn btn-primary">
+                                <span class="font-weight-bold">
+                                    LƯU THAY ĐỔI
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateBirthDayModal" tabindex="-1" aria-labelledby="updateBirthDayModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="updateBirthDayModal">CẬP NHẬT NGÀY SINH</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" name="dob" id="dob" class="form-control p-2 border-0"
+                                   style="background-color:#EAEEF2 " placeholder="DD/MM/YYYY"
+                                   aria-describedby="helpId">
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" id="updateFullName" class="btn btn-primary">
+                                <span class="font-weight-bold">
+                                    LƯU THAY ĐỔI
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="bg-white mt-4" style="border-radius: 10px">
+    <div class="p-4 " style="border-bottom: 1px solid #EEEEEE">
+        <h4 style="font-weight: bold; " class=" ">Liên kết mạng xã hội</h4>
+    </div>
+    <div style="width: 800px; margin: auto" class="user-information mt-3">
+        <div class="d-flex py-3 justify-content-between ">
+            <div class="d-flex align-items-center">
+                <img src="/static/images/google.png" style="width: 30px; height: 30px"/>
+                <div class="ml-3">
+                    <div class="font-weight-bold">Google</div>
+                    <div> Liên kết google</div>
+                </div>
+            </div>
+            <div class="">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input " checked   id="customSwitch1">
+                    <label class="custom-control-label" for="customSwitch1"></label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="d-flex py-3 justify-content-between ">
+            <div class="d-flex align-items-center">
+                <img src="/static/images/facebook (1).png" style="width: 30px; height: 30px"/>
+                <div class="ml-3">
+                    <div class="font-weight-bold">Google</div>
+                    <div> Liên kết google</div>
+                </div>
+            </div>
+            <div class="">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input "    id="customSwitch1">
+                    <label class="custom-control-label" for="customSwitch1"></label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
