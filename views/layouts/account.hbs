@@ -31,36 +31,46 @@
                 <div class="mt-1 ">
                 <a href="/account/information" style="color: #ED1C24">
                     {{#if this.information}}
-                        <img src="/static/images/user.png " class="mr-2">
+                        <img src="/others/user.png " class="mr-2">
                         Thông tin tài khoản
                     </a>
                     {{else}}
                         <a href="/account/information">
-                            <img src="/static/images/user (1).png " class="mr-2">
+                            <img src="/others/user (1).png " class="mr-2">
                             Thông tin tài khoản
                         </a>
                     {{/if}}
                 </div>
                 <div>
-                    {{#if this.saveArticle}}
-                        <a href="#" style="color: #ED1C24"><img src="/static/images/heart.png" class="mr-2">Tin đã
+                    {{#if this.savedArticle}}
+                        <a href="/account/saved-articles" style="color: #ED1C24"><img src="/others/heart.png"
+                                                                                      class="mr-2">Tin đã
                             lưu</a>
                     {{else}}
-                        <a href="#"><img src="/static/images/heart (1).png" class="mr-2">Tin đã lưu</a>
+                        <a href="/account/saved-articles"><img src="/others/heart (1).png" class="mr-2">Tin đã
+                            lưu</a>
                     {{/if}}
 
 
                 </div>
                 <div>
                     {{#if this.premium}}
-                        <a href="/account/premium" style="color: #ED1C24"><img src="/static/images/premium (1).png" class="mr-2">Premium</a>
+                        <a href="/account/premium" style="color: #ED1C24"><img src="/others/premium (1).png"
+                                                                               class="mr-2">Premium</a>
                     {{else}}
-                        <a href="/account/premium"><img src="/static/images/premium.png" class="mr-2">Premium</a>
+                        <a href="/account/premium"><img src="/others/premium.png" class="mr-2">Premium</a>
                     {{/if}}
                 </div>
-
                 <div>
-                    <a href="#"><img src="/static/images/logout.png" class="mr-2">Đăng xuất</a>
+                    {{#if this.roleRegister}}
+                        <a href="/account/role-register" style="color: #ED1C24"><img src="/others/edit (1).png"
+                                                                                     class="mr-2">Đăng ký vai trò</a>
+                    {{else}}
+                        <a href="/account/role-register"><img src="/others/edit.png" class="mr-2">Đăng ký vai trò</a>
+                    {{/if}}
+                </div>
+                <div>
+                    <a href="#"><img src="/others/logout.png" class="mr-2">Đăng xuất</a>
                 </div>
 
             </div>
@@ -116,13 +126,13 @@
         </div>
         <div>
             <a>
-                <img src="/static/images/social.png"/>
+                <img src="/others/social.png"/>
             </a>
             <a>
-                <img src="/static/images/facebook.png" style="width: 26px;height: 26px;margin-left: -2px"/>
+                <img src="/others/facebook.png" style="width: 26px;height: 26px;margin-left: -2px"/>
             </a>
             <a>
-                <img src="/static/images/instagram.png" style="width: 26px;height: 26px"/>
+                <img src="/others/instagram.png" style="width: 26px;height: 26px"/>
             </a>
         </div>
     </div>
