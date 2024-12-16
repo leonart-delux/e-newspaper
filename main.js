@@ -2,9 +2,12 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import hbs_section from 'express-handlebars-sections';
 import session from 'express-session';
+import passport from './middlewares/passport.js';
+import dotenv from 'dotenv';
 
 import authRouter from './routes/auth.route.js';
 
+dotenv.config();
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -31,9 +34,15 @@ app.engine('hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', './views');
 app.use('/static', express.static('static'));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Middleware Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', authRouter);
 
 app.listen(3000, function () {
-    console.log('Server started on http://localhost:3000');
+    console.log('Server started on http://localhost:3000/');
 });
