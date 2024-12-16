@@ -11,6 +11,7 @@ import {fileURLToPath} from "url";
 
 import accountRoute from "./routes/account.route.js";
 import authRouter from './routes/auth.route.js';
+import writerRouter from './routes/writer.route.js';
 
 
 // =================================================
@@ -62,6 +63,7 @@ app.use('/others', express.static(path.join(__dirname, '/static/images/others'))
 // =================================================
 app.use('/', authRouter);
 app.use('/account', accountRoute);
+app.use('/writer', writerRouter);
 
 app.listen(3000, function () {
     console.log("Server started on http://localhost:3000");
