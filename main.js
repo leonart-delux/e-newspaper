@@ -8,6 +8,9 @@ import accountRoute from "./routes/account.route.js";
 import path from 'path';
 import {dirname} from "path";
 import {fileURLToPath} from "url";
+import {getVipUser} from "./middlewares/user.mdw.js";
+import categoryRoute from "./routes/category.route.js";
+
 const liveReloadServer = livereload.createServer();
 liveReloadServer.server.once("connection", () => {
     setTimeout(() => {
@@ -48,7 +51,9 @@ app.use(express.urlencoded({
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use('/others', express.static(path.join(__dirname, '/static/images/others')));
 
-app.use('/account', accountRoute);
+app.use('/account', getVipUser, accountRoute);
+
+app.use('/category', categoryRoute);
 
 app.listen(3000, function () {
     console.log("Server started on http://localhost:3000");
