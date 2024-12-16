@@ -4,7 +4,7 @@ import helper from "../utils/helper.js";
 import moment from "moment";
 import bcrypt from 'bcryptjs'
 
-const userId = 5;
+const userId = 1;
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get('/', async function (req, res) {
     user.birth_date = moment(user.birth_date).format("DD-MM-YYYY");
     req.session.user = await accountService.getWriterPseudonym(user);
 
-    res.redirect('account/information');
+    res.redirect('/account/information');
 });
 
 

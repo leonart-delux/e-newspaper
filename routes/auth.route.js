@@ -5,14 +5,14 @@ import moment from 'moment';
 const router = express.Router();
 
 router.get("/login-register", (req, res) => {
-    res.render("vwAccount/login-register", {
+    res.render("vwAuthent/login-register", {
         title: "Login/Register", 
         layout: "main", 
     });
 });
 
 router.get("/forgot-password", (req, res) => {
-    res.render("vwAccount/forgot-password", {
+    res.render("vwAuthent/forgot-password", {
         title: "Forgot Password", 
         layout: "main", 
     });
