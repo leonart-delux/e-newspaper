@@ -3,6 +3,10 @@ import accountService from "../services/accountService.js";
 import helper from "../utils/helper.js";
 import moment from "moment";
 import bcrypt from 'bcryptjs'
+import applyService from "../services/applyService.js";
+import subscriberService from "../services/subscriberService.js";
+import writerService from "../services/writerService.js";
+import editorCategoriesService from "../services/editorCategoriesService.js";
 
 
 const router = express.Router();
@@ -30,7 +34,7 @@ router.post('/information/update-pseudonym', async function (req, res) {
     const entity = {
         pseudonym: req.body.pseudonym,
     }
-    const ret = await accountService.updatePseudonym(userId, entity);
+    const ret = await writerService.updatePseudonym(userId, entity);
     res.redirect('/account');
 });
 
@@ -63,12 +67,12 @@ router.post('/premium', async function (req, res) {
         status: 'waiting',
     }
 
-    let ret = await accountService.addSubscriber(subscribers);
+    let ret = await subscriberService.addSubscriber(subscribers);
     if (!ret) {
         return;
     }
 
-    req.session.user = await accountService.getVipStatus(userId);
+    req.session.user = await subscriberService.getVipStatus(userId);
 
     user = req.session.user;
 
@@ -142,11 +146,27 @@ router.get('/saved-articles', function (req, res) {
     })
 });
 
-router.get('/role-register', function (req, res) {
+router.get('/role-register', async function (req, res) {
+    const user = req.session.user;
+
+    const waiting = user.roleStatus !== undefined;
+    console.log(user.roleStatus);
+    console.log(user);
+    console.log(waiting);
+    const userRole = user.role;
+
+    const categoryNames = await editorCategoriesService.getEditorCategoryNames(user.id);
+    console.log(categoryNames);
+
+
     res.render('vwAccount/role-register', {
         layout: 'account',
         roleRegister: true,
-        waiting: true,
+        waiting: waiting,
+        guest: userRole === 'guest' && waiting === false,
+        editor: userRole === 'editor',
+        writer: userRole === 'writer',
+        categoryNames: categoryNames,
 
     })
 });
@@ -155,16 +175,21 @@ router.post('/role-register', async function (req, res) {
 
     const role = req.body.role;
     const user = req.session.user;
-
-    if (role === 'writer') {
-        const pseudonym = req.body.pseudonym;
-
-        const entity = {
-            pseudonym: pseudonym,
-            user_id: user.id,
-        }
-        // const ret = await accountService.updateRoleToWriter(entity);
+    const apply = {
+        self_access: req.body.selfAccess,
+        status: 'pending',
+        user_id: user.id,
+        role: role,
     }
+
+    const ret = await applyService.addApplyRole(apply);
+    console.log(ret);
+
+});
+
+router.post('/signOut', function (req, res) {
+    req.session.user = null;
+    res.redirect('/');
 });
 
 export default router;
