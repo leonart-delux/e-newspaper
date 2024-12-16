@@ -38,6 +38,9 @@
 <div class="tab-content p-2" id="pills-tabContent">
     {{!-- Danh sách các bài viết đã được duyệt --}}
     <div class="tab-pane fade show active" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
+        {{#if this.isAvailableEmpty}}
+           Bạn chưa có tin nào xuất bản hay chờ xuất bản, viết một tin mới tại <a href="/writer/draft-articles">đây</a>.
+        {{/if}}
         {{#each this.availableArticles}}
         <div class="row mb-3" style="border-radius: 10px; ">
             <div class="col-3">
@@ -62,6 +65,9 @@
 
     {{!-- Danh sách các bài viết chưa được duyệt --}}
     <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
+        {{#if this.isDraftEmpty}}
+           Bạn chưa có tin nào đang chờ được duyệt, viết một tin mới tại <a href="/writer/draft-articles">đây</a>.
+        {{/if}}
         {{#each this.draftArticles}}
         <div class="row mb-3" style="border-radius: 10px; ">
             <div class="col-3">

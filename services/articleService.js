@@ -48,7 +48,6 @@ export default {
             .where({ writer_id: id, is_available: 0 })
             .join('drafts', 'articles.id', 'drafts.article_id')
             .whereIn('drafts.status', ['pending', 'rejected'])
-            .orWhere('status', 'rejected')
             .join('articles_categories', 'articles.id', 'articles_categories.article_id')
             .join('categories', 'articles_categories.category_id', 'categories.id')
             .select(

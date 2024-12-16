@@ -8,16 +8,23 @@ router.get('/', function (req, res) {
 });
 
 router.get('/manage-articles', async function (req, res) {
+    const writerId = 2;
+
     // Get list of articles of writer
-    const listAvailableArticles = await articleService.getAvailableOfWriterByWriterId(1);
-    const listDrafts = await articleService.getDraftOfWriterByWriterId(1);
+    const listAvailableArticles = await articleService.getAvailableOfWriterByWriterId(writerId);
+    const listDrafts = await articleService.getDraftOfWriterByWriterId(writerId);
+    
+    const isAvailableEmpty = listAvailableArticles.length === 0;
+    const isDraftEmpty = listDrafts.length === 0;
 
     res.render('vwWriter/manage-articles', {
         layout: 'writer',
         title: 'Quản lí bài viết',
         isManage: true,
         availableArticles: listAvailableArticles,
-        draftArticles: listDrafts
+        draftArticles: listDrafts,
+        isAvailableEmpty: isAvailableEmpty,
+        isDraftEmpty: isDraftEmpty,
     });
 });
 
