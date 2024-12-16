@@ -11,7 +11,7 @@
     }
 
     .article-title:hover {
-        color:  black;
+        color: black;
         text-decoration: none;
     }
 
@@ -23,8 +23,8 @@
 
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-approved-tab" data-toggle="pill" data-target="#pills-approved" type="button"
-            role="tab" aria-controls="pills-approved" aria-selected="true">
+        <button class="nav-link active" id="pills-approved-tab" data-toggle="pill" data-target="#pills-approved"
+            type="button" role="tab" aria-controls="pills-approved" aria-selected="true">
             Tin của bạn
         </button>
     </li>
@@ -36,28 +36,76 @@
     </li>
 </ul>
 <div class="tab-content p-2" id="pills-tabContent">
+    {{!-- Danh sách các bài viết đã được duyệt --}}
     <div class="tab-pane fade show active" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
-        <div class="row" style="border-radius: 10px; ">
+        {{#each this.availableArticles}}
+        <div class="row mb-3" style="border-radius: 10px; ">
             <div class="col-3">
-                <picture style="max-width: 200px; max-height: 200px">
-                    <img src="/others/test.webp " class="w-100 h-100 rounded" />
-                </picture>
+                <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
             </div>
             <div class="col-9 pl-0">
-                <p style="color: #7E8299" class="mb-0 article-text">
-                    Đời sống
+                <p style="color: #7E8299" class="mb-0 article-text d-flex">
+                    {{#each categories}}
+                    <span class="mr-2">{{name}}</span>
+                    {{/each}}
+                    {{#unless is_published}}
+                    <span class="badge badge-warning ml-auto">Chưa xuất bản</span>
+                    {{/unless}}
                 </p>
-                <a class="font-weight-bold article-title" href="#">
-                    Xe máy có thời gian sản xuất trên 5 năm phải kiểm định khí thải
-                </a>
-                <div class="article-text mt-1">
-                    Việc kiểm định khí thải xe máy theo định kỳ sẽ được áp dụng với xe có thời gian sản xuất trên 5 năm.
-                    Chủ xe phải mang xe đến cơ sở đăng kiểm để kiểm định.
-                </div>
+                {{!-- Thêm link vào bài viết sau nhe --}}
+                <a class="font-weight-bold article-title" href="#">{{title}}</a>
+                <div class="article-text mt-1">{{abstract}}</div>
             </div>
         </div>
+        {{/each}}
     </div>
+
+    {{!-- Danh sách các bài viết chưa được duyệt --}}
     <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
-        Tin dang duyet
+        {{#each this.draftArticles}}
+        <div class="row mb-3" style="border-radius: 10px; ">
+            <div class="col-3">
+                <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
+            </div>
+            <div class="col-9 pl-0">
+                <p style="color: #7E8299" class="mb-0 article-text d-flex">
+                    {{#each categories}}
+                    <span class="mr-2">{{name}}</span>
+                    {{/each}}
+                    <span class="ml-auto">
+                        {{#if is_rejected}}
+                        <a href="#" class="badge badge-danger" data-toggle="modal" data-target="#staticBackdrop">Bị từ chối</a>
+                        {{!-- Thông báo lí do bị từ chối --}}
+                        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Biên tập viên từ chối duyệt bài
+                                            của bạn</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{reject_reason}}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger">Xóa bài</button>
+                                        <button type="button" class="btn btn-success">Chỉnh sửa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{else}}
+                        <a href="#" class="badge badge-primary ">Chỉnh sửa</a>
+                        {{/if}}
+                    </span>
+                </p>
+                {{!-- Thêm link vào bài viết sau nhe --}}
+                <a class="font-weight-bold article-title" href="#">{{title}}</a>
+                <div class="article-text mt-1">{{abstract}}</div>
+            </div>
+        </div>
+        {{/each}}
     </div>
 </div>
