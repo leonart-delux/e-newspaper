@@ -64,19 +64,13 @@ router.post('/premium', async function (req, res) {
 
     const subscribers = {
         user_id: user.id,
-        status: 'waiting',
+        vipStatus: 'waiting',
     }
 
     let ret = await accountService.addSubscriber(subscribers);
     if (!ret) {
         return;
     }
-
-    const subscribeRequest = {
-        subscribe_id: ret.id,
-    }
-
-    ret = await accountService.addSubscribeRequest(subscribeRequest)
 
     req.session.user = await accountService.getVipStatus(userId);
 
@@ -143,4 +137,21 @@ router.get('/is-available-email', async function (req, res) {
     }
     return res.json(false);
 });
+
+router.get('/saved-articles', function (req, res) {
+    res.render('vwAccount/saved-articles',{
+        layout: 'account',
+        savedArticle: true,
+
+    })
+});
+
+router.get('/role-register', function (req, res) {
+    res.render('vwAccount/role-register',{
+        layout:'account',
+        roleRegister: true,
+
+    })
+});
+
 export default router;

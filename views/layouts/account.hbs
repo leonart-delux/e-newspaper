@@ -6,137 +6,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Commerce Application</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/static/css/layout-account.css">
     {{{_sections.css}}}
 </head>
-<body style="background-color: #E6E9F1">
-<div class="bg-danger d-flex justify-content-center align-items-center " style="height: 50px">
-    <h3 class="font-weight-bold text-white ">WebSite Name</h3>
-</div>
-<div class="account-container__content justify-content-between mt-5 d-flex">
-    <div class="account-container__content__sidebar  pb-3">
-        <div class=" account-container__content__sidebar__section">
-            <div class="  account-container__content__sidebar__section--brief-info mt-2">
-                <h5 class="font-weight-bold text-secondary mb-4 ">nguy****@gmail.com</h5>
-                <div class=" ">Email: <span>nguy****@gmail.com</span></div>
-                <div class=" ">Số điện thoại: <span>0999</span></div>
-                <div class=" ">Ngày tham gia: <span>14/12/2024</span></div>
-            </div>
-        </div>
 
-        <div class="account-container__content__sidebar__section">
-            <div class=" account-container__content__sidebar__section--link">
-                <div class="mt-1 ">
-                <a href="/account/information" style="color: #ED1C24">
-                    {{#if this.information}}
-                        <img src="/static/images/others/user.png " class="mr-2">
-                        Thông tin tài khoản
-                    </a>
-                    {{else}}
-                        <a href="/account/information">
-                            <img src="/static/images/others/user (1).png " class="mr-2">
+<body style="background-color: #E6E9F1">
+    <div class="bg-danger d-flex justify-content-center align-items-center " style="height: 50px">
+        <h3 class="font-weight-bold text-white ">WebSite Name</h3>
+    </div>
+    <div class="account-container__content justify-content-between mt-5 d-flex">
+        <div class="account-container__content__sidebar  pb-3">
+            <div class=" account-container__content__sidebar__section">
+                <div class="  account-container__content__sidebar__section--brief-info mt-2">
+                    <h5 class="font-weight-bold text-secondary mb-4 ">nguy****@gmail.com</h5>
+                    <div class=" ">Email: <span>nguy****@gmail.com</span></div>
+                    <div class=" ">Số điện thoại: <span>0999</span></div>
+                    <div class=" ">Ngày tham gia: <span>14/12/2024</span></div>
+                </div>
+            </div>
+
+            <div class="account-container__content__sidebar__section">
+                <div class=" account-container__content__sidebar__section--link">
+                    <div class="mt-1 ">
+                        <a href="/account/information" style="color: #ED1C24">
+                            {{#if this.information}}
+                            <img src="/others/user.png " class="mr-2">
                             Thông tin tài khoản
                         </a>
-                    {{/if}}
+                        {{else}}
+                        <a href="/account/information">
+                            <img src="/others/user (1).png " class="mr-2">
+                            Thông tin tài khoản
+                        </a>
+                        {{/if}}
+                    </div>
+                    <div>
+                        {{#if this.savedArticle}}
+                        <a href="/account/saved-articles" style="color: #ED1C24"><img src="/others/heart.png"
+                                class="mr-2">Tin đã lưu</a>
+                        {{else}}
+                        <a href="/account/saved-articles"><img src="/others/heart (1).png" class="mr-2">Tin đã lưu</a>
+                        {{/if}}
+                    </div>
+                    <div>
+                        {{#if this.premium}}
+                        <a href="/account/premium" style="color: #ED1C24"><img src="/others/premium (1).png"
+                                class="mr-2">Premium</a>
+                        {{else}}
+                        <a href="/account/premium"><img src="/others/premium.png" class="mr-2">Premium</a>
+                        {{/if}}
+                    </div>
+                    <div>
+                        {{#if this.roleRegister}}
+                        <a href="/account/role-register" style="color: #ED1C24"><img src="/others/edit (1).png"
+                                class="mr-2">Đăng ký vai trò</a>
+                        {{else}}
+                        <a href="/account/role-register"><img src="/others/edit.png" class="mr-2">Đăng ký vai
+                            trò</a>
+                        {{/if}}
+                    </div>
+                    <div>
+                        <a href="#"><img src="/others/logout.png" class="mr-2">Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="account-container__content__content rounded bg-transparent">
+            {{{body}}}
+        </div>
+
+    </div>
+    <footer class="bg-white rounded mt-3 footer p-3" style="width: 1320px; margin: auto">
+        <div class="footer__category-link d-flex pb-4">
+            <a href="/" class="font-weight-bolder">Trang chủ </a>
+            <a href="/" class="font-weight-bolder">Thế giới </a>
+            <a href="/" class="font-weight-bolder">Pháp luật </a>
+        </div>
+        <div class="row mt-3 pb-3" style="border-bottom: 1px solid  #EEEEEE">
+            <div class="col-5 flex-column justify-content-between">
+                <div>Tổng biên tập: Lê Thế Chữ</div>
+                <div>Giấy phép hoạt động báo điện tử tiếng Việt, tiếng Anh Số 561/GP-BTTTT, cấp ngày 25-11-2022.</div>
+                <div>Thông tin tòa soạn - Thành Đoàn TP.HCM</div>
+            </div>
+
+            <div class="col-5 d-flex flex-column justify-content-between">
+                <div>
+                    Địa chỉ: 60A Hoàng Văn Thụ, P.9, Q.Phú Nhuận, Tp. Hồ Chí Minh
                 </div>
                 <div>
-                    {{#if this.saveArticle}}
-                        <a href="#" style="color: #ED1C24"><img src="/static/images/others/heart.png" class="mr-2">Tin đã
-                            lưu</a>
-                    {{else}}
-                        <a href="#"><img src="/static/images/others/heart (1).png" class="mr-2">Tin đã lưu</a>
-                    {{/if}}
-
+                    Hotline: 0918.033.133 - Email: tto@tuoitre.com.vn
+                </div>
+                <div>Phòng Quảng Cáo Báo Tuổi Trẻ: 028.39974848</div>
+            </div>
+            <div class="col-2 footer__contact-link d-flex flex-column justify-content-between">
+                <div>
+                    <a href="#" class="text-decoration-none">Liên hệ quảng cáo</a>
+                </div>
+                <div>
+                    <a href="#" class="text-decoration-none">Chính sách bảo mật</a>
 
                 </div>
                 <div>
-                    {{#if this.premium}}
-                        <a href="/account/premium" style="color: #ED1C24"><img src="/static/images/others/premium (1).png" class="mr-2">Premium</a>
-                    {{else}}
-                        <a href="/account/premium"><img src="/static/images/others/premium.png" class="mr-2">Premium</a>
-                    {{/if}}
+                    <a href="#" class="text-decoration-none">Liên hệ góp ý</a>
                 </div>
-
-                <div>
-                    <a href="#"><img src="/static/images/others/logout.png" class="mr-2">Đăng xuất</a>
-                </div>
-
             </div>
-
         </div>
-    </div>
-
-
-    <div class="account-container__content__content rounded bg-transparent">
-        {{{body}}}
-    </div>
-
-</div>
-<footer class="bg-white rounded mt-3 footer p-3" style="width: 1320px; margin: auto">
-    <div class="footer__category-link d-flex pb-4">
-        <a href="/" class="font-weight-bolder">Trang chủ </a>
-        <a href="/" class="font-weight-bolder">Thế giới </a>
-        <a href="/" class="font-weight-bolder">Pháp luật </a>
-    </div>
-    <div class="row mt-3 pb-3" style="border-bottom: 1px solid  #EEEEEE">
-        <div class="col-5 flex-column justify-content-between">
-            <div>Tổng biên tập: Lê Thế Chữ</div>
-            <div>Giấy phép hoạt động báo điện tử tiếng Việt, tiếng Anh Số 561/GP-BTTTT, cấp ngày 25-11-2022.</div>
-            <div>Thông tin tòa soạn - Thành Đoàn TP.HCM</div>
-        </div>
-
-        <div class="col-5 d-flex flex-column justify-content-between">
+        <div class="d-flex justify-content-between py-3">
             <div>
-                Địa chỉ: 60A Hoàng Văn Thụ, P.9, Q.Phú Nhuận, Tp. Hồ Chí Minh
+                © Copyright 2023 TuoiTre Online, All rights reserved ® Tuổi Trẻ Online giữ bản quyền nội dung trên
+                website
+                này
             </div>
             <div>
-                Hotline: 0918.033.133 - Email: tto@tuoitre.com.vn
+                <a>
+                    <img src="/others/social.png" />
+                </a>
+                <a>
+                    <img src="/others/facebook.png" style="width: 26px;height: 26px;margin-left: -2px" />
+                </a>
+                <a>
+                    <img src="/others/instagram.png" style="width: 26px;height: 26px" />
+                </a>
             </div>
-            <div>Phòng Quảng Cáo Báo Tuổi Trẻ: 028.39974848</div>
         </div>
-        <div class="col-2 footer__contact-link d-flex flex-column justify-content-between">
-            <div>
-                <a href="#" class="text-decoration-none">Liên hệ quảng cáo</a>
-            </div>
-            <div>
-                <a href="#" class="text-decoration-none">Chính sách bảo mật</a>
+    </footer>
 
-            </div>
-            <div>
-                <a href="#" class="text-decoration-none">Liên hệ góp ý</a>
-            </div>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between py-3">
-        <div>
-            © Copyright 2023 TuoiTre Online, All rights reserved ® Tuổi Trẻ Online giữ bản quyền nội dung trên website
-            này
-        </div>
-        <div>
-            <a>
-                <img src="/static/images/others/social.png"/>
-            </a>
-            <a>
-                <img src="/static/images/others/facebook.png" style="width: 26px;height: 26px;margin-left: -2px"/>
-            </a>
-            <a>
-                <img src="/static/images/others/instagram.png" style="width: 26px;height: 26px"/>
-            </a>
-        </div>
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
         integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
         crossorigin="anonymous"></script>
-{{{_sections.js}}}
+    {{{_sections.js}}}
 </body>
 
 </html>

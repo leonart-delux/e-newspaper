@@ -1,0 +1,17 @@
+.role-register button {
+    background-color: #ED1C24;
+    font-weight: bold;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.role-register .nav-link.active {
+    background-color: #ED1C24;
+    border: 1px solid #ED1C24;
+}
+
+.role-register .nav-link {
+    border: 1px solid black;
+}

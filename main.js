@@ -3,8 +3,11 @@ import hbs_section from 'express-handlebars-sections';
 import livereload from 'livereload';
 import session from "express-session";
 import express from "express";
+import path from 'path';
 
 import {engine} from "express-handlebars";
+import {dirname} from "path";
+import {fileURLToPath} from "url";
 
 import accountRoute from "./routes/account.route.js";
 import authRouter from './routes/auth.route.js';
@@ -51,7 +54,8 @@ app.use(connectLiveReload());
 app.use(express.urlencoded({
     extended: true,
 }));
-
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use('/others', express.static(path.join(__dirname, '/static/images/others')));
 
 // =================================================
 //                  SERVER ROUTING
