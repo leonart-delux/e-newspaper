@@ -5,7 +5,9 @@ import session from "express-session";
 import express from "express";
 import {engine} from "express-handlebars";
 import accountRoute from "./routes/account.route.js";
-
+import path from 'path';
+import {dirname} from "path";
+import {fileURLToPath} from "url";
 const liveReloadServer = livereload.createServer();
 liveReloadServer.server.once("connection", () => {
     setTimeout(() => {
@@ -43,7 +45,8 @@ app.use(connectLiveReload());
 app.use(express.urlencoded({
     extended: true,
 }));
-
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use('/others', express.static(path.join(__dirname, '/static/images/others')));
 
 app.use('/account', accountRoute);
 
