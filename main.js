@@ -61,6 +61,12 @@ app.use('/others', express.static(path.join(__dirname, '/static/images/others'))
 // =================================================
 //                  SERVER ROUTING
 // =================================================
+app.get('/', function (req, res) {
+    res.render('home', {
+        layout: 'home',
+
+    });
+});
 app.use('/', authRouter);
 app.use('/account', accountRoute);
 app.use('/writer', writerRouter);
