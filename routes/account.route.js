@@ -4,15 +4,11 @@ import helper from "../utils/helper.js";
 import moment from "moment";
 import bcrypt from 'bcryptjs'
 
-const userId = 5;
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    const user = await accountService.getVipStatus(userId);
 
-    user.birth_date = moment(user.birth_date).format("DD-MM-YYYY");
-    req.session.user = await accountService.getWriterPseudonym(user);
 
     res.redirect('/account/information');
 });
@@ -139,7 +135,7 @@ router.get('/is-available-email', async function (req, res) {
 });
 
 router.get('/saved-articles', function (req, res) {
-    res.render('vwAccount/saved-articles',{
+    res.render('vwAccount/saved-articles', {
         layout: 'account',
         savedArticle: true,
 
@@ -147,11 +143,28 @@ router.get('/saved-articles', function (req, res) {
 });
 
 router.get('/role-register', function (req, res) {
-    res.render('vwAccount/role-register',{
-        layout:'account',
+    res.render('vwAccount/role-register', {
+        layout: 'account',
         roleRegister: true,
+        waiting: true,
 
     })
+});
+
+router.post('/role-register', async function (req, res) {
+
+    const role = req.body.role;
+    const user = req.session.user;
+
+    if (role === 'writer') {
+        const pseudonym = req.body.pseudonym;
+
+        const entity = {
+            pseudonym: pseudonym,
+            user_id: user.id,
+        }
+        // const ret = await accountService.updateRoleToWriter(entity);
+    }
 });
 
 export default router;
