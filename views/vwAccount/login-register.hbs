@@ -18,10 +18,11 @@
           <div class="tab-content" id="formTabsContent">
             <!-- Login Form -->
             <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-              <form id="loginForm">
+              <form id="loginForm" method="POST" action="/login-register">
+                <input type="hidden" name="formType" value="login">
                 <div class="form-group">
                   <input type="email" class="form-control" id="loginEmail" name="email"
-                    placeholder="Nhập email hoặc số điện thoại" required>
+                    placeholder="Nhập email" required>
                 </div>
                 <div class="form-group">
                   <div class="input-group">
@@ -35,6 +36,14 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
               </form>
+              {{#if has_errors}}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Không đăng nhập được.</strong> Hãy thử đăng nhập lại.
+              </div>
+              {{/if}}
               <div class="text-center mt-4">
                 <p>Hoặc đăng nhập với tài khoản mạng xã hội</p>
                 <div class="d-flex justify-content-center">
@@ -51,10 +60,11 @@
 
             <!-- Register Form -->
             <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-              <form id="registerForm">
+              <form id="registerForm" method="POST" action="/login-register">
+                <input type="hidden" name="formType" value="register">
                 <div class="form-group">
                   <input type="email" class="form-control" id="registerEmail" name="email"
-                    placeholder="Nhập email hoặc số điện thoại" required>
+                    placeholder="Nhập email" required>
                 </div>
                 <div class="form-group">
                   <div class="input-group">
@@ -62,7 +72,7 @@
                       placeholder="Nhập mật khẩu" required>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-success btn-block">Đăng ký</button>
+                <button type="submit" id="registerSubmit" class="btn btn-success btn-block">Đăng ký</button>
                 <div class="text-center mt-4">
                   <p>Hoặc đăng ký với tài khoản mạng xã hội <br> Khi nhấn đăng ký bạn đã đồng ý các <a href="#">quy định</a> của báo</p>
                   <div class="d-flex justify-content-center">
