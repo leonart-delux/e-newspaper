@@ -19,9 +19,8 @@
     <div class="account-container__content__sidebar  pb-3">
         <div class=" account-container__content__sidebar__section">
             <div class="  account-container__content__sidebar__section--brief-info mt-2">
-                <h5 class="font-weight-bold text-secondary mb-4 ">nguy****@gmail.com</h5>
-                <div class=" ">Email: <span>nguy****@gmail.com</span></div>
-                <div class=" ">Số điện thoại: <span>0999</span></div>
+                <h5 class="font-weight-bold text-secondary mb-4 " style="max-width: 100px">{{this.user.name}}</h5>
+                <div class=" ">Email: <span>{{this.user.email}}</span></div>
                 <div class=" ">Ngày tham gia: <span>14/12/2024</span></div>
             </div>
         </div>
@@ -50,8 +49,6 @@
                         <a href="/account/saved-articles"><img src="/others/heart (1).png" class="mr-2">Tin đã
                             lưu</a>
                     {{/if}}
-
-
                 </div>
                 <div>
                     {{#if this.premium}}
@@ -70,11 +67,12 @@
                     {{/if}}
                 </div>
                 <div>
-                    <a href="#"><img src="/others/logout.png" class="mr-2">Đăng xuất</a>
+                    <form id="frmLogout" method="post" action="/account/signOut"></form>
+                    <a href="javascript:$('#frmLogout').submit()">
+                        <img src="/others/logout.png" class="mr-2">Đăng xuất
+                    </a>
                 </div>
-
             </div>
-
         </div>
     </div>
 
