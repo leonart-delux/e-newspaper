@@ -1,0 +1,63 @@
+{{#section 'css'}}
+<style>
+    #pills-tab button.nav-link.active {
+        background-color: #ED1C24;
+        color: white;
+    }
+
+    .article-title {
+        color: black;
+        font-size: large;
+    }
+
+    .article-title:hover {
+        color:  black;
+        text-decoration: none;
+    }
+
+    .article-text {
+        color: #7E8299;
+    }
+</style>
+{{/section}}
+
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-approved-tab" data-toggle="pill" data-target="#pills-approved" type="button"
+            role="tab" aria-controls="pills-approved" aria-selected="true">
+            Tin của bạn
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-pending-tab" data-toggle="pill" data-target="#pills-pending" type="button"
+            role="tab" aria-controls="pills-pending" aria-selected="false">
+            Tin đang chờ duyệt
+        </button>
+    </li>
+</ul>
+<div class="tab-content p-2" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
+        <div class="row" style="border-radius: 10px; ">
+            <div class="col-3">
+                <picture style="max-width: 200px; max-height: 200px">
+                    <img src="/others/test.webp " class="w-100 h-100 rounded" />
+                </picture>
+            </div>
+            <div class="col-9 pl-0">
+                <p style="color: #7E8299" class="mb-0 article-text">
+                    Đời sống
+                </p>
+                <a class="font-weight-bold article-title" href="#">
+                    Xe máy có thời gian sản xuất trên 5 năm phải kiểm định khí thải
+                </a>
+                <div class="article-text mt-1">
+                    Việc kiểm định khí thải xe máy theo định kỳ sẽ được áp dụng với xe có thời gian sản xuất trên 5 năm.
+                    Chủ xe phải mang xe đến cơ sở đăng kiểm để kiểm định.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
+        Tin dang duyet
+    </div>
+</div>
