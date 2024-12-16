@@ -12,43 +12,52 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script>
-        $.getJSON('/category/category/get-all-category-names', function (datas) {
-            if (!datas) {
-                Swal.fire
-                ({
-                    title: 'Error!',
-                    text: 'categories empty',
-                    icon: 'error',
-                })
-                return;
-            }
-            $(".prompt").select2({
-                data: datas.map((data) => {
-                    return {
-                        id: data.id,
-                        text: data.name,
-                    }
-                }),
-                width: '100%',
-                multiple: true,
-                placeholder: "Hãy nhập chuyên mục bạn muốn quản lý",
-            });
-        });
+    <!--    Phần này để cho select được nhiều category một lúc, sau này vào admin thêm category cho editor lấy cái này ra xài-->
+    <!--    <script>-->
+    <!--        $.getJSON('/category/category/get-all-category-names', function (datas) {-->
+    <!--            if (!datas) {-->
+    <!--                Swal.fire-->
+    <!--                ({-->
+    <!--                    title: 'Error!',-->
+    <!--                    text: 'categories empty',-->
+    <!--                    icon: 'error',-->
+    <!--                })-->
+    <!--                return;-->
+    <!--            }-->
+    <!--            $(".prompt").select2({-->
+    <!--                data: datas.map((data) => {-->
+    <!--                    return {-->
+    <!--                        id: data.id,-->
+    <!--                        text: data.name,-->
+    <!--                    }-->
+    <!--                }),-->
+    <!--                width: '100%',-->
+    <!--                multiple: true,-->
+    <!--                placeholder: "Hãy nhập chuyên mục bạn muốn quản lý",-->
+    <!--            });-->
+    <!--        });-->
 
-        $('#editorSubmit').on('submit', function (e) {
-            e.preventDefault();
-            var datas = $('.prompt').select2('data');
-            const categories = datas.map((data) => data.text);
+    <!--        $('#editorSubmit').on('submit', function (e) {-->
+    <!--            e.preventDefault();-->
+    <!--            var datas = $('.prompt').select2('data');-->
+    <!--            const categories = datas.map((data) => data.text);-->
 
-            var hiddenInput = $('<input>')
-                    .attr('type', 'hidden')
-                    .attr('name', 'categories')
-                    .attr('value', categories);
-            $(this).append(hiddenInput);
-            $(this).off('submit').submit();
-        });
-    </script>
+    <!--            var hiddenInput = $('<input>')-->
+    <!--                    .attr('type', 'hidden')-->
+    <!--                    .attr('name', 'categories')-->
+    <!--                    .attr('value', categories);-->
+    <!--            $(this).append(hiddenInput);-->
+    <!--            $(this).off('submit').submit();-->
+    <!--        });-->
+    <!--    </script>-->
+    <!--Html cho cai select-->
+    <!--                        <div class="form-group">-->
+    <!--                            <div class="row">-->
+    <!--                                <div class="col-md-8">-->
+    <!--                                    <input class="prompt" multiple placeholder="Search countries...">-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
 {{/section}}
 
 
@@ -58,11 +67,19 @@
             <h5 style="font-weight: bold; " class="mb-0 ">Đơn đăng ký của bạn đã được tiếp nhận, chúng tôi sẽ cố gắng
                 phản hồi sớm nhất có thể </h5>
             <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
-        {{else}}
+        {{else if this.guest}}
             <h5 style="font-weight: bold; " class="mb-0 ">Đăng ký vai trò bạn muốn để cùng chúng tôi xây dựng những bài
                 báo
                 chất lượng hơn </h5>
             <img src="/others/partners.png " class="ml-3" style="width: 40px;height: 40px"/>
+        {{else if this.writer}}
+            <h5 style="font-weight: bold; " class="mb-0 ">Bạn đang là một phóng viên, hãy tiếp tục phát huy sở trường
+                của mình nào.</h5>
+            <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
+        {{else if this.editor}}
+            <h5 style="font-weight: bold; " class="mb-0 ">Bạn đang là một Editor, hãy tiếp tục kiểm duyệt nội dung một
+                cách kỹ càng nhé</h5>
+            <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
         {{/if}}
 
     </div>
@@ -78,7 +95,7 @@
                 <a href="/" style="text-decoration: underline">mới
                     nhất</a> nào!
             </div>
-        {{else}}
+        {{else if this.guest}}
             <ul class="nav nav-pills mb-3 role-register row" id="pills-tab" role="tablist">
                 <li class="nav-item col-6  px-0" role="presentation">
                     <button class="nav-link active w-100" id="pills-home-tab" data-toggle="pill"
@@ -109,8 +126,6 @@
                     <form action="" method="post" class="mt-3">
                         <div class="form-group">
                             <input name="role" value="writer" hidden="hidden">
-                            <input name="pseudonym " class="form-control my-3"
-                                   placeholder="Hãy chọn một bút danh thật CHẤT chơi nào!">
                             <textarea type="text" name="selfAccess" id="" class="form-control"
                                       placeholder="Hãy trình bày một tí về lý do bạn chọn công việc này."
                                       aria-describedby="helpId"></textarea>
@@ -145,13 +160,7 @@
                                       placeholder="Hãy trình bày một tí về lý do bạn chọn công việc này."
                                       aria-describedby="helpId"></textarea>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <input class="prompt" multiple placeholder="Search countries...">
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="d-flex justify-content-center">
                             <a href="/account" class="btn-danger btn px-3 mx-3" style="border-radius: 10px">
                                 <img src="/others/back.png" style="width: 25px; height: 25px">
@@ -167,6 +176,33 @@
                     </form>
 
                 </div>
+            </div>
+        {{else if this.editor}}
+            <div class="d-flex justify-content-center">
+                <img src="/others/content-creation (1).png" style=" width: 250px; height: 250px"/>
+            </div>
+            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">
+                Đây là danh sách các chuyên mục mà bạn chịu trách nhiệm quản lý:
+            </div>
+            <div class="d-flex mt-3">
+                {{#each this.categoryNames}}
+                    <div class="  mx-2 p-2" style="border-radius: 20px; border: 1px solid #464E5F">
+                        <div class="font-weight-bold text-center" style="min-width: 100px">{{name}}</div>
+                    </div>
+                {{/each}}
+            </div>
+            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đi đến <a href="/"
+                                                                                     style="text-decoration: underline">nơi
+                làm việc</a> của bạn!
+            </div>
+        {{else if this.writer}}
+            <div class="d-flex justify-content-center">
+                <img src="/others/writer.png" style=" width: 250px; height: 250px"/>
+
+            </div>
+            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đi đến <a href="/"
+                                                                                     style="text-decoration: underline">nơi
+                làm việc</a> của bạn!
             </div>
         {{/if}}
 
