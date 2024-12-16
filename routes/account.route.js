@@ -14,7 +14,7 @@ router.get('/', async function (req, res) {
     user.birth_date = moment(user.birth_date).format("DD-MM-YYYY");
     req.session.user = await accountService.getWriterPseudonym(user);
 
-    res.redirect('account/information');
+    res.redirect('/account/information');
 });
 
 
@@ -71,12 +71,6 @@ router.post('/premium', async function (req, res) {
     if (!ret) {
         return;
     }
-
-    const subscribeRequest = {
-        subscribe_id: ret.id,
-    }
-
-    ret = await accountService.addSubscribeRequest(subscribeRequest)
 
     req.session.user = await accountService.getVipStatus(userId);
 
@@ -143,4 +137,21 @@ router.get('/is-available-email', async function (req, res) {
     }
     return res.json(false);
 });
+
+router.get('/saved-articles', function (req, res) {
+    res.render('vwAccount/saved-articles',{
+        layout: 'account',
+        savedArticle: true,
+
+    })
+});
+
+router.get('/role-register', function (req, res) {
+    res.render('vwAccount/role-register',{
+        layout:'account',
+        roleRegister: true,
+
+    })
+});
+
 export default router;
