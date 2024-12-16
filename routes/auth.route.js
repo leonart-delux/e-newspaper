@@ -1,6 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import moment from 'moment';
+import passport from 'passport';
 
 import authService from '../services/auth.service.js';
 
@@ -62,6 +63,17 @@ router.post("/login-register", async (req, res) => {
         res.redirect("/login-register");
     }
 });
+
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+
+router.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/" }),
+    (req, res) => {
+      // Xác thực thành công
+      res.redirect("/success");
+    }
+  );
 
 router.get("/forgot-password", (req, res) => {
     res.render("vwAccount/forgot-password", {
