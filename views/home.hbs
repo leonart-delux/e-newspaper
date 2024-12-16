@@ -1,321 +1,207 @@
-<div class="container-fluid mt-4">
-    <div class="row">
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Bài viết hot trong tuần</h5>
+<div class="container-fluid mt-3">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title text-center" style="font-weight: bolder;">Bài viết nổi bật nhất trong tuần</h2>
 
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
+            <div id="carouselId" class="carousel slide carousel-fade" data-ride="carousel" data-interval="5000">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" style="display: block; text-decoration: none; color: inherit;">
+                            <div class="row no-gutters h-100">
+                                <div class="col-md-6">
+                                    <img src="/others/test.webp" class="d-block w-100 h-100" alt="Photo">
+                                </div>
+
+                                <div class="col-md-6 d-flex flex-column justify-content-between p-3">
+                                    <div>
+                                        <p>Chuyên mục</p>
+                                    </div>
+                                    <div>
+                                        <h3>Trên trời có triệu vì sao</h3>
+                                    </div>
+                                    <div>
+                                        <p>Ngày đăng</p>
+                                    </div>
+                                </div>
                             </div>
-
-                            <img src="IMG 01.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 02.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 03.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 04.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 05.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
                         </a>
                     </div>
+
+                    <div class="carousel-item">
+                        <a href="#" style="display: block; text-decoration: none; color: inherit;">
+                            <div class="row no-gutters h-100">
+                                <div class="col-md-6">
+                                    <img src="/others/test.webp" class="d-block w-100 h-100" alt="Photo">
+                                </div>
+
+                                <div class="col-md-6 d-flex flex-column justify-content-between p-3">
+                                    <div>
+                                        <p>Chuyên mục</p>
+                                    </div>
+                                    <div>
+                                        <h3>Sao ta lớn rồi mà vẫn chưa khôn</h3>
+                                    </div>
+                                    <div>
+                                        <p>Ngày đăng</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
                 </div>
+
+                {{!-- Nút Previous bị chìm vô hình bên trái nhìn hơi lỏ nên bỏ --}}
+
+                <button class="carousel-control-next" type="button" data-target="#carouselId" data-slide="next"
+                    style="right: 0; position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; background-color: transparent; border: none;">
+                    <span class="carousel-control-next-icon" aria-hidden="true"
+                        style="background-color: black; border-radius: 50%; width: 30px; height: 30px;"></span>
+                    <span class="sr-only">Next</span>
+                </button>
             </div>
         </div>
+    </div>
 
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Bài viết nổi bật nhất trong tuần</h5>
-                    <div id="carouselId" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" style="width: 100%; height: 100%; overflow: hidden;">
-                            <div class="carousel-item active" data-interval="1000">
-                                <div class="row no-gutters h-100">
-                                    <div class="col-md-6">
-                                        <img src="IMG 01.jpg" class="d-block w-100 h-100" alt="Photo"
-                                            style="object-fit: cover;">
-                                    </div>
+    <div class="card">
+        <div class="card-body">
+            <div style="margin-bottom: 20px;">
+                <a href="#" class="btn btn-primary tab-button" data-target="latest_news"
+                    style="background-color: red; border:transparent; outline: none; box-shadow: none; margin-left: 10px;"><i
+                        class="fas fa-star fa-lg fa-fw"></i>Bài viết mới nhất</a>
 
-                                    <div class="col-md-6 d-flex flex-column justify-content-between p-3">
-                                        <div class="category">
-                                            <p>Chuyên mục</p>
-                                        </div>
+                <a href="#" class="btn btn-primary tab-button" data-target="hottest_news"
+                    style="background-color: red; border:transparent; outline: none; box-shadow: none; margin-left: 10px;"><i
+                        class="fas fa-fire fa-lg fa-fw"></i>Bài viết hot</a>
 
-                                        <div class="title">
-                                            <h3>Iran kêu gọi ủng hộ 'tuyên án tử' với thủ tướng Israel</h3>
-                                        </div>
+                <a href="#" class="btn btn-primary tab-button" data-target="hottest_categories"
+                    style="background-color: red; border:transparent; outline: none; box-shadow: none; margin-left: 10px;"><i
+                        class="fas fa-burn fa-lg fa-fw"></i>Chuyên mục hot</a>
+            </div>
 
-                                        <div class="postedDate">
-                                            <p>Ngày đăng</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div id="latest_news" class="tab-content" style="display: block;">
+                <h2 class="card-title text-center" style="font-weight: bolder;">Bài viết mới nhất</h2>
 
-                            <div class="carousel-item" data-interval="1000">
-                                <div class="row no-gutters h-100">
-                                    <div class="col-md-6">
-                                        <img src="IMG 02.jpg" class="d-block w-100 h-100" alt="Photo"
-                                            style="object-fit: cover;">
-                                    </div>
-
-                                    <div class="col-md-6 d-flex flex-column justify-content-between p-3">
-                                        <div class="category">
-                                            <p>Chuyên mục</p>
-                                        </div>
-
-                                        <div class="title">
-                                            <h3>Tôm cạn trong hốc cây, rêu đá mùa đông, lá mì xào cá của người Cao Lan,
-                                                bạn nếm thử chưa?</h3>
-                                        </div>
-
-                                        <div class="postedDate">
-                                            <p>Ngày đăng</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item" data-interval="1000">
-                                <div class="row no-gutters h-100">
-                                    <div class="col-md-6">
-                                        <img src="IMG 03.jpg" class="d-block w-100 h-100" alt="Photo"
-                                            style="object-fit: cover;">
-                                    </div>
-
-                                    <div class="col-md-6 d-flex flex-column justify-content-between p-3">
-                                        <div class="category">
-                                            <p>Chuyên mục</p>
-                                        </div>
-
-                                        <div class="title">
-                                            <h3>Thu hồi 'đất vàng' cấp cho dự án khách sạn 5 sao vì nợ thuế</h3>
-                                        </div>
-
-                                        <div class="postedDate">
-                                            <p>Ngày đăng</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item" data-interval="1000">
-                                <div class="row no-gutters h-100">
-                                    <div class="col-md-6">
-                                        <img src="IMG 04.jpg" class="d-block w-100 h-100" alt="Photo"
-                                            style="object-fit: cover;">
-                                    </div>
-
-                                    <div class="col-md-6 d-flex flex-column justify-content-between p-3">
-                                        <div class="category">
-                                            <p>Chuyên mục</p>
-                                        </div>
-
-                                        <div class="title">
-                                            <h3>Bitcoin lập kỷ lục mới, vượt 106.000 USD sau tuyên bố của ông Trump</h3>
-                                        </div>
-
-                                        <div class="postedDate">
-                                            <p>Ngày đăng</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item" data-interval="1000">
-                                <div class="row no-gutters h-100">
-                                    <div class="col-md-6">
-                                        <img src="IMG 05.jpg" class="d-block w-100 h-100" alt="Photo"
-                                            style="object-fit: cover;">
-                                    </div>
-
-                                    <div class="col-md-6 d-flex flex-column justify-content-between p-3">
-                                        <div class="category">
-                                            <p>Chuyên mục</p>
-                                        </div>
-
-                                        <div class="title">
-                                            <h3>Công ty Hàn Quốc xin lỗi sau sự cố sữa chứa dung dịch vệ sinh</h3>
-                                        </div>
-
-                                        <div class="postedDate">
-                                            <p>Ngày đăng</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>Chuyên mục</small>
+                            <small>Ngày đăng</small>
                         </div>
-                    </div>
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <img src="/others/test.webp" class="d-block" alt="Photo"
+                                style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
+
+                            <h3 class="mb-1" style="margin: 0;">Yeah sure chắc chắn là Bài viết mới nhất</h3>
+                        </div>
+                    </a>
                 </div>
+
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>Chuyên mục</small>
+                            <small>Ngày đăng</small>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <img src="/others/test.webp" class="d-block" alt="Photo"
+                                style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
+
+                            <h3 class="mb-1" style="margin: 0;">Yeah sure chắc chắn là Bài viết mới nhất</h3>
+                        </div>
+                    </a>
+                </div>
+
+
             </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Bài viết mới nhất</h5>
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
+            <div id="hottest_news"  class="tab-content" style="display: none;">
+                <h2 class="card-title text-center" style="font-weight: bolder;">Bài viết hot</h2>
 
-                            <img src="IMG 01.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>Chuyên mục</small>
                             <small>Ngày đăng</small>
-                        </a>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <img src="/others/test.webp" class="d-block" alt="Photo"
+                                style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
 
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 02.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 03.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 04.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 05.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-                    </div>
+                            <h3 class="mb-1" style="margin: 0;">Yeah sure chắc chắn là Bài viết hot</h3>
+                        </div>
+                    </a>
                 </div>
+
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>Chuyên mục</small>
+                            <small>Ngày đăng</small>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <img src="/others/test.webp" class="d-block" alt="Photo"
+                                style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
+
+                            <h3 class="mb-1" style="margin: 0;">Yeah sure chắc chắn là Bài viết hot</h3>
+                        </div>
+                    </a>
+                </div>
+
+
             </div>
-        </div>
 
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Chuyên mục hot trong tuần</h5>
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
+            <div id="hottest_categories" class="tab-content" style="display: none;">
+                <h2 class="card-title text-center" style="font-weight: bolder;">Chuyên mục hot</h2>
 
-                            <img src="IMG 01.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>Chuyên mục</small>
                             <small>Ngày đăng</small>
-                        </a>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <img src="/others/test.webp" class="d-block" alt="Photo"
+                                style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
 
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 02.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 03.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 04.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề</h5>
-                                <small>Chuyên mục</small>
-                            </div>
-
-                            <img src="IMG 05.jpg" class="d-block w-100 h-100" alt="Photo" style="object-fit: cover;">
-
-                            <small>Ngày đăng</small>
-                        </a>
-                    </div>
+                            <h3 class="mb-1" style="margin: 0;">Yeah sure chắc chắn là Chuyên mục hot</h3>
+                        </div>
+                    </a>
                 </div>
+
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>Chuyên mục</small>
+                            <small>Ngày đăng</small>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <img src="/others/test.webp" class="d-block" alt="Photo"
+                                style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
+
+                            <h3 class="mb-1" style="margin: 0;">Yeah sure chắc chắn là Chuyên mục hot</h3>
+                        </div>
+                    </a>
+                </div>
+
+                
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = "none";
+            });
+
+            const target = document.getElementById(this.getAttribute('data-target'));
+            if (target) target.style.display = "block";
+        });
+    });
+</script>
