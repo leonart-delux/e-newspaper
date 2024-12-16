@@ -35,11 +35,12 @@
         </button>
     </li>
 </ul>
+
 <div class="tab-content p-2" id="pills-tabContent">
     {{!-- Danh sách các bài viết đã được duyệt --}}
     <div class="tab-pane fade show active" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
         {{#if this.isAvailableEmpty}}
-           Bạn chưa có tin nào xuất bản hay chờ xuất bản, viết một tin mới tại <a href="/writer/draft-articles">đây</a>.
+        Bạn chưa có tin nào xuất bản hay chờ xuất bản, viết một tin mới tại <a href="/writer/draft-articles">đây</a>.
         {{/if}}
         {{#each this.availableArticles}}
         <div class="row mb-3" style="border-radius: 10px; ">
@@ -51,6 +52,7 @@
                     {{#each categories}}
                     <span class="mr-2">{{name}}</span>
                     {{/each}}
+                    
                     {{#unless is_published}}
                     <span class="badge badge-warning ml-auto">Chưa xuất bản</span>
                     {{/unless}}
@@ -66,7 +68,7 @@
     {{!-- Danh sách các bài viết chưa được duyệt --}}
     <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
         {{#if this.isDraftEmpty}}
-           Bạn chưa có tin nào đang chờ được duyệt, viết một tin mới tại <a href="/writer/draft-articles">đây</a>.
+        Bạn chưa có tin nào đang chờ được duyệt, viết một tin mới tại <a href="/writer/draft-articles">đây</a>.
         {{/if}}
         {{#each this.draftArticles}}
         <div class="row mb-3" style="border-radius: 10px; ">
@@ -78,37 +80,14 @@
                     {{#each categories}}
                     <span class="mr-2">{{name}}</span>
                     {{/each}}
-                    <span class="ml-auto">
-                        {{#if is_rejected}}
-                        <a href="#" class="badge badge-danger" data-toggle="modal" data-target="#staticBackdrop">Bị từ chối</a>
-                        {{!-- Thông báo lí do bị từ chối --}}
-                        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
-                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Biên tập viên từ chối duyệt bài
-                                            của bạn</h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        {{reject_reason}}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-danger">Xóa bài</button>
-                                        <button type="button" class="btn btn-success">Chỉnh sửa</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{else}}
-                        <a href="#" class="badge badge-primary ">Chỉnh sửa</a>
-                        {{/if}}
-                    </span>
+
+                    {{#if is_rejected}}
+                    <span class="badge badge-danger ml-auto">Đang chờ duyệt</span>
+                    {{else}}
+                    <span class="badge badge-warning ml-auto">Đang chờ duyệt</span>
+                    {{/if}}
                 </p>
-                {{!-- Thêm link vào bài viết sau nhe --}}
-                <a class="font-weight-bold article-title" href="#">{{title}}</a>
+                <a class="font-weight-bold article-title" href="/writer/edit-article?id={{id}}">{{title}}</a>
                 <div class="article-text mt-1">{{abstract}}</div>
             </div>
         </div>

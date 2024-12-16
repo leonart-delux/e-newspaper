@@ -56,7 +56,6 @@ export default {
                 'articles.abstract',
                 'articles.main_thumb',
                 'drafts.status as status',
-                'drafts.reject_reason as reject_reason',
                 'categories.id as category_id',
                 'categories.name as category_name'
             );
@@ -71,7 +70,6 @@ export default {
                     abstract: row.abstract,
                     main_thumb: row.main_thumb,
                     is_rejected: row.status === 'rejected',
-                    reject_reason: row.reject_reason,
                     categories: []
                 };
             }

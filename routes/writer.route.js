@@ -8,7 +8,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/manage-articles', async function (req, res) {
-    const writerId = 2;
+    const writerId = 1;
 
     // Get list of articles of writer
     const listAvailableArticles = await articleService.getAvailableOfWriterByWriterId(writerId);
@@ -28,6 +28,7 @@ router.get('/manage-articles', async function (req, res) {
     });
 });
 
+// ../writer/edit-article?id=
 router.get('/edit-article', function (req, res) {
     res.render('vwWriter/edit-articles');
 });
