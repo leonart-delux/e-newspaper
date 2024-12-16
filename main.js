@@ -7,10 +7,26 @@ import authRouter from './routes/auth.route.js';
 
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
+
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'SECRET_KEY',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}));
+
 app.engine('hbs', engine({
     extname: '.hbs',
     defaultLayout: 'main',
     layoutsDir: './views/layouts',
+    helpers: {
+        format_number(value) {
+          return numeral(value).format('0,0') + ' vnd';
+        },
+        section: hbs_section(),
+      }
 }));
 app.set('view engine', 'hbs');
 app.set('views', './views');
