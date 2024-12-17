@@ -1,13 +1,17 @@
 {{#section 'css'}}
     <link rel="stylesheet"
-          href="/static/css/account-information/account-information.css">
+          href="/static/css/home-articleList/articleListByCat.css">
 {{/section}}
 
 
-<div class="  mx-auto mt-3" style="width: 1320px">
-    <div class="d-flex">
-        <div></div>
-        <h3>Thế giới</h3>
+<div class="  mx-auto p-3 rounded " style="width: 1320px;background-color: #FFFFFF">
+    <div class="d-flex category-list align-items-center pb-3 border-bottom">
+        <div class="category-list__vertical-line"></div>
+        <a href="/cat?catId={{this.mainCat.id}}" class="category-list__category "><h2
+            class="mb-0 mx-3 category-list__category category-list__category--parent">{{this.mainCat.name}}</h2></a>
+        {{#each this.childCats}}
+            <a href="/cat?catId={{id}}" class="category-list__category category-list__category--child">{{name}}</a>
+        {{/each}}
     </div>
 
 
