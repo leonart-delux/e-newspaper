@@ -7,5 +7,10 @@ router.get('', function (req, res) {
         layout: 'home',
     });
 });
+router.get('/cat', function (req, res) {
+    res.render('vwHome/articleListByCat',{
+        layout: 'home',
+    });
+});
 
 export default router;
