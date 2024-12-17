@@ -4,7 +4,6 @@ import livereload from 'livereload';
 import session from "express-session";
 import express from "express";
 import {engine} from "express-handlebars";
-import accountRoute from "./routes/account.route.js";
 import path from 'path';
 import {dirname} from "path";
 import {fileURLToPath} from "url";
@@ -19,6 +18,7 @@ import writerRouter from './routes/writer.route.js';
 // =================================================
 import {getVipUser} from "./middlewares/user.mdw.js";
 import categoryRoute from "./routes/category.route.js";
+import articleRoute from "./routes/article.route.js";
 
 const liveReloadServer = livereload.createServer();
 liveReloadServer.server.once("connection", () => {
@@ -59,22 +59,21 @@ app.use(express.urlencoded({
     extended: true,
 }));
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// =================================================
+//                  SERVER ROUTING
+// =================================================
+
+app.use('/', articleRoute);
+
 app.use('/others', express.static(path.join(__dirname, '/static/images/others')));
 
 app.use('/account', getVipUser, accountRoute);
 
 app.use('/category', categoryRoute);
-// =================================================
-//                  SERVER ROUTING
-// =================================================
-app.get('/', function (req, res) {
-    res.render('home', {
-        layout: 'home',
 
-    });
-});
 app.use('/', authRouter);
-app.use('/account', accountRoute);
+
 app.use('/writer', writerRouter);
 
 app.listen(3000, function () {

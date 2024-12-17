@@ -16,6 +16,5 @@ export async function getVipUser(req, res, next) {
         user.roleStatus = 'pending';
     }
     req.session.user = user;
-
     next();
 }
