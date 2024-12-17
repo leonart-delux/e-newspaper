@@ -2,6 +2,8 @@ import express from "express";
 import categoryService from "../services/categoryService.js";
 import articleService from "../services/articleService.js";
 import tagService from "../services/tagService.js";
+import moment from "moment";
+import helper from "../utils/helper.js";
 
 const router = express.Router();
 
@@ -32,8 +34,6 @@ router.get('/cat', async function (req, res) {
             active: i === +page,
         })
     }
-    console.log(page_items.length);
-
     const prevPage = page === 1 ? page_items.length : page - 1;
     const nextPage = page === page_items.length ? 1 : page + 1;
     res.render('vwHome/articleListByCat', {
@@ -81,5 +81,72 @@ router.get('/search', async function (req, res) {
 
     })
 });
+
+
+router.get('/tag', async function (req, res) {
+    const tagId = +req.query.tagId || 1;
+    const limit = 2;
+    const page = +req.query.page || 1;
+    const offset = (page - 1) * limit;
+
+    const tag = await tagService.getTagNameById(tagId);
+
+    const articlesByTag = await articleService.getArticlesByTags(tagId, limit, offset);
+
+    const totalArticles = await articleService.countByTagId(tagId);
+
+    const nPages = Math.ceil(totalArticles.quantity / limit);
+    const page_items = [];
+    for (let i = 1; i <= nPages; i++) {
+        page_items.push({
+            value: i,
+            active: i === +page,
+        })
+    }
+    const prevPage = page === 1 ? page_items.length : page - 1;
+    const nextPage = page === page_items.length ? 1 : page + 1;
+    // moment().format('LL') // 24 tháng 7 năm 2018
+    res.render('vwHome/articleListByTag', {
+        layout: 'home',
+        tagName: tag.tagName,
+        articles: articlesByTag,
+        empty: articlesByTag.length === 0,
+        page_items: page_items,
+        tagId: tagId,
+        prevPage: prevPage,
+        nextPage: nextPage,
+    });
+});
+
+router.get('/newest', async function (req, res) {
+    const limit = 2;
+    const page = +req.query.page || 1;
+    const offset = (page - 1) * limit;
+
+
+    const newestArticles = await articleService.getNewestArticles(limit, offset);
+
+    const totalArticles = await articleService.count();
+
+    const nPages = Math.ceil(totalArticles.quantity / limit);
+    const page_items = [];
+    for (let i = 1; i <= nPages; i++) {
+        page_items.push({
+            value: i,
+            active: i === +page,
+        })
+    }
+    const prevPage = page === 1 ? page_items.length : page - 1;
+    const nextPage = page === page_items.length ? 1 : page + 1;
+    res.render('vwHome/articleNewest', {
+        layout: 'home',
+        articles: newestArticles,
+        empty: newestArticles.length === 0,
+        page_items: page_items,
+        prevPage: prevPage,
+        nextPage: nextPage,
+    });
+});
+
 
 export default router;
