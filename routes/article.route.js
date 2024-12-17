@@ -50,4 +50,36 @@ router.get('/cat', async function (req, res) {
     });
 });
 
+router.get('/search', async function (req, res) {
+
+    const limit = 2;
+    const page = +req.query.page || 1;
+    const offset = (page - 1) * limit;
+
+
+    const keywords = req.query.keywords;
+    const articlesList = await articleService.getArticlesByKeywords(keywords, limit, offset);
+
+    const nPages = Math.ceil(articlesList.count / limit);
+    const page_items = [];
+    const prevPage = page === 1 ? page_items.length : page - 1;
+    const nextPage = page === page_items.length ? 1 : page + 1;
+    for (let i = 1; i <= nPages; i++) {
+        page_items.push({
+            value: i,
+            active: i === +page,
+        })
+    }
+    res.render('vwHome/articleListByKeywords', {
+        layout: 'home',
+        empty: articlesList.count === 0,
+        page_items: page_items,
+        prevPage: prevPage,
+        nextPage: nextPage,
+        keywords: keywords,
+        articles: articlesList.content,
+
+    })
+});
+
 export default router;
