@@ -1,0 +1,24 @@
+.category-list__vertical-line {
+    background-color: #ED1C24;
+    color: #ED1C24;
+    width: 5px;
+    height: 30px;
+}
+.category-list__category--child {
+    font-size: 17px;
+    font-weight: bold;
+    color: #7E8299;
+    margin-top: 10px;
+    padding: 0 15px;
+}
+.category-list__category:hover {
+    text-decoration: none;
+    color: #ED1C24;
+}
+.category-list__category{
+
+}
+.category-list__category--parent {
+    color: #333333;
+
+}
