@@ -53,7 +53,7 @@ router.get('/edit-article', async function (req, res) {
     res.render('vwWriter/edit-articles', {
         layout: 'main',
         title: fullDraftInfo.title,
-        fullDraftInfo: fullDraftInfo,
+        draft: fullDraftInfo,
         isRejected: isRejected,
         isPendingP: isPending,
     });
