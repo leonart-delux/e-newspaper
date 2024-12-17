@@ -22,3 +22,62 @@
     color: #333333;
 
 }
+#pills-tab button.nav-link.active {
+    background-color: #ED1C24;
+    color: white;
+}
+
+.article-title {
+    color: black;
+    font-size: large;
+}
+
+.article-title:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.article-text {
+    color: #7E8299;
+}
+
+.category-link {
+    color: #7E8299;
+}
+
+.category-link:hover {
+    text-decoration: none;
+    color:#ED1C24;
+}
+
+
+.page-link {
+    color: black
+}
+
+.pagination.pagination-rounded-flat .page-item {
+    margin: 0.2rem
+}
+
+.pagination-rounded-flat{
+
+}
+
+.pagination-success .page-item.active .page-link{
+    background: #ED1C24;
+    border-color: #00c689
+}
+
+.pagination.pagination-rounded-flat .page-item .page-link,a {
+    border: none;
+    border-radius: 18px;
+}
+.page-link {
+    padding-left: 13px;
+    padding-right: 13px;
+    font-weight: bold;
+}
+.page-link:hover {
+   color: #ED1C24;
+}
+
