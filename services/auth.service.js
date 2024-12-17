@@ -7,8 +7,7 @@ export default {
     },
 
     findByEmail(email) {
-        console.log("Email trong findByEmail:", email); 
-        return db("users").where("email", email);
+        return db("users").where("email", email).first();
     },
 
     updatePassword(email, newPassword) {
