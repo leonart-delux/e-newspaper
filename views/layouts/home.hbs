@@ -18,16 +18,18 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         Tuổi Già ♥
 
-        <form class="form-inline my-2 my-lg-0 ml-auto d-flex align-items-center">
+        <form class="form-inline my-2 my-lg-0 ml-auto d-flex align-items-center" id="searchForm" method="get"
+              action="/search">
             <div class="input-container"
                  style="position: relative; display: inline-block; outline: none; box-shadow: none;">
-                <i class="fa fa-search" aria-hidden="true"
-                   style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+                <button class="fa fa-search border-0 bg-transparent mr-2 pl-0" aria-hidden="true" type="submit"
+                        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></button>
 
-                <input class="form-control mr-sm-2" type="search" placeholder="Nhập nội dung cần tìm"
+                <input class="form-control mr-sm-2" type="search" placeholder="Nhập nội dung cần tìm" id="searchInput"
                        aria-label="Search"
                        style="padding-left: 30px; width: 250px; margin-right: 15px; outline: none; box-shadow: none;">
             </div>
+
         </form>
 
         <a href="#" class="btn btn-primary"
@@ -45,7 +47,7 @@
 <nav class="navbar navbar-expand navbar-light bg-light sticky-top">
     <ul class="nav navbar-nav d-flex align-items-center">
         <li class="nav-item active">
-            <a class="nav-link" href="#"><i class="fas fa-home fa-lg fa-fw" style="color: #f90606;"></i></a>
+            <a class="nav-link" href="/"><i class="fas fa-home fa-lg fa-fw" style="color: #f90606;"></i></a>
         </li>
 
         <li class="nav-item active">
@@ -80,7 +82,7 @@
     </ul>
 </nav>
 
-    {{{body}}}
+{{{body}}}
 
 <footer class="bg-white rounded mt-3 footer p-3" style="width: 1320px; margin: auto">
     <div class="footer__category-link d-flex pb-4">
@@ -140,6 +142,13 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
+<script>
+    $('#searchForm').on('submit', function (e) {
+        e.preventDefault();
+        const searchQuery = $('#searchInput').val();
+        window.location.href = `/search?keywords=${encodeURIComponent(searchQuery)}`;
+    })
+</script>
 {{{_sections.js}}}
 </body>
 
