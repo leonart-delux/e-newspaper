@@ -11,11 +11,16 @@ export default {
             .select('id', 'title', 'abstract', 'main_thumb');
 
         // Với mỗi aricle thì thêm category names và tag names cho nó
+
+        return this.getCatsAndTagsForAnArticle(articlesList);
+    },
+    async getCatsAndTagsForAnArticle(articlesList) {
         articlesList = await Promise.all(articlesList.map(async (article) => {
             article.categoryList = (await categoryService.getCategoryListFromAnArticle(article.id));
             article.tagList = (await tagService.getTagListFromAnArticle(article.id));
             return article;
-        }))
+        }));
+
         return articlesList;
     },
     countByCatId(catId) {
@@ -23,6 +28,22 @@ export default {
             .where('articles_categories.category_id', catId)
             .count('* as quantity')
             .first();
+    },
+    async getArticlesByKeywords(keywords, limit, offset) {
+        let articlesList = await db('articles')
+            .whereRaw('MATCH(title,content,abstract) against (? in natural language mode)', [keywords])
+            .limit(limit)
+            .offset(offset)
+            .select('id', 'title', 'abstract', 'main_thumb', 'content');
+
+        articlesList =await this.getCatsAndTagsForAnArticle(articlesList);
+        const count = await db('articles')
+            .whereRaw('MATCH(title,content,abstract) against (? in natural language mode)', [keywords])
+            .count('* as quantity').first();
+
+        return {content: articlesList, count: count.quantity}
+
+
     },
 
 }
