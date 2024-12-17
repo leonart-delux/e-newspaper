@@ -34,6 +34,8 @@ router.get('/cat', async function (req, res) {
             active: i === +page,
         })
     }
+    console.log(page_items.length);
+
     const prevPage = page === 1 ? page_items.length : page - 1;
     const nextPage = page === page_items.length ? 1 : page + 1;
     res.render('vwHome/articleListByCat', {
@@ -79,6 +81,12 @@ router.get('/search', async function (req, res) {
         keywords: keywords,
         articles: articlesList.content,
 
+    })
+});
+
+router.get('/detailArticle', async function (req, res) {
+    res.render('vwHome/detailArticle', {
+        layout: 'home',
     })
 });
 
