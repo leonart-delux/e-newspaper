@@ -13,7 +13,7 @@ router.get('/manage-articles', async function (req, res) {
     // Get list of articles of writer
     const listAvailableArticles = await articleService.getAvailableOfWriterByWriterId(writerId);
     const listDrafts = await articleService.getDraftOfWriterByWriterId(writerId);
-    
+
     const isAvailableEmpty = listAvailableArticles.length === 0;
     const isDraftEmpty = listDrafts.length === 0;
 
@@ -29,8 +29,34 @@ router.get('/manage-articles', async function (req, res) {
 });
 
 // ../writer/edit-article?id=
-router.get('/edit-article', function (req, res) {
-    res.render('vwWriter/edit-articles');
+router.get('/edit-article', async function (req, res) {
+    // Get article info (draft)
+    const articleId = +req.query.id || 0;
+    const fullDraftInfo = await articleService.getFullDraftInfoById(articleId);
+
+    // If published
+    if (fullDraftInfo.is_available) {
+        const script = `
+        <script>
+            alert('Bài viết đã được xuất bản!');
+            window.location.href = '/writer/manage-articles';
+        </script>
+        `;
+        res.send(script);
+        return;
+    }
+
+    // Condition control
+    const isRejected = fullDraftInfo.status === 'rejected';
+    const isPending = fullDraftInfo.status === 'pending'
+
+    res.render('vwWriter/edit-articles', {
+        layout: 'main',
+        title: fullDraftInfo.title,
+        fullDraftInfo: fullDraftInfo,
+        isRejected: isRejected,
+        isPendingP: isPending,
+    });
 });
 
 router.get('/draft-articles', function (req, res) {

@@ -45,16 +45,18 @@
         {{#each this.availableArticles}}
         <div class="row mb-3" style="border-radius: 10px; ">
             <div class="col-3">
-                <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
+                <a href="">
+                    <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
+                </a>
             </div>
             <div class="col-9 pl-0">
                 <p style="color: #7E8299" class="mb-0 article-text d-flex">
                     {{#each categories}}
                     <span class="mr-2">{{name}}</span>
                     {{/each}}
-                    
+
                     {{#unless is_published}}
-                    <span class="badge badge-warning ml-auto">Chưa xuất bản</span>
+                    <span class="badge badge-info ml-auto">Chờ xuất bản</span>
                     {{/unless}}
                 </p>
                 {{!-- Thêm link vào bài viết sau nhe --}}
@@ -73,7 +75,9 @@
         {{#each this.draftArticles}}
         <div class="row mb-3" style="border-radius: 10px; ">
             <div class="col-3">
-                <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
+                <a href="/writer/edit-article?id={{id}}">
+                    <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
+                </a>
             </div>
             <div class="col-9 pl-0">
                 <p style="color: #7E8299" class="mb-0 article-text d-flex">
@@ -82,7 +86,7 @@
                     {{/each}}
 
                     {{#if is_rejected}}
-                    <span class="badge badge-danger ml-auto">Đang chờ duyệt</span>
+                    <span class="badge badge-danger ml-auto">Bị từ chối</span>
                     {{else}}
                     <span class="badge badge-warning ml-auto">Đang chờ duyệt</span>
                     {{/if}}

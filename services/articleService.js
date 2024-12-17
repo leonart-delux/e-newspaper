@@ -44,12 +44,12 @@ export default {
     },
     async getDraftOfWriterByWriterId(id) {
         // Draft list along with category list of each article (each article can have many categories)
-        const articlesWithCategories = await db('articles')
+        const draftsWithCategories = await db('articles')
             .where({ writer_id: id, is_available: 0 })
             .join('drafts', 'articles.id', 'drafts.article_id')
             .whereIn('drafts.status', ['pending', 'rejected'])
-            .join('articles_categories', 'articles.id', 'articles_categories.article_id')
-            .join('categories', 'articles_categories.category_id', 'categories.id')
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
             .select(
                 'articles.id',
                 'articles.title',
@@ -62,7 +62,7 @@ export default {
 
         // Group categories by article
         const articlesMap = {};
-        articlesWithCategories.forEach(row => {
+        draftsWithCategories.forEach(row => {
             if (!articlesMap[row.id]) {
                 articlesMap[row.id] = {
                     id: row.id,
@@ -84,5 +84,61 @@ export default {
 
         // Dump to list
         return Object.values(articlesMap);
+    },
+    async getFullDraftInfoById(id) {
+        // Retrieve infor of draft from database
+        const fullInfoDraft = await db('articles')
+            .where('articles.id', id)
+            .join('writers', 'articles.writer_id', 'writers.user_id')
+            .leftJoin('drafts', 'articles.id', 'drafts.article_id')
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
+            .leftJoin('articles_tags', 'articles.id', 'articles_tags.article_id')
+            .leftJoin('tags', 'articles_tags.tag_id', 'tags.id')
+            .select(
+                'articles.*',
+                'writers.pseudonym as writer_pseudonym',
+                'drafts.status',
+                'drafts.reject_reason',
+                'drafts.date as last_modified',
+                'categories.id as category_id',
+                'tags.id as tag_id',
+            );
+
+        // Group categories and tags
+        const draftMap = {};
+        fullInfoDraft.forEach(row => {
+            if (!draftMap[row.id]) {
+                draftMap[row.id] = {
+                    id: row.id,
+                    title: row.title,
+                    abstract: row.abstract,
+                    main_thumb: row.main_thumb,
+                    content: row.content,
+                    is_premium: row.is_premium,
+                    is_available: row.is_available,
+                    writer_id: row.writer_id,
+                    writer_pseudonym: row.writer_pseudonym,
+                    status: row.status,
+                    reject_reason: row.reject_reason,
+                    last_modified: row.last_modified,
+                    categories: [],
+                    tags: [],
+                };
+            }
+
+            // Add category if it exists
+            if (row.category_id && !draftMap[row.id].categories.includes(row.category_id)) {
+                draftMap[row.id].categories.push(row.category_id);
+            }
+
+            // Add tag if it exists
+            if (row.tag_id && !draftMap[row.id].tags.includes(row.tag_id)) {
+                draftMap[row.id].tags.push(row.tag_id);
+            }
+        });
+
+        // Dump to an object
+        return (Object.values(draftMap))[0];
     },
 };
