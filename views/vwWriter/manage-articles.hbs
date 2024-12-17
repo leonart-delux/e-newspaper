@@ -92,7 +92,7 @@
                     <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
                 </a>
             </div>
-            <div class="col-9 pl-0">
+            <div class="col-9 pl-0 d-flex flex-column">
                 <p style="color: #7E8299" class="mb-0 article-text d-flex">
                     {{#each categories}}
                     <a href="" class="category-link mr-2">{{name}}</a>
@@ -106,6 +106,11 @@
                 </p>
                 <a class="font-weight-bold article-title" href="/writer/edit-article?id={{id}}">{{title}}</a>
                 <div class="article-text mt-1">{{abstract}}</div>
+                <p class="mb-0 article-text mt-auto">
+                    {{#each tags}}
+                    <a href="" class="badge badge-pill badge-light mr-2 mt-auto">{{name}}</a>
+                    {{/each}}
+                </p>
             </div>
         </div>
         {{/each}}
