@@ -10,4 +10,12 @@ export default{
     getCategory(catId) {
         return db('categories').where('id', catId).first();
     },
+    getCategoryListFromAnArticle(articleId) {
+        //Only get category_name
+        return db('articles_categories').where('article_id', articleId)
+            .join('categories', 'articles_categories.category_id', 'categories.id')
+            .select('name');
+    },
+
+
 }
