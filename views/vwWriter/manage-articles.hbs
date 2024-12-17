@@ -18,6 +18,14 @@
     .article-text {
         color: #7E8299;
     }
+
+    .category-link {
+        color: #7E8299;
+    }
+
+    .category-link:hover {
+        text-decoration: none;
+    }
 </style>
 {{/section}}
 
@@ -49,10 +57,10 @@
                     <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 130px;" />
                 </a>
             </div>
-            <div class="col-9 pl-0">
-                <p style="color: #7E8299" class="mb-0 article-text d-flex">
+            <div class="col-9 pl-0 d-flex flex-column">
+                <p class="mb-0 article-text d-flex">
                     {{#each categories}}
-                    <span class="mr-2">{{name}}</span>
+                    <a href="" class="category-link mr-2">{{name}}</a>
                     {{/each}}
 
                     {{#unless is_published}}
@@ -62,6 +70,11 @@
                 {{!-- Thêm link vào bài viết sau nhe --}}
                 <a class="font-weight-bold article-title" href="#">{{title}}</a>
                 <div class="article-text mt-1">{{abstract}}</div>
+                <p class="mb-0 article-text mt-auto">
+                    {{#each tags}}
+                    <a href="" class="badge badge-pill badge-light mr-2 mt-auto">{{name}}</a>
+                    {{/each}}
+                </p>
             </div>
         </div>
         {{/each}}
@@ -82,7 +95,7 @@
             <div class="col-9 pl-0">
                 <p style="color: #7E8299" class="mb-0 article-text d-flex">
                     {{#each categories}}
-                    <span class="mr-2">{{name}}</span>
+                    <a href="" class="category-link mr-2">{{name}}</a>
                     {{/each}}
 
                     {{#if is_rejected}}
