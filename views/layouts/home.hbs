@@ -11,77 +11,160 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/static/css/account-information/layout-account.css">
     {{{_sections.css}}}
+
+    <style>
+        .header {
+            min-height: 82px;
+            z-index: 99;
+            display: block;
+            box-sizing: border-box;
+            line-height: 20px;
+            font-size: 14px;
+        }
+
+        .header_top {
+            background: linear-gradient(90.13deg, #e30e16 18.76%, #c90009 96.9%);
+        }
+
+        .cus_container {
+            width: 1310px;
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+
+        .header_top_flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 48px;
+        }
+
+        .header_top_right {
+            display: flex;
+            align-items: center;
+        }
+
+        .header_bot {
+            box-shadow: 0 4px 20px rgb(0 0 0 / 5%);
+            background: #fff;
+        }
+
+        .header_nav_flex .menu_nav {
+            display: flex;
+            align-items: center;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        @media (max-width: 1180px) {
+            body,
+            .cus_container,
+            .header_top {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 1350px) {
+            .cus_container {
+                width: 1130px;
+            }
+        }
+    </style>
 </head>
 
 <body style="background-color: #FFFFFF">
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f90606;">
+    <div class="header">
+        <div>
+            <div class="header_top">
+                <div class="cus_container">
+                    <div class="header_top_flex">
+                        <div>
+                            Tuổi Già ♥
+                        </div>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            Tuổi Già ♥
+                        <div class="header_top_right">
+                            <form class="form-inline my-2 my-lg-0 ml-auto d-flex align-items-center" id="searchForm"
+                                method="get" action="/search">
+                                <div class="input-container"
+                                    style="position: relative; display: inline-block; outline: none; box-shadow: none;">
+                                    <button class="fa fa-search border-0 bg-transparent mr-2 pl-0" aria-hidden="true"
+                                        type="submit"
+                                        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></button>
 
-            <form class="form-inline my-2 my-lg-0 ml-auto d-flex align-items-center" id="searchForm" method="get"
-                action="/search">
-                <div class="input-container"
-                    style="position: relative; display: inline-block; outline: none; box-shadow: none;">
-                    <button class="fa fa-search border-0 bg-transparent mr-2 pl-0" aria-hidden="true" type="submit"
-                        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></button>
+                                    <input class="form-control mr-sm-2" type="search"
+                                        placeholder="Nhập nội dung cần tìm" id="searchInput" aria-label="Search"
+                                        style="padding-left: 30px; width: 250px; margin-right: 15px; outline: none; box-shadow: none;">
+                                </div>
+                            </form>
 
-                    <input class="form-control mr-sm-2" type="search" placeholder="Nhập nội dung cần tìm"
-                        id="searchInput" aria-label="Search"
-                        style="padding-left: 30px; width: 250px; margin-right: 15px; outline: none; box-shadow: none;">
+                            <a href="#" class="btn btn-primary"
+                                style="background-color: transparent; border:transparent; outline: none; box-shadow: none; margin-right: 10px;"><i
+                                    class="fas fa-user-circle fa-lg fa-fw" style="color: #fdfdfd;"></i></a>
+
+                            <a href="#" class="btn btn-primary" style="outline: none; box-shadow: none;">Đăng ký Tuổi
+                                Già Sao</a>
+
+                            <a href="#" class="btn btn-primary"
+                                style="background-color: transparent; border:transparent; outline: none; box-shadow: none; margin-left: 10px;"><i
+                                    class="far fa-question-circle fa-lg fa-fw"></i></a>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-            </form>
+            <div class="header_bot">
+                <div>
+                    <div>
+                        <div class="cus_container">
+                            <div class="header_nav_flex">
+                                <ul class="menu_nav">
+                                    <li>
+                                        <a class="nav-link" href="/"><i class="fas fa-home fa-lg fa-fw"
+                                                style="color: #f90606;"></i></a>
+                                    </li>
 
-            <a href="#" class="btn btn-primary"
-                style="background-color: transparent; border:transparent; outline: none; box-shadow: none; margin-right: 10px;"><i
-                    class="fas fa-user-circle fa-lg fa-fw" style="color: #fdfdfd;"></i></a>
+                                    <li>
+                                        <div class="dropdown">
+                                            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button"
+                                                data-toggle="dropdown" aria-expanded="false"
+                                                style="color: black; background-color: transparent; border:transparent; outline: none; box-shadow: none;">
+                                                Chuyên mục
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Chuyên mục con</a>
+                                                <a class="dropdown-item" href="#">Chuyên mục con</a>
+                                            </div>
+                                        </div>
+                                    </li>
 
-            <a href="#" class="btn btn-primary" style="outline: none; box-shadow: none;">Đăng ký Tuổi Già Sao</a>
-
-            <a href="#" class="btn btn-primary"
-                style="background-color: transparent; border:transparent; outline: none; box-shadow: none; margin-left: 10px;"><i
-                    class="far fa-question-circle fa-lg fa-fw"></i></a>
+                                    <li>
+                                        <div class="dropdown">
+                                            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button"
+                                                data-toggle="dropdown" aria-expanded="false"
+                                                style="color: black; background-color: transparent; border:transparent; outline: none; box-shadow: none;">
+                                                Chuyên mục
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Chuyên mục con</a>
+                                                <a class="dropdown-item" href="#">Chuyên mục con</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
-
-    <nav class="navbar navbar-expand navbar-light bg-light sticky-top">
-        <ul class="nav navbar-nav d-flex align-items-center">
-            <li class="nav-item active">
-                <a class="nav-link" href="/"><i class="fas fa-home fa-lg fa-fw" style="color: #f90606;"></i></a>
-            </li>
-
-            <li class="nav-item active">
-                <div class="dropdown">
-                    <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                        aria-expanded="false"
-                        style="color: black; background-color: transparent; border:transparent; outline: none; box-shadow: none;">
-                        Chuyên mục </a>
-
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Chuyên mục con</a>
-                        <a class="dropdown-item" href="#">Chuyên mục con</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item active">
-                <div class="dropdown">
-                    <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                        aria-expanded="false"
-                        style="color: black; background-color: transparent; border:transparent; outline: none; box-shadow: none;">
-                        Chuyên mục </a>
-
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Chuyên mục con</a>
-                        <a class="dropdown-item" href="#">Chuyên mục con</a>
-                    </div>
-                </div>
-            </li>
-
-
-        </ul>
-    </nav>
+    </div>    
 
     {{{body}}}
 
