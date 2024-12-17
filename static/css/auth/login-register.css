@@ -1,0 +1,13 @@
+.nav-tabs .nav-link {
+    color: rgb(255, 255, 255); /* Màu chữ mặc định của các tab chưa được chọn */
+}
+
+.nav-link {
+    color: black; /* Màu chữ mặc định của các tab được chọn */
+    border: none; 
+}   
+  
+.nav-link:hover {
+    color: #ffffff; 
+    background-color: rgba(250, 61, 61, 0.63); 
+}

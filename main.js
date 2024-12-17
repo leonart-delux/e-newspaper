@@ -8,6 +8,15 @@ import accountRoute from "./routes/account.route.js";
 import path from 'path';
 import {dirname} from "path";
 import {fileURLToPath} from "url";
+
+import accountRoute from "./routes/account.route.js";
+import authRouter from './routes/auth.route.js';
+import writerRouter from './routes/writer.route.js';
+
+
+// =================================================
+//                  SERVER CONFIG
+// =================================================
 import {getVipUser} from "./middlewares/user.mdw.js";
 import categoryRoute from "./routes/category.route.js";
 
@@ -31,7 +40,8 @@ app.use(session({
 app.use('/static', express.static('static'));
 app.engine('hbs', engine({
     extname: 'hbs',
-    // defaultLayout: 'main',
+    defaultLayout: 'main',
+    layoutsDir: './views/layouts',
     helpers: {
         format_number(value) {
             return numeral(value).format('0,0') + ' vnd';
@@ -54,6 +64,18 @@ app.use('/others', express.static(path.join(__dirname, '/static/images/others'))
 app.use('/account', getVipUser, accountRoute);
 
 app.use('/category', categoryRoute);
+// =================================================
+//                  SERVER ROUTING
+// =================================================
+app.get('/', function (req, res) {
+    res.render('home', {
+        layout: 'home',
+
+    });
+});
+app.use('/', authRouter);
+app.use('/account', accountRoute);
+app.use('/writer', writerRouter);
 
 app.listen(3000, function () {
     console.log("Server started on http://localhost:3000");

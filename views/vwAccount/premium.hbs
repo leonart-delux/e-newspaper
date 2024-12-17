@@ -1,31 +1,29 @@
 {{#section 'css'}}
-    <link rel="stylesheet"
-          href="/static/css/account-information.css">
+<link rel="stylesheet" href="/static/css/account-information.css">
 
-    <link rel="stylesheet"
-          href="/static/css/account-premium.css">
+<link rel="stylesheet" href="/static/css/account-premium.css">
 {{/section}}
 
 <div class="bg-white " style="border-radius: 10px">
     <div class="p-4 d-flex " style="border-bottom: 1px solid #EEEEEE">
         <div class="d-flex align-items-center">
             {{#if this.activeSub}}
-                <h4 style="font-weight: bold; text-align: center" class="mb-0 ">
-                    Bạn đang là thành viên cấp cao của chúng tôi
-                </h4>
+            <h4 style="font-weight: bold; text-align: center" class="mb-0 ">
+                Bạn đang là thành viên cấp cao của chúng tôi
+            </h4>
 
-                <img src="/others/premium (2).png " class="ml-3" style="width: 40px;height: 40px"/>
+            <img src="/others/premium (2).png " class="ml-3" style="width: 40px;height: 40px" />
             {{else if this.notSubbed}}
-                <h4 style="font-weight: bold; text-align: center" class="mb-0 ">
-                    Trở thành thành viên cấp cao với nhiều nội dung hay "HO"
-                </h4>
-                <img src="/others/premium-quality.png " class="" style="width: 40px;height: 40px"/>
+            <h4 style="font-weight: bold; text-align: center" class="mb-0 ">
+                Trở thành thành viên cấp cao với nhiều nội dung hay "HO"
+            </h4>
+            <img src="/others/premium-quality.png " class="" style="width: 40px;height: 40px" />
 
             {{else }}
-                <h4 style="font-weight: bold; text-align: center" class="mb-0 ">
-                    Yêu cầu đăng ký VIP của bạn đang được duyệt, đừng lo sẽ thanh thôi.
-                </h4>
-                <img src="/others/star.png " class="ml-3" style="width: 40px;height: 40px"/>
+            <h4 style="font-weight: bold; text-align: center" class="mb-0 ">
+                Yêu cầu đăng ký VIP của bạn đang được duyệt, đừng lo sẽ thanh thôi.
+            </h4>
+            <img src="/others/star.png " class="ml-3" style="width: 40px;height: 40px" />
             {{/if}}
 
         </div>
@@ -33,46 +31,46 @@
     </div>
     <div style="width: 800px; margin: auto" class=" mt-3 pb-5">
         {{#if this.activeSub}}
-            <div class="row py-3 font-weight-bold">
-                <span class="col-2 px-0" style="color: #B5B5C3">Ngày đăng ký: </span>
-                <div class="col-8 user-information__value">
-                    {{this.user.subscribe_time}}
-                </div>
+        <div class="row py-3 font-weight-bold">
+            <span class="col-2 px-0" style="color: #B5B5C3">Ngày đăng ký: </span>
+            <div class="col-8 user-information__value">
+                {{this.user.subscribe_time}}
             </div>
-            <div class="row py-3 font-weight-bold">
-                <span class="col-2 px-0" style="color: #B5B5C3">Ngày hết hạn: </span>
-                <div class="col-8 user-information__value">
-                    {{this.user.outdate_time}}
-                </div>
+        </div>
+        <div class="row py-3 font-weight-bold">
+            <span class="col-2 px-0" style="color: #B5B5C3">Ngày hết hạn: </span>
+            <div class="col-8 user-information__value">
+                {{this.user.outdate_time}}
             </div>
+        </div>
         {{else if this.notSubbed}}
-            <div class="d-flex justify-content-center">
-                <img src="/others/substraction.png" style="width: 300px; height: 300px"/>
+        <div class="d-flex justify-content-center">
+            <img src="/others/substraction.png" style="width: 300px; height: 300px" />
+        </div>
+        <div class="d-flex align-items-center mt-3">
+            <div style="color: #ED1C24" class="font-weight-bold mr-3">Đăng ký thành viên premium để tiếp cận với
+                nhiều nội dung tuyệt vời!
             </div>
-            <div class="d-flex align-items-center mt-3">
-                <div style="color: #ED1C24" class="font-weight-bold mr-3">Đăng ký thành viên premium để tiếp cận với
-                    nhiều nội dung tuyệt vời!
-                </div>
-                <div>
-                    <form method="post" action="">
-                        <button class="btn btn-outline-danger font-weight-bold" type="submit">
-                            <i class="bi-danger bi-plus-square "></i>
-                            Đăng ký
-                        </button>
-                    </form>
+            <div>
+                <form method="post" action="">
+                    <button class="btn btn-outline-danger font-weight-bold" type="submit">
+                        <i class="bi-danger bi-plus-square "></i>
+                        Đăng ký
+                    </button>
+                </form>
 
-                </div>
             </div>
+        </div>
         {{else}}
-            <div class="d-flex justify-content-center">
-                <img src="/others/clock.png" style="width: 300px; height: 300px"/>
-            </div>
-            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đừng lo lắng,
-                chỉ tốn một ít thời gian để chúng
-                tôi có thể duyệt đơn yêu cầu của bạn. Trong lúc chờ đợi cùng xem những tin tức
-                <a href="#" style="text-decoration: underline">mới
-                    nhất</a> nào!
-            </div>
+        <div class="d-flex justify-content-center">
+            <img src="/others/clock.png" style="width: 300px; height: 300px" />
+        </div>
+        <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đừng lo lắng,
+            chỉ tốn một ít thời gian để chúng
+            tôi có thể duyệt đơn yêu cầu của bạn. Trong lúc chờ đợi cùng xem những tin tức
+            <a href="#" style="text-decoration: underline">mới
+                nhất</a> nào!
+        </div>
         {{/if}}
     </div>
 </div>
