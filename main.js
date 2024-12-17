@@ -11,6 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
@@ -44,5 +45,5 @@ app.use(passport.session());
 app.use('/', authRouter);
 
 app.listen(3000, function () {
-    console.log('Server started on http://localhost:3000/');
+    console.log('Server started on http://localhost:3000/login-register');
 });
