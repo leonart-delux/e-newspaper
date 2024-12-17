@@ -14,7 +14,7 @@ export default{
         //Only get category_name
         return db('articles_categories').where('article_id', articleId)
             .join('categories', 'articles_categories.category_id', 'categories.id')
-            .select('name');
+            .select('name', 'articles_categories.category_id');
     },
 
 
