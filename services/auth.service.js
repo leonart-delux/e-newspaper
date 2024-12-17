@@ -1,4 +1,5 @@
 import db from "../utils/db.js";
+import bcrypt from "bcryptjs";
 
 export default {
     add(entity) {
@@ -6,6 +7,12 @@ export default {
     },
 
     findByEmail(email) {
-        return db("users").where("email", email).first();
+        console.log("Email trong findByEmail:", email); 
+        return db("users").where("email", email);
+    },
+
+    updatePassword(email, newPassword) {
+        newPassword = bcrypt.hashSync(newPassword, 8);
+        return db("users").where("email", email).update({ password: newPassword });
     }
 };
