@@ -10,6 +10,7 @@ router.get('', function (req, res) {
         layout: 'home',
     });
 });
+
 router.get('/cat', async function (req, res) {
     const catId = +req.query.catId || 6;
     const limit = 2;
@@ -79,6 +80,12 @@ router.get('/search', async function (req, res) {
         keywords: keywords,
         articles: articlesList.content,
 
+    })
+});
+
+router.get('/detailArticle', async function (req, res) {
+    res.render('vwHome/detailArticle', {
+        layout: 'home',
     })
 });
 
