@@ -1,4 +1,5 @@
 {{#section 'css'}}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
     .main-container {
         width: 1280px;
@@ -7,23 +8,157 @@
 
     .article-container {
         width: 730px;
-        margin-left: 109px;
+    }
+    
+    .sticky-control {
+        position: sticky;
+        top: 10px; 
+        align-self: flex-start;
     }
 </style>
 {{/section}}
 
+{{#section 'js'}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/vi.min.js"></script>
+
+<script src="https://cdn.tiny.cloud/1/cdmf4otr4i6qmtynngm9mxc5j1hb906knqi3o9dxf43zn57c/tinymce/7/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.6.0/plugins/help/js/i18n/keynav/vi.min.js"></script>
+
+{{!-- Phần này để cho select được nhiều category một lúc --}}
+<script>
+    // Prepare data
+    var cData = [];
+    {{#each this.cData}}
+    cData.push({
+        id: {{ id }},
+        text: '{{text}}',
+        selected: {{ selected }}
+        });
+    {{/each}}
+
+    var tData = [];
+    {{#each this.tData}}
+    tData.push({
+        id: {{ id }},
+        text: '{{text}}',
+        selected: {{ selected }}
+        });
+    {{/each}}
+
+    // Append data
+    $(document).ready(function () {
+        $('.selector-categories').select2({
+            placeholder: 'Danh sách danh mục của bài viết',
+            data: cData,
+            width: '100%',
+            allowClear: true,
+        });
+    });
+
+    $(document).ready(function () {
+        $('.selector-tags').select2({
+            placeholder: 'Danh sách danh mục của bài viết',
+            data: tData,
+            width: '100%',
+            allowClear: true,
+        });
+    });
+</script>
+
+{{!-- WYSIWYG --}}
+<script>
+    tinymce.init({
+        selector: '#txtContent',
+        height: 600,
+        plugins: 'paste image link autolink lists table media',
+        automatic_uploads: true,
+        images_upload_url: '/writer/upload-image?id={{this.draft.id}}',
+        menubar: false,
+        toolbar: [
+            'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+        ],
+        toolbar_sticky: true,
+        language: 'vi'
+    });
+</script>
+{{/section}}
+
 <div class="main-container d-flex mt-5 mb-5">
-    <div class="article-container">
-        <p class="ml-4 mb-2" style="color: #6B6869; font-size: 18px">Chỉnh sửa bài viết</p>
-        <hr class="mt-0" color="grey">
-        <form action="" method="post">
-            <div class="form-group">
-                <input type="text" name="" id="" class="form-control" placeholder="Tiêu đề bài viết" aria-describedby="helpId" value="{{this.draft.title}}" required>
+    <form class="mx-auto" action="" method="post">
+        <div class="wrapper d-flex mx-auto">
+            {{!-- Thanh điều khiển quay lại lưu xóa --}}
+            <div class="sticky-control bg-light p-2 mr-3 rounded">
+                <a href="/writer/manage-articles" type="button" class="btn btn-secondary mb-2">
+                    <i class="bi bi-reply"></i>
+                </a> <br>
+                <a href="/writer/del-articles?id={{this.draft.id}}" type="button" class="btn btn-danger mb-2">
+                    <i class="bi bi-trash3"></i>
+                </a> <br>
+                <button type="submit" class="btn btn-primary mb-2">
+                    <i class="bi bi-floppy-fill"></i>
+                </button> <br>
+                <a href="/writer/submit-artcile?id={{this.draft.id}}" type="button" class="btn btn-success">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                </a>
             </div>
-            <div class="form-group">
-              <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Tóm tắt bài viết" rows="3" aria-describedby="helpId">{{this.draft.abstract}}</textarea>
-              <small id="helpId" class="text-muted ml-1">Nội dung tóm tắt đày đủ ý chính sẽ thu hút người đọc hơn.</small>
+
+            {{!-- Nội dung chính --}}
+            <div class="article-container mx-auto p-3 bg-light rounded">
+                <h4 class="ml-4 mb-2" style="color: #6B6869; font-size: 18px"><b>Chỉnh sửa bài viết</b></h4>        
+                <hr class="mt-0">
+
+                {{#if this.isPending}}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Bài viết của bạn vẫn đang chờ được duyệt, bạn có thể chỉnh sửa nó bây giờ!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{/if}}
+
+                {{#if this.isRejected}}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Bài viết của bạn không được duyệt, lí do là: <br> 
+                    <b>{{this.draft.reject_reason}}</b> <br>
+                    <hr class="m-2">
+                    Hãy chỉnh sửa trước khi đăng kiểm duyệt lại!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{/if}}
+
+                <div class="form-group">
+                    <label class="ml-2" for="txtTitle">Tiêu đề</label>
+                    <input type="text" name="title" id="txtTitle" class="form-control" placeholder="Nhập tiêu đề ở đây"
+                        aria-describedby="helpId" value="{{this.draft.title}}" required>
+                </div>
+                <div class="form-group">
+                    <label class="ml-2" for="txtAbstract">Tóm tắt bài viết</label>
+                    <textarea name="abstract" class="form-control" id="txtAbstract" placeholder="Nhập tóm tắt bài viết ở đây" rows="3"
+                        aria-describedby="helpId" required>{{this.draft.abstract}}</textarea>
+                    <small id="helpId" class="text-muted ml-1">Nội dung tóm tắt hấp dẫn sẽ thu hút người đọc hơn.</small>
+                </div>
+                <hr class="mt-0 mb-2">
+                <div class="form-group">
+                    <label class="ml-2" for="slctCategories">Danh mục</label>
+                    <select class="selector-categories" name="categories" multiple="multiple" id="slctCategories" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="ml-2" for="slctTags">Nhãn</label>
+                    <select class="selector-tags" name="tags" multiple="multiple" id="slctTags" required>
+                    </select>
+                </div>
+                <hr class="mb-2">
+                <div class="form-group">
+                    <label class="ml-2" for="txtContent">Nội dung bài viết</label>
+                    <textarea name="content" id="txtContent" required></textarea>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>

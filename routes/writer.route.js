@@ -1,5 +1,8 @@
 import express from 'express';
+import multer from 'multer';
 import articleService from '../services/articleService.js';
+import categoryService from '../services/categoryService.js';
+import tagService from '../services/tagService.js';
 
 const router = express.Router();
 
@@ -46,6 +49,29 @@ router.get('/edit-article', async function (req, res) {
         return;
     }
 
+    // Get category & tag list
+    const categoryList = await categoryService.getAll();
+    const tagList = await tagService.getAll();
+    const articleCatList = fullDraftInfo.categories;
+    const articleTagList = fullDraftInfo.tags;
+
+    // Configure
+    const cData = categoryList.map(element => {
+        return {
+            id: element.id,
+            text: element.name,
+            selected: articleCatList.includes(element.id)
+        };
+    });
+
+    const tData = tagList.map(element => {
+        return {
+            id: element.id,
+            text: element.name,
+            selected: articleTagList.includes(element.id)
+        };
+    });
+
     // Condition control
     const isRejected = fullDraftInfo.status === 'rejected';
     const isPending = fullDraftInfo.status === 'pending'
@@ -54,8 +80,49 @@ router.get('/edit-article', async function (req, res) {
         layout: 'main',
         title: fullDraftInfo.title,
         draft: fullDraftInfo,
+        cData: cData,
+        tData: tData,
         isRejected: isRejected,
-        isPendingP: isPending,
+        isPending: isPending,
+    });
+});
+
+router.post('/edit-article', async function (req, res) {
+   console.log(req.body);
+   res.redirect('manage-articles');
+});
+
+// Upload image in article
+// ../upload-image?id = 
+router.post('/upload-image', function (req, res) {
+    const article_id = +req.query.id || 0;
+
+    // Config storage
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            const path = `./static/images/articles/${article_id}`;
+            cb(null, path);
+        },
+        filename: function (req, file, cb) {
+            const name = Date.now() + '-' + file.originalname;
+            cb(null, name);
+        }
+    });
+
+    const upload = multer({ storage: storage });
+    // Exec upload
+    upload.single('file')(req, res, function (err) {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to upload file', details: err.message });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        // Return path URL
+        const imageUrl = `/static/images/articles/${article_id}/${req.file.filename}`;
+        res.json({ location: imageUrl });
     });
 });
 
