@@ -1,5 +1,6 @@
 .nav-tabs .nav-link {
     color: rgb(255, 255, 255); /* Màu chữ mặc định của các tab chưa được chọn */
+    border: none;
 }
 
 .nav-link {
@@ -11,3 +12,14 @@
     color: #ffffff; 
     background-color: #dc3545; 
 }
+
+.btn-close-custom {
+    background-color: #dc3545 !important;;
+    color: #ffffff !important;;
+    border: none !important;;
+  }
+  
+  .btn-close-custom:hover {
+    background-color: #c82333 !important;; 
+    color: #ffffff !important;
+  }
