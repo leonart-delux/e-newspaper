@@ -1,0 +1,50 @@
+.red-bar {
+    height: 300px;
+    background-color: #FF3030;
+    position: relative;
+}
+
+.dash-board {
+    height: 1200px;
+    width: 250px;
+    position: absolute;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    top: 30px;
+    left: 15px;
+}
+
+.admin-content {
+    top: 60px;
+    left: 300px;
+    position: absolute;
+    height: 600px;
+    width: 980px;
+}
+
+.dash-board__section {
+    padding: 30px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+.dash-board__section.active {
+    background-color: #FD8082;
+}
+
+.dash-board__section div {
+    color: #284A8E;
+}
+
+.dash-board__section:hover {
+    cursor: pointer;
+}
+
+.dash-board__section.active div {
+    font-weight: bold;
+
+}
+
+.dash-board a{
+    text-decoration: none;
+}
