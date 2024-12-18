@@ -11,6 +11,7 @@ export default {
             .join('articles_categories', 'articles.id', '=', 'articles_categories.article_id')
             .select('id', 'title', 'abstract', 'main_thumb', 'articles.id as article_id', 'publish_date');
 
+        console.log(articlesList);
         // Với mỗi aricle thì thêm category names và tag names cho nó
         return this.getCatsAndTagsForAnArticle(articlesList);
     },
@@ -50,11 +51,15 @@ export default {
             .select('id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date');
 
         articlesList = await this.getCatsAndTagsForAnArticle(articlesList);
+
+
+        return articlesList;
+    },
+    async countByKeywords(keywords) {
         const count = await db('articles')
             .whereRaw('MATCH(title,content,abstract) against (? in natural language mode)', [keywords])
             .count('* as quantity').first();
-
-        return {content: articlesList, count: count.quantity}
+        return count;
     },
 
     async getArticlesByTags(tagId, limit, offset) {
@@ -64,6 +69,7 @@ export default {
             .offset(offset)
             .join('articles_tags', 'articles.id', 'articles_tags.article_id')
             .select('articles.id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date');
+
         return this.getCatsAndTagsForAnArticle(articlesList);
     },
 
