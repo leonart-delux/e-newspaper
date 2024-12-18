@@ -7,12 +7,11 @@
 <div class="  mx-auto p-3 rounded " style="width: 1320px;background-color: #FFFFFF">
     <div class="d-flex category-list align-items-center pb-3 border-bottom">
         <div class="category-list__vertical-line"></div>
-        <a href="/cat?catId={{this.mainCat.id}}" class="category-list__category "><h2
-            class="mb-0 mx-3 category-list__category category-list__category--parent">{{this.mainCat.name}}</h2></a>
-        {{#each this.childCats}}
-            <a href="/cat?catId={{id}}" class="category-list__category category-list__category--child">{{name}}</a>
-        {{/each}}
+        <h6 class="mb-0 mx-3 category-list__category category-list__category--parent">Tìm kiếm</h6></a>
     </div>
+    <h3 class="px-3 mt-2 mb-0">
+        Từ khóa tìm kiếm:{{keywords}}
+    </h3>
     <div class="mt-3 px-3" style="width: 900px ">
         {{#each this.articles}}
             <div class="row mb-3 border-bottom py-3" style="border-radius: 10px; ">
