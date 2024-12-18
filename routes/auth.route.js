@@ -24,34 +24,19 @@ router.post("/login-register", async (req, res) => {
     const user = await authService.findByEmail(req.body.email);
 
     if (!user) {
-      return res.render("vwAccount/login-register", {
-        title: "Login/Register",
-        layout: "main",
-        has_errors: true,
-        message: "Email không tồn tại.",
-      });
+      return res.json({ error: "Email không tồn tại." });
     }
 
     if (!user.password) {
-      return res.render("vwAccount/login-register", {
-        title: "Login/Register",
-        layout: "main",
-        has_errors: true,
-        message: "Có lỗi xảy ra trong việc xác thực mật khẩu.",
-      });
+      return res.json({ error: "Có lỗi xảy ra trong việc xác thực mật khẩu." });
     }
 
     const ret = bcrypt.compareSync(req.body.password, user.password);
     if (!ret) {
-      return res.render("vwAccount/login-register", {
-        title: "Login/Register",
-        layout: "main",
-        has_errors: true,
-        message: "Mật khẩu không đúng.",
-      });
+      return res.json({ error: "Mật khẩu không đúng." });
     }
 
-    res.redirect("/success-login");
+    return res.json({ success: true, message: "Đăng nhập thành công!" });
   }
   if (formType === "register") {
     const { email, password } = req.body;
@@ -59,12 +44,7 @@ router.post("/login-register", async (req, res) => {
     const existingUser = await db("users").where({ email }).first();
 
     if (existingUser) {
-      return res.render("vwAccount/login-register", {
-        title: "Login/Register",
-        layout: "main",
-        has_errors: true,
-        message: "Email đã được sử dụng.",
-      });
+      return res.json({ error: "Email đã được sử dụng." });
     }
 
     const hash_password = bcrypt.hashSync(password, 8);
@@ -77,22 +57,9 @@ router.post("/login-register", async (req, res) => {
 
     const ret = await authService.add(entity);
 
-    res.redirect("/login-register");
+    return res.json({ success: true, message: "Đăng ký thành công!" });
   }
 });
-
-router.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => {
-    res.redirect("/success");
-  }
-);
 
 router.get("/forgot-password", (req, res) => {
   res.render("vwAccount/forgot-password", {
@@ -142,14 +109,8 @@ router.get("/forgot-password/otp-verify", (req, res) => {
 router.post("/forgot-password/otp-verify", async (req, res) => {
   const { otp } = req.body;
 
-  if (!req.session.otp || !req.session.otpExpires) {
-    return res
-      .status(400)
-      .json({ success: false, message: "OTP không hợp lệ hoặc đã hết hạn." });
-  }
-
   if (Date.now() > req.session.otpExpires) {
-    return res.status(400).json({ success: false, message: "OTP đã hết hạn." });
+    return res.status(400).json({ success: false, message: "OTP đã hết hạn.",  redirectUrl: "/login-register"});
   }
 
   if (otp !== req.session.otp) {
@@ -176,27 +137,47 @@ router.post("/forgot-password/reset-password", async (req, res) => {
   const { newPassword, confirmPassword } = req.body;
 
   if (newPassword !== confirmPassword) {
-    return res.status(400).send("Mật khẩu xác nhận không khớp.");
+    return res.status(400).json({ success: false, message: "Mật khẩu xác nhận không khớp." });
   }
 
   const email = req.session.email;
+  const user = await authService.findByEmail(email);
 
-  if (!email) {
-    return res.status(400).send("Email không hợp lệ.");
+  if (!user) {
+    return res.status(400).json({ success: false, message: "Email không tồn tại.", redirectUrl: "/login-register" });
   }
 
   try {
+    const isPasswordSame = bcrypt.compareSync(newPassword, user.password);
+    
+    if (isPasswordSame) {
+      return res.status(400).json({ success: false, message: "Mật khẩu mới trùng với mật khẩu cũ. Mời bạn đăng nhập lại.", redirectUrl: "/login-register" });
+    }
+
     const result = await authService.updatePassword(email, newPassword);
 
     if (result) {
-      res.redirect("/login-register");
+      return res.json({ success: true, message: "Mật khẩu đã được cập nhật thành công.", redirectUrl: "/login-register" });
     } else {
-      res.status(500).send("Không thể cập nhật mật khẩu. Vui lòng thử lại.");
+      return res.status(500).json({ success: false, message: "Không thể cập nhật mật khẩu. Vui lòng thử lại." });
     }
   } catch (error) {
     console.error("Lỗi khi cập nhật mật khẩu:", error);
-    res.status(500).send("Có lỗi xảy ra. Vui lòng thử lại sau.");
+    return res.status(500).json({ success: false, message: "Có lỗi xảy ra. Vui lòng thử lại sau." });
   }
 });
+
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/success");
+  }
+);
 
 export default router;
