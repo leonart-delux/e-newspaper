@@ -1,19 +1,26 @@
 import express from "express";
+import categoryService from "../services/categoryService.js";
 
 const router = express.Router();
 
 router.get('/', function (req, res) {
-    res.render('vwAdmin/linechart', {
+    res.render('vwAdmin/dashboard', {
         layout: 'admin',
         dashboard: true,
 
     });
 });
 
-router.get('/categories', function (req, res) {
+router.get('/categories', async function (req, res) {
+
+    const categories = await categoryService.getAllCategoriesAndItsChildCat();
+
+
     res.render('vwAdmin/categories-menu', {
         layout: 'admin',
         categories: true,
+        categoryList: categories,
+
     });
 });
 
