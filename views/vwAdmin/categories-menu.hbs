@@ -1,0 +1,39 @@
+{{#section 'css'}}
+    <link rel="stylesheet"
+          href="/static/css/admin/admin-categories.css">
+{{/section}}
+
+<div class="bg-white p-4" style="border-radius: 10px">
+    <h3>Danh sách chuyên mục </h3>
+    <div class="border-bottom mt-3 ">
+        <div class="row text-white rounded " style="padding: 0.5rem;background-color: #FF3030">
+            <h4 class="col-3 d-flex justify-content-center"><span>Tên chuyên mục</span>
+            </h4>
+            <h4 class="col-7 d-flex justify-content-center"><span class="ml-4">Chuyên mục con</span></h4>
+            <div class="col-2 ">
+
+            </div>
+        </div>
+    </div>
+    <div>
+        {{#each this.categoryList}}
+            <div class="row  border  category-section">
+                <div class="col-3  category-section__category-name"><span>{{name}}</span>
+                </div>
+                <div class="col-7   category-section__child-category">
+                    {{#if this.childCats}}
+                        {{#each childCats}}
+                            <a class="m-1">{{name}}</a>
+                        {{/each}}
+                    {{else}}
+                        Không có gì hết :3.
+                    {{/if}}
+
+                </div>
+                <div class="col-2 category-section__btn-edit">
+                    <button class="btn btn-primary">Sửa</button>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
