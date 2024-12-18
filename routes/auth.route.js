@@ -54,12 +54,27 @@ router.post("/login-register", async (req, res) => {
     res.redirect("/success-login");
   }
   if (formType === "register") {
-    const hash_password = bcrypt.hashSync(req.body.password, 8);
+    const { email, password } = req.body;
+
+    const existingUser = await db("users").where({ email }).first();
+
+    if (existingUser) {
+      return res.render("vwAccount/login-register", {
+        title: "Login/Register",
+        layout: "main",
+        has_errors: true,
+        message: "Email đã được sử dụng.",
+      });
+    }
+
+    const hash_password = bcrypt.hashSync(password, 8);
+
     const entity = {
       password: hash_password,
-      email: req.body.email,
+      email,
       role: "guest",
     };
+
     const ret = await authService.add(entity);
 
     res.redirect("/login-register");
@@ -164,7 +179,7 @@ router.post("/forgot-password/reset-password", async (req, res) => {
     return res.status(400).send("Mật khẩu xác nhận không khớp.");
   }
 
-  const email = req.session.email; 
+  const email = req.session.email;
 
   if (!email) {
     return res.status(400).send("Email không hợp lệ.");
@@ -174,7 +189,7 @@ router.post("/forgot-password/reset-password", async (req, res) => {
     const result = await authService.updatePassword(email, newPassword);
 
     if (result) {
-      res.redirect("/login-register"); 
+      res.redirect("/login-register");
     } else {
       res.status(500).send("Không thể cập nhật mật khẩu. Vui lòng thử lại.");
     }
