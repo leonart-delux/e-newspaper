@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row my-3">
+        <div class="col">
+            <h4>Bootstrap 4 Chart.js - Line Chart</h4>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-md-12">
+            <canvas id="chLine" height="100"></canvas>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    const colors = ['#007bff', '#28a745', '#333333', '#c3e6cb', '#dc3545', '#6c757d'];
+
+    /* large line chart */
+    const chLine = document.getElementById("chLine");
+    const chartData = {
+        labels: ["S", "M", "T", "W", "T", "F", "S", "X", "Y", "Z"],
+        datasets: [{
+            data: [589, 445, 483, 503, 689, 692, 634, 300, 100, 200],
+            backgroundColor: 'transparent',
+            borderColor: colors[0],
+            borderWidth: 4,
+            pointBackgroundColor: colors[0],
+            tension: 0.4,
+        },
+        ]
+    };
+
+    if (chLine) {
+        new Chart(chLine, {
+            type: 'line',
+            data: chartData,
+            options: {
+                scales: {
+                    x: {
+                        grid: {display: false} // Loại bỏ kẻ dọc
+                    },
+                    y: {
+                        grid: {
+                            drawBorder: false, // Loại bỏ đường kẻ dọc ở 2 bên
+                            borderDash: [5, 5] // Đặt đường ngang đứt đoạn
+                        },
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+
+</script>
