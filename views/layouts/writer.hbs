@@ -18,28 +18,29 @@
     </div>
     <div class="account-container__content justify-content-between mt-5 mb-5 d-flex">
         <div class="account-container__content__sidebar  pb-3" style="background-color: transparent;">
-            <div class="account-container__content__sidebar__section" style="background-color: white; border-radius: 10px">
+            <div class="account-container__content__sidebar__section"
+                style="background-color: white; border-radius: 10px">
                 <div class=" account-container__content__sidebar__section--link">
                     <div class="mt-1">
                         <a href="/writer/manage-articles">
-                        {{#if this.isManage}}
-                        <img src="/others/newspaper (1).png" class="mr-2">
-                        <span style="color: red;">Quản lí tin</span>
-                        {{else}}   
-                        <img src="/others/newspaper.png" class="mr-2">
-                        Quản lí tin
-                        {{/if}}
+                            {{#if this.isManage}}
+                            <img src="/others/newspaper (1).png" class="mr-2">
+                            <span style="color: red;">Quản lí tin</span>
+                            {{else}}
+                            <img src="/others/newspaper.png" class="mr-2">
+                            Quản lí tin
+                            {{/if}}
                         </a>
                     </div>
                     <div>
                         <a href="/writer/draft-articles">
-                        {{#if this.isCreate}}
-                        <img src="/others/quill-pen (1).png" class="mr-2">
-                        <span style="color: red;">Đăng tin mới</span>
-                        {{else}}   
-                        <img src="/others/quill-pen.png" class="mr-2">
-                        Đăng tin mới
-                        {{/if}}
+                            {{#if this.isCreate}}
+                            <img src="/others/quill-pen (1).png" class="mr-2">
+                            <span style="color: red;">Đăng tin mới</span>
+                            {{else}}
+                            <img src="/others/quill-pen.png" class="mr-2">
+                            Đăng tin mới
+                            {{/if}}
                         </a>
                     </div>
                 </div>
@@ -116,6 +117,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
         integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     {{{_sections.js}}}
 </body>
 

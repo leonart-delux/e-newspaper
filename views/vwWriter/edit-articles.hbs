@@ -1,5 +1,5 @@
 {{#section 'css'}}
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
     .main-container {
         width: 1280px;
@@ -9,62 +9,38 @@
     .article-container {
         width: 730px;
     }
-    
+
     .sticky-control {
         position: sticky;
-        top: 10px; 
+        top: 10px;
         align-self: flex-start;
+    }
+
+    .optgroup-header {
+        font-weight: 500;
+        font-size: medium;
+    }
+
+    .option {
+        margin-left: 15px;
+    }
+
+    .file-preview-image {
+        object-fit: cover !important;
+        width: 100% !important;
+        height: 100% !important;
     }
 </style>
 {{/section}}
 
 {{#section 'js'}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/vi.min.js"></script>
-
-<script src="https://cdn.tiny.cloud/1/cdmf4otr4i6qmtynngm9mxc5j1hb906knqi3o9dxf43zn57c/tinymce/7/tinymce.min.js"
-    referrerpolicy="origin"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.6.0/plugins/help/js/i18n/keynav/vi.min.js"></script>
-
 {{!-- Phần này để cho select được nhiều category một lúc --}}
 <script>
-    // Prepare data
-    var cData = [];
-    {{#each this.cData}}
-    cData.push({
-        id: {{ id }},
-        text: '{{text}}',
-        selected: {{ selected }}
-        });
-    {{/each}}
-
-    var tData = [];
-    {{#each this.tData}}
-    tData.push({
-        id: {{ id }},
-        text: '{{text}}',
-        selected: {{ selected }}
-        });
-    {{/each}}
-
-    // Append data
-    $(document).ready(function () {
-        $('.selector-categories').select2({
-            placeholder: 'Danh sách danh mục của bài viết',
-            data: cData,
-            width: '100%',
-            allowClear: true,
-        });
+    new TomSelect('#selectCat', {
+        plugins: ['remove_button'],
     });
-
-    $(document).ready(function () {
-        $('.selector-tags').select2({
-            placeholder: 'Danh sách danh mục của bài viết',
-            data: tData,
-            width: '100%',
-            allowClear: true,
-        });
+    new TomSelect('#selectTag', {
+        plugins: ['remove_button'],
     });
 </script>
 
@@ -73,7 +49,7 @@
     tinymce.init({
         selector: '#txtContent',
         height: 600,
-        plugins: 'paste image link autolink lists table media',
+        plugins: 'image link autolink lists table media',
         automatic_uploads: true,
         images_upload_url: '/writer/upload-image?id={{this.draft.id}}',
         menubar: false,
@@ -83,11 +59,47 @@
         toolbar_sticky: true,
         language: 'vi'
     });
+
+    document.getElementById('articleForm').addEventListener('submit', function (e) {
+        const content = tinymce.get('txtContent').getContent({ format: 'text' }).trim();
+        if (!content) {
+            alert('Vui lòng nhập nội dung bài viết!');
+            e.preventDefault();
+        }
+    });
+</script>
+
+{{!-- file input --}}
+<script>
+    $('#fileThumbnail').fileinput({
+        allowedFileExtensions: ['jpg', 'gif'],
+        language: 'vi',
+        dropZoneEnabled: false,
+        showPreview: false,
+        showUpload: false,
+        showRemove: false,
+    });
+
+    $('#fileThumbnail').on('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Set ảnh vào trong khung preview
+                $('#preview-image').attr('src', e.target.result);
+                $('#preview-container').show();  // Hiển thị khung preview
+            };
+
+            reader.readAsDataURL(file); // Đọc ảnh dưới dạng URL
+        }
+    });
 </script>
 {{/section}}
 
 <div class="main-container d-flex mt-5 mb-5">
-    <form class="mx-auto" action="" method="post">
+    <form id="articleForm" class="mx-auto" action="/writer/save-article?id={{this.draft.id}}" method="post"
+        enctype="multipart/form-data">
         <div class="wrapper d-flex mx-auto">
             {{!-- Thanh điều khiển quay lại lưu xóa --}}
             <div class="sticky-control bg-light p-2 mr-3 rounded">
@@ -107,7 +119,7 @@
 
             {{!-- Nội dung chính --}}
             <div class="article-container mx-auto p-3 bg-light rounded">
-                <h4 class="ml-4 mb-2" style="color: #6B6869; font-size: 18px"><b>Chỉnh sửa bài viết</b></h4>        
+                <h4 class="ml-4 mb-2" style="color: #6B6869; font-size: 18px"><b>Chỉnh sửa bài viết</b></h4>
                 <hr class="mt-0">
 
                 {{#if this.isPending}}
@@ -121,7 +133,7 @@
 
                 {{#if this.isRejected}}
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Bài viết của bạn không được duyệt, lí do là: <br> 
+                    Bài viết của bạn không được duyệt, lí do là: <br>
                     <b>{{this.draft.reject_reason}}</b> <br>
                     <hr class="m-2">
                     Hãy chỉnh sửa trước khi đăng kiểm duyệt lại!
@@ -138,25 +150,52 @@
                 </div>
                 <div class="form-group">
                     <label class="ml-2" for="txtAbstract">Tóm tắt bài viết</label>
-                    <textarea name="abstract" class="form-control" id="txtAbstract" placeholder="Nhập tóm tắt bài viết ở đây" rows="3"
-                        aria-describedby="helpId" required>{{this.draft.abstract}}</textarea>
-                    <small id="helpId" class="text-muted ml-1">Nội dung tóm tắt hấp dẫn sẽ thu hút người đọc hơn.</small>
+                    <textarea name="abstract" class="form-control" id="txtAbstract"
+                        placeholder="Nhập tóm tắt bài viết ở đây" rows="3" aria-describedby="helpId"
+                        required>{{this.draft.abstract}}</textarea>
+                    <small id="helpId" class="text-muted ml-1">Nội dung tóm tắt hấp dẫn sẽ thu hút người đọc
+                        hơn.</small>
+                </div>
+                <div class="form-group">
+                    <label class="ml-2" for="fileThumbnail">Ảnh đại diện bài viết</label>
+                    <input type="file" name="thumbnail" id="fileThumbnail" class="file" aria-describedby="helpId"
+                        required>
+                    <small id="helpId" class="text-muted ml-1">Chọn hình ảnh đại diện phù hợp cho bài viết.</small>
+
+                    <div id="preview-container" style="margin-top: 10px; display: none;">
+                        <img id="preview-image" src="" alt="Preview"
+                            style="max-width: 100%; height: auto; object-fit: cover;">
+                    </div>
                 </div>
                 <hr class="mt-0 mb-2">
+
                 <div class="form-group">
-                    <label class="ml-2" for="slctCategories">Danh mục</label>
-                    <select class="selector-categories" name="categories" multiple="multiple" id="slctCategories" required>
+                    <label class="ml-2" for="selectCat">Danh mục</label>
+                    <select class="" name="categories" id="selectCat" placeholder="Chọn danh sách danh mục phù hợp..."
+                        autocomplete="off" multiple required>
+                        {{#each this.cData}}
+                        <optgroup class="p-5" label="{{name}}">
+                            {{#each children}}
+                            <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+                            {{/each}}
+                        </optgroup>
+                        {{/each}}
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="ml-2" for="slctTags">Nhãn</label>
-                    <select class="selector-tags" name="tags" multiple="multiple" id="slctTags" required>
+                    <label class="ml-2" for="selectTag">Nhãn</label>
+                    <select class="" name="tags" id="selectTag" placeholder="Chọn danh sách nhãn phù hợp..."
+                        autocomplete="off" multiple required>
+                        {{#each this.tData}}
+                        <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+                        {{/each}}
                     </select>
                 </div>
                 <hr class="mb-2">
+
                 <div class="form-group">
                     <label class="ml-2" for="txtContent">Nội dung bài viết</label>
-                    <textarea name="content" id="txtContent" required></textarea>
+                    <textarea name="content" id="txtContent"></textarea>
                 </div>
             </div>
         </div>

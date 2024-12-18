@@ -88,7 +88,8 @@ export default {
                     abstract: row.abstract,
                     main_thumb: row.main_thumb,
                     is_rejected: row.status === 'rejected',
-                    categories: []
+                    categories: [],
+                    tags: [],
                 };
             }
 

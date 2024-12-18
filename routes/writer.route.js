@@ -1,5 +1,10 @@
 import express from 'express';
 import multer from 'multer';
+import fs from 'fs';
+import fsExtra from 'fs-extra/esm';
+import path  from 'path';
+import * as cheerio from 'cheerio';
+
 import articleService from '../services/articleService.js';
 import categoryService from '../services/categoryService.js';
 import tagService from '../services/tagService.js';
@@ -50,26 +55,24 @@ router.get('/edit-article', async function (req, res) {
     }
 
     // Get category & tag list
-    const categoryList = await categoryService.getAll();
+    const categoryTree = await categoryService.getAll();
     const tagList = await tagService.getAll();
     const articleCatList = fullDraftInfo.categories;
     const articleTagList = fullDraftInfo.tags;
 
-    // Configure
-    const cData = categoryList.map(element => {
-        return {
-            id: element.id,
-            text: element.name,
-            selected: articleCatList.includes(element.id)
-        };
+    // Configure selected categories and tags
+    categoryTree.forEach(parentCat => {
+        parentCat.children.forEach(childCat => {
+            if (articleCatList.includes(childCat.id)) {
+                childCat.selected = true;
+            }
+        });
     });
 
-    const tData = tagList.map(element => {
-        return {
-            id: element.id,
-            text: element.name,
-            selected: articleTagList.includes(element.id)
-        };
+    tagList.forEach(tag => {
+        if (articleTagList.includes(tag.id)) {
+            tag.selected = true;
+        }
     });
 
     // Condition control
@@ -80,27 +83,76 @@ router.get('/edit-article', async function (req, res) {
         layout: 'main',
         title: fullDraftInfo.title,
         draft: fullDraftInfo,
-        cData: cData,
-        tData: tData,
+        cData: categoryTree,
+        tData: tagList,
         isRejected: isRejected,
         isPending: isPending,
     });
 });
 
-router.post('/edit-article', async function (req, res) {
-   console.log(req.body);
-   res.redirect('manage-articles');
-});
-
-// Upload image in article
-// ../upload-image?id = 
-router.post('/upload-image', function (req, res) {
-    const article_id = +req.query.id || 0;
+// ../writer/save-artcie?id=
+router.post('/save-article', async function (req, res) {
+    // Get draft id
+    const draftId = +req.query.id || 0;
+    if (draftId === 0) {
+        return res.status(500).json({ error: 'Failed to save article' });
+    }
 
     // Config storage
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            const path = `./static/images/articles/${article_id}`;
+            const path = `./static/images/articles/${draftId}`;
+            cb(null, path);
+        },
+        filename: function (req, file, cb) {
+            const name = Date.now() + '-' + file.originalname;
+            cb(null, name);
+        }
+    });
+
+    const upload = multer({ storage: storage });
+    // Exec upload
+    upload.single('thumbnail')(req, res, function (err) {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to upload file', details: err.message });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        // Draft information
+        const { title, abstract, categories, tags, content } = req.body;
+        const draft = {
+            id: draftId,
+            title,
+            abstract,
+            main_thumbnail: `/static/images/article/${draftId}/${req.file.filename}`,
+            categories,
+            tags,
+            content,
+        };
+
+        // Delete old images
+        const newImages = extractImageNames(draft.content);
+        newImages.push(`${req.file.filename}`);
+        const directory = `static/images/articles/${draftId}`;
+        deleteUnrelatedImages(directory, newImages);
+
+        console.log(`Article #${draftId} saved:\n`, draft);
+        res.redirect(`edit-article?id=${draftId}`);
+    });
+});
+
+// Upload image in article content
+// ../upload-image?id = 
+router.post('/upload-image', function (req, res) {
+    const draftId = +req.query.id || 0;
+
+    // Config storage
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            const path = `./static/images/articles/${draftId}`;
             cb(null, path);
         },
         filename: function (req, file, cb) {
@@ -121,7 +173,7 @@ router.post('/upload-image', function (req, res) {
         }
 
         // Return path URL
-        const imageUrl = `/static/images/articles/${article_id}/${req.file.filename}`;
+        const imageUrl = `/static/images/articles/${draftId}/${req.file.filename}`;
         res.json({ location: imageUrl });
     });
 });
@@ -137,5 +189,47 @@ router.get('/draft-articles', function (req, res) {
 router.get('/create-article', function (req, res) {
     res.render('vwWriter/create-articles');
 });
+
+// Delete redundant images in article folder
+function deleteUnrelatedImages(directory, imagesToKeep) {
+    fs.readdir(directory, (err, files) => {
+        if (err) {
+            console.error('Lỗi khi đọc thư mục:', err);
+            return;
+        }
+
+        // Duyệt qua tất cả các tệp tin trong thư mục
+        files.forEach(file => {
+            // Nếu ảnh không có trong danh sách cần giữ lại, xóa ảnh
+            if (!imagesToKeep.includes(file)) {
+                const filePath = path.join(directory, file);
+
+                // Kiểm tra xem file có phải là ảnh và xóa
+                fsExtra.remove(filePath, (err) => {
+                    if (err) {
+                        console.error('Lỗi khi xóa ảnh:', err);
+                    } else {
+                        console.log(`Đã xóa ảnh không liên quan: ${file}`);
+                    }
+                });
+            }
+        });
+    });
+}
+
+// Filter all image NAME in a HTML doc
+function extractImageNames(content) {
+    const $ = cheerio.load(content);
+    const images = [];
+
+    // Loop through all images
+    $('img').each((i, img) => {
+        const imgSrc = $(img).attr('src');
+        const imgName = imgSrc.split('/').pop();  // Lấy tên ảnh từ src
+        images.push(imgName);
+    });
+
+    return images;
+}
 
 export default router;
