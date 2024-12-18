@@ -7,12 +7,9 @@
 <div class="  mx-auto p-3 rounded " style="width: 1320px;background-color: #FFFFFF">
     <div class="d-flex category-list align-items-center pb-3 border-bottom">
         <div class="category-list__vertical-line"></div>
-        <a href="/cat?catId={{this.mainCat.id}}" class="category-list__category ">
-        <h6 class="mb-0 mx-3 category-list__category category-list__category--parent">SỰ KIỆN</h6></a>
-
+        <h6 class="mb-0 mx-3 category-list__category category-list__category--parent">Mới nhất</h6></a>
     </div>
     <h2 class="px-3 mt-2 mb-0">
-        {{tagName}}
     </h2>
     <div class="mt-2 px-3" style="width: 900px ">
         {{#each this.articles}}
@@ -35,13 +32,15 @@
                     <div class="row mt-2">
                         <p class="mb-0 col-7 article-text mt-auto">
                             {{#each tagList}}
-                                <a href="/tag?tagId={{tag_id}}" class="badge badge-pill badge-light mr-2 mt-auto">{{name}}</a>
+                                <a href="/tag?tagId={{tag_id}}" class="badge badge-pill badge-light mr-2
+                                mt-auto">{{name}}</a>
                             {{/each}}
                         </p>
-                        <div class="col-5 px-1 mt-1" >
+                        <div class="col-5 px-1 mt-1">
                             <div class="text-center  rounded" style="background-color: #D1D3D8; font-style: italic">
                                 {{this.publish_date}}
-                            </div></div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
