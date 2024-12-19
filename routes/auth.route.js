@@ -37,7 +37,7 @@ router.post("/login-register", async (req, res) => {
     }
 
     req.session.auth = true;
-    req.session.authUser = {
+    req.session.user = {
       id: user.id,
       email: user.email,
       role: user.role,

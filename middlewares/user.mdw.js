@@ -8,13 +8,12 @@ const userId = 5;
 
 export async function getVipUser(req, res, next) {
     //Tạm thời là lấy = userId sau này lấy bằng session
-    let user = await subscriberService.getVipStatus(userId);
+    let user = req.session.user;
     user.birth_date = moment(user.birth_date).format("DD-MM-YYYY");
     user = await writerService.getWriterPseudonym(user);
     const userApply = await applyService.getPendingApplyUser(user.id);
     if (userApply) {
         user.roleStatus = 'pending';
     }
-    req.session.user = user;
     next();
 }
