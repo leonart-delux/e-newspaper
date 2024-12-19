@@ -8,7 +8,7 @@ const db = fnKnex({
             port: 3306,
             user: 'root',
             password: '',
-            database: 'web_programming_final_project'
+            database: 'epaperdb'
         },
     pool: {min: 0, max: 7}
 });
