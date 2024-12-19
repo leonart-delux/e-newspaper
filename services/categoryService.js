@@ -58,8 +58,32 @@ export default {
             return newCat !== null;
         }
         return newCat !== null && childCatRet !== null;
-
     },
+
+    //Delete category and set null at its child category's parent_id
+    async deleteCategory(catId) {
+        const childCats = await this.getChildCategories(catId);
+
+        try {
+            if (childCats.length!==0) {
+                const childCatRet = await Promise.all(childCats.map(async (childCat) => {
+                        const entity = {
+                            parent_id: null,
+                        };
+                        await this.addChildCatToACategory(childCat.id, entity);
+                    }
+                ));
+            }
+        } catch (e) {
+            return false;
+        }
+        const result =await db('categories').where('id', catId).delete();
+        if (result) {
+            return true;
+        }
+        return false;
+
+    }
 
 
 }
