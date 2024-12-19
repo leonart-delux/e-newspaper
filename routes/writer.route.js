@@ -13,6 +13,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/manage-articles', async function (req, res) {
+    // NHỚ ĐỔI LẤY WRITER ID TỪ SESSION
     const writerId = 1;
 
     // Get list of articles of writer

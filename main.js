@@ -10,6 +10,7 @@ import {dirname} from "path";
 import {fileURLToPath} from "url";
 
 import helper from './utils/helper.js';
+import { isAuth, isWriter } from './middlewares/auth.mdw.js';
 
 import accountRoute from "./routes/account.route.js";
 import authRouter from './routes/auth.route.js';
@@ -62,7 +63,7 @@ app.use('/others', express.static(path.join(__dirname, '/static/images/others'))
 // =================================================
 app.use('/', authRouter);
 app.use('/account', accountRoute);
-app.use('/writer', writerRouter);
+app.use('/writer', isAuth, isWriter, writerRouter);
 
 app.listen(3000, function () {
     console.log("Server started on http://localhost:3000");
