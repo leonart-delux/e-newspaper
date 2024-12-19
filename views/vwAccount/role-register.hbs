@@ -12,52 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <!--    Phần này để cho select được nhiều category một lúc, sau này vào admin thêm category cho editor lấy cái này ra xài-->
-    <!--    <script>-->
-    <!--        $.getJSON('/category/category/get-all-category-names', function (datas) {-->
-    <!--            if (!datas) {-->
-    <!--                Swal.fire-->
-    <!--                ({-->
-    <!--                    title: 'Error!',-->
-    <!--                    text: 'categories empty',-->
-    <!--                    icon: 'error',-->
-    <!--                })-->
-    <!--                return;-->
-    <!--            }-->
-    <!--            $(".prompt").select2({-->
-    <!--                data: datas.map((data) => {-->
-    <!--                    return {-->
-    <!--                        id: data.id,-->
-    <!--                        text: data.name,-->
-    <!--                    }-->
-    <!--                }),-->
-    <!--                width: '100%',-->
-    <!--                multiple: true,-->
-    <!--                placeholder: "Hãy nhập chuyên mục bạn muốn quản lý",-->
-    <!--            });-->
-    <!--        });-->
 
-    <!--        $('#editorSubmit').on('submit', function (e) {-->
-    <!--            e.preventDefault();-->
-    <!--            var datas = $('.prompt').select2('data');-->
-    <!--            const categories = datas.map((data) => data.text);-->
-
-    <!--            var hiddenInput = $('<input>')-->
-    <!--                    .attr('type', 'hidden')-->
-    <!--                    .attr('name', 'categories')-->
-    <!--                    .attr('value', categories);-->
-    <!--            $(this).append(hiddenInput);-->
-    <!--            $(this).off('submit').submit();-->
-    <!--        });-->
-    <!--    </script>-->
-    <!--Html cho cai select-->
-    <!--                        <div class="form-group">-->
-    <!--                            <div class="row">-->
-    <!--                                <div class="col-md-8">-->
-    <!--                                    <input class="prompt" multiple placeholder="Search countries...">-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
 {{/section}}
 
 
