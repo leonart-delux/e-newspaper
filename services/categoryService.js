@@ -30,6 +30,36 @@ export default {
         });
         return await Promise.all(promises);
     },
+    addChildCatToACategory(childId, entity) {
+        return db('categories').where('id', childId).update(entity);
+    },
+
+
+    async addCategories(categoryName, childCats) {
+        let newCat = null;
+        try {
+            newCat = await db('categories').insert({name: categoryName});
+        } catch (error) {
+            return false;
+        }
+
+        console.log(childCats);
+        childCats = childCats.split(',');
+        const childCatRet = await Promise.all(childCats.map(async (childCat) => {
+                console.log(`child:${childCat}`);
+                const entity = {
+                    parent_id: newCat,
+                };
+                await this.addChildCatToACategory(childCat, entity);
+            }
+        ));
+
+        if (childCats === null) {
+            return newCat !== null;
+        }
+        return newCat !== null && childCatRet !== null;
+
+    },
 
 
 }
