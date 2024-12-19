@@ -13,5 +13,5 @@ export default {
     updatePassword(email, newPassword) {
         newPassword = bcrypt.hashSync(newPassword, 8);
         return db("users").where("email", email).update({ password: newPassword });
-    }
+    },
 };

@@ -25,6 +25,7 @@
     "nodemailer": "^6.9.16",
     "numeral": "^2.0.6",
     "passport": "^0.7.0",
+    "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "sequelize": "^6.37.5",
     "sweetalert": "^2.1.2",
