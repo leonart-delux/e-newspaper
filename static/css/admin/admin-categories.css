@@ -32,3 +32,10 @@
     color: #333333;
     text-decoration: none;
 }
+.scrollable-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 600px;
+    padding: 20px;
+
+}
