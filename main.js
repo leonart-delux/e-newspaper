@@ -20,6 +20,7 @@ import authRouter from './routes/auth.route.js';
 import writerRouter from './routes/writer.route.js';
 import categoryRoute from "./routes/category.route.js";
 import articleRoute from "./routes/article.route.js";
+import editorRouter from './routes/editor.route.js';
 
 import {getVipUser} from "./middlewares/user.mdw.js";
 
@@ -82,6 +83,7 @@ app.use('/category', categoryRoute);
 app.use('/', authRouter);
 app.use('/account', accountRoute);
 app.use('/writer', isAuth, isWriter, writerRouter);
+app.use('/editor', editorRouter);
 
 app.listen(3000, function () {    
     console.log("Server started on http://localhost:3000");
