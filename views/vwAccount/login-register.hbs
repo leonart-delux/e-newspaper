@@ -90,106 +90,95 @@
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header" style="background-color: #dc3545;">
-        <h5 class="modal-title" id="termsModalLabel" style="color: #ffffff">Điều Khoản Sử Dụng</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <h3 style="font-size: 20px; color: #dc3545;">1. Giới thiệu</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+<script>
+  document.getElementById("termsLink").addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const { value: accept } = await Swal.fire({
+      title: `<h3 style="font-size: 24px; color: #dc3545; text-align: left;">Điều Khoản Sử Dụng</h3>`,
+      html: `
+      <h3 style="font-size: 20px; color: #dc3545; text-align: left;">1. Giới thiệu</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
           sit amet lectus vitae urna vehicula ultricies eget id purus. Cras faucibus sapien eget leo pharetra vehicula.
           Nulla facilisi. Suspendisse potenti.</p>
 
         <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
-        <h3 style="font-size: 20px; color: #dc3545;">2. Quyền và Nghĩa Vụ Của Người Dùng</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
+        <h3 style="font-size: 20px; color: #dc3545; text-align: left;">2. Quyền và Nghĩa Vụ Của Người Dùng</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
           non varius feugiat, dui ligula fermentum nisl, nec convallis urna lacus ut nisl. Curabitur accumsan, odio id
           ultrices volutpat, sapien odio faucibus nibh, id scelerisque nisi quam vel odio.</p>
 
         <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
-        <h3 style="font-size: 20px; color: #dc3545;">3. Quyền Sở Hữu và Bản Quyền</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+        <h3 style="font-size: 20px; color: #dc3545; text-align: left;">3. Quyền Sở Hữu và Bản Quyền</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
           sit amet lectus vitae urna vehicula ultricies eget id purus. Cras faucibus sapien eget leo pharetra vehicula.
           Nulla facilisi. Suspendisse potenti.</p>
 
         <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
-        <h3 style="font-size: 20px; color: #dc3545;">4. Trách Nhiệm Của Người Dùng</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
+        <h3 style="font-size: 20px; color: #dc3545; text-align: left;">4. Trách Nhiệm Của Người Dùng</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
           non varius feugiat, dui ligula fermentum nisl, nec convallis urna lacus ut nisl. Curabitur accumsan, odio id
           ultrices volutpat, sapien odio faucibus nibh, id scelerisque nisi quam vel odio.</p>
 
         <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
-        <h3 style="font-size: 20px; color: #dc3545;">5. Chính Sách Bảo Mật</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+        <h3 style="font-size: 20px; color: #dc3545; text-align: left;">5. Chính Sách Bảo Mật</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
           sit amet lectus vitae urna vehicula ultricies eget id purus. Cras faucibus sapien eget leo pharetra vehicula.
           Nulla facilisi. Suspendisse potenti.</p>
 
         <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
-        <h3 style="font-size: 20px; color: #dc3545;">6. Điều Khoản Chấm Dứt Sử Dụng</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
+        <h3 style="font-size: 20px; color: #dc3545; text-align: left;">6. Điều Khoản Chấm Dứt Sử Dụng</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
           non varius feugiat, dui ligula fermentum nisl, nec convallis urna lacus ut nisl. Curabitur accumsan, odio id
           ultrices volutpat, sapien odio faucibus nibh, id scelerisque nisi quam vel odio.</p>
 
         <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
-        <h3 style="font-size: 20px; color: #dc3545;">7. Thay Đổi Điều Khoản</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+        <h3 style="font-size: 20px; color: #dc3545; text-align: left;">7. Thay Đổi Điều Khoản</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
           sit amet lectus vitae urna vehicula ultricies eget id purus. Cras faucibus sapien eget leo pharetra vehicula.
           Nulla facilisi. Suspendisse potenti.</p>
 
         <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
-        <h3 style="font-size: 20px; color: #dc3545;">8. Liên Hệ</h3>
-        <p style="font-size: 16px; line-height: 1.6;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
+        <h3 style="font-size: 20px; color: #dc3545; text-align: left;">8. Liên Hệ</h3>
+        <p style="font-size: 16px; line-height: 1.6; text-align: left;">Phasellus eget dui vel risus tempus suscipit. Sed cursus, metus
           non varius feugiat, dui ligula fermentum nisl, nec convallis urna lacus ut nisl. Curabitur accumsan, odio id
           ultrices volutpat, sapien odio faucibus nibh, id scelerisque nisi quam vel odio.</p>
+
+        <hr style="border: 1px dashed #ccc; margin: 20px 0;">
 
         <!-- Checkbox -->
-        <div class="form-check">
+        <div class="form-check" style="text-align: left;">
           <input type="checkbox" class="form-check-input" id="agreeCheckbox">
           <label class="form-check-label" for="agreeCheckbox">Tôi đồng ý với quy định của tòa báo</label>
         </div>
-      </div>
-      <!-- Modal Footer -->
-      <div class="modal-footer">
-        <button type="button" id="closeModalBtn" class="btn btn-close-custom" disabled><b>Đóng</b></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const termsLink = document.getElementById("termsLink");
-    const agreeCheckbox = document.getElementById("agreeCheckbox");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-
-    termsLink.addEventListener("click", function (event) {
-      event.preventDefault();
-      $("#termsModal").modal("show");
+    `,
+      confirmButtonText: 'Đóng',
+      confirmButtonColor: "#dc3545",
+      showCancelButton: false,
+      preConfirm: () => {
+        const agreeCheckbox = document.getElementById("agreeCheckbox");
+        if (!agreeCheckbox.checked) {
+          return Swal.showValidationMessage("Bạn cần đồng ý với các điều khoản!");
+        }
+      },
+      width: 600,
+      padding: "20px",
+      background: "#fff",
+      customClass: {
+        popup: "custom-swal-modal",
+      },
     });
 
-    agreeCheckbox.addEventListener("change", function () {
-      closeModalBtn.disabled = !agreeCheckbox.checked;
-    });
-
-    closeModalBtn.addEventListener("click", function () {
-      $("#termsModal").modal("hide");
-    });
+    if (accept) {
+      Swal.fire("Cảm ơn bạn đã đồng ý với các điều khoản của tòa báo!", "", "success");
+    }
   });
 
   document.getElementById("loginForm").addEventListener("submit", function (event) {
