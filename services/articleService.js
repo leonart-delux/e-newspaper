@@ -218,7 +218,23 @@ export default {
         return db('articles').where('id', id).del();
     },
     submitDraft(id) {
-        const entity = { status: 'pending' };
+        const entity = { status: 'pending', date: Date.now() };
         return db('drafts').where('article_id', id).update(entity);
+    },
+    async createNewDraft(writerId) {
+        const newArt = {
+            main_thumb: '/static/images/others/test.webp',
+            writer_id: writerId,
+        }
+        const result = await db('articles').insert(newArt);
+        const artId = result[0];
+
+        const draft = {
+            status: 'creating',
+            article_id: artId,
+        };
+        await db('drafts').insert(draft);
+
+        return artId;
     }
 };

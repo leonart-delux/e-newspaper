@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import helper from '../utils/helper.js';
+import fsExtra from 'fs-extra';
 
 import articleService from '../services/articleService.js';
 import categoryService from '../services/categoryService.js';
@@ -77,7 +78,7 @@ router.get('/edit-article', async function (req, res) {
     // Condition control
     const isRejected = fullDraftInfo.status === 'rejected';
     const isPending = fullDraftInfo.status === 'pending';
-    const isCreating = fullDraftInfo.script === 'creating';
+    const isCreating = fullDraftInfo.status === 'creating';
 
     res.render('vwWriter/edit-articles', {
         layout: 'main',
@@ -99,11 +100,19 @@ router.post('/save-draft', async function (req, res) {
         return res.status(500).json({ error: 'Failed to save article' });
     }
 
+    const directoryPath = `./static/images/articles/${draftId}`;
+
+    // Ensure the directory exists (create it if it doesn't exist)
+    try {
+        await fsExtra.ensureDir(directoryPath);
+    } catch (err) {
+        return res.status(500).json({ error: 'Failed to create directory', details: err.message });
+    }
+
     // Config storage
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            const path = `./static/images/articles/${draftId}`;
-            cb(null, path);
+            cb(null, directoryPath);
         },
         filename: function (req, file, cb) {
             const name = Date.now() + '-' + file.originalname;
@@ -182,14 +191,22 @@ router.get('/submit-draft', async function (req, res) {
 
 // Upload image in article content
 // ../upload-image?id = 
-router.post('/upload-image', function (req, res) {
+router.post('/upload-image', async function (req, res) {
     const draftId = +req.query.id || 0;
+
+    const directoryPath = `./static/images/articles/${draftId}`;
+
+    // Ensure the directory exists (create it if it doesn't exist)
+    try {
+        await fsExtra.ensureDir(directoryPath);
+    } catch (err) {
+        return res.status(500).json({ error: 'Failed to create directory', details: err.message });
+    }
 
     // Config storage
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            const path = `./static/images/articles/${draftId}`;
-            cb(null, path);
+            cb(null, directoryPath);
         },
         filename: function (req, file, cb) {
             const name = Date.now() + '-' + file.originalname;
@@ -222,8 +239,30 @@ router.get('/draft-articles', function (req, res) {
     });
 });
 
-router.get('/create-article', function (req, res) {
-    res.render('vwWriter/create-articles');
+router.get('/create-articles', async function (req, res) {
+    // NHỚ ĐỔI LẤY WRITER ID TỪ SESSION
+    const writerId = 1;
+
+    // Get list of articles of writer
+    let listDrafts = await articleService.getDraftOfWriterByWriterId(writerId);
+    const creatingDraftList = listDrafts.filter(element => element.is_creating);
+
+    const isDraftEmpty = creatingDraftList.length === 0;
+
+    res.render('vwWriter/create-articles', {
+        layout: 'writer',
+        title: 'Tạo tin mới',
+        isCreate: true,
+        draftArticles: creatingDraftList,
+        isDraftEmpty: isDraftEmpty,
+    })
 });
+
+router.get('/create-new', async function (req, res) {
+    // Chỉnh lại lấy bằng session nhe
+    const writer_id = 1;
+    const newDraftId = await articleService.createNewDraft(writer_id);
+    res.redirect(`edit-article?id=${newDraftId}`);
+})
 
 export default router;
