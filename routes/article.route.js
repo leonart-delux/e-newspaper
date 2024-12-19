@@ -61,8 +61,8 @@ router.get('/search', async function (req, res) {
     })
 });
 
-router.get('/detailArticle', async function (req, res) {
-    res.render('vwHome/detailArticle', {
+router.get('/article', async function (req, res) {
+    res.render('vwHome/article', {
         layout: 'home',
     })
 });
