@@ -5,10 +5,10 @@ export default {
         // Available list along with category list of each article (each article can have many categories)
         const articlesWithCategories = await db('articles')
             .where({ writer_id: id, is_available: 1 })
-            .join('articles_categories', 'articles.id', 'articles_categories.article_id')
-            .join('categories', 'articles_categories.category_id', 'categories.id')
-            .join('articles_tags', 'articles.id', 'articles_tags.article_id')
-            .join('tags', 'articles_tags.tag_id', 'tags.id')
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
+            .leftJoin('articles_tags', 'articles.id', 'articles_tags.article_id')
+            .leftJoin('tags', 'articles_tags.tag_id', 'tags.id')
             .select(
                 'articles.id',
                 'articles.title',
@@ -37,7 +37,7 @@ export default {
                 };
             }
 
-            if (row.category_id && row.category_name && 
+            if (row.category_id && row.category_name &&
                 !articlesMap[row.id].categories.some(c => c.id === row.category_id)) {
                 articlesMap[row.id].categories.push({
                     id: row.category_id,
@@ -45,7 +45,7 @@ export default {
                 });
             }
 
-            if (row.tag_id && row.tag_name && 
+            if (row.tag_id && row.tag_name &&
                 !articlesMap[row.id].tags.some(t => t.id === row.tag_id)) {
                 articlesMap[row.id].tags.push({
                     id: row.tag_id,
@@ -94,7 +94,7 @@ export default {
                 };
             }
 
-            if (row.category_id && row.category_name && 
+            if (row.category_id && row.category_name &&
                 !articlesMap[row.id].categories.some(c => c.id === row.category_id)) {
                 articlesMap[row.id].categories.push({
                     id: row.category_id,
@@ -102,7 +102,7 @@ export default {
                 });
             }
 
-            if (row.tag_id && row.tag_name && 
+            if (row.tag_id && row.tag_name &&
                 !articlesMap[row.id].tags.some(t => t.id === row.tag_id)) {
                 articlesMap[row.id].tags.push({
                     id: row.tag_id,
@@ -170,4 +170,54 @@ export default {
         // Dump to an object
         return (Object.values(draftMap))[0];
     },
+    // Update information of draft
+    async patchArticle(id, entity) {
+        try {
+            // Kiểm tra đầu vào (entity)
+            if (!entity || !entity.tags || !entity.categories) {
+                throw new Error('Invalid entity data');
+            }
+
+            // Delete old article_tag and article_category 
+            const deleteTags = db('articles_tags').where('article_id', id).del();
+            const deleteCategories = db('articles_categories').where('article_id', id).del();
+
+            // Add new article_tag and article_category 
+            const addTags = entity.tags.map(tag =>
+                db('articles_tags').insert({ article_id: id, tag_id: tag })
+            );
+            const addCategories = entity.categories.map(cat =>
+                db('articles_categories').insert({ article_id: id, category_id: cat })
+            );
+
+            // Update article
+            const updateArticle = db('articles').where('id', id).update({
+                title: entity.title,
+                abstract: entity.abstract,
+                main_thumb: entity.main_thumb,
+                content: entity.content,
+            });
+
+            // Wait all to complete
+            await Promise.all([
+                deleteTags,
+                deleteCategories,
+                ...addTags,
+                ...addCategories,
+                updateArticle
+            ]);
+
+            console.log('Article updated successfully');
+        } catch (error) {
+            console.error('Error updating article:', error);
+            throw error;
+        }
+    },
+    delArticle(id) {
+        return db('articles').where('id', id).del();
+    },
+    submitDraft(id) {
+        const entity = { status: 'pending' };
+        return db('drafts').where('article_id', id).update(entity);
+    }
 };

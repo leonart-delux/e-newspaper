@@ -88,8 +88,8 @@ router.get('/edit-article', async function (req, res) {
     });
 });
 
-// ../writer/save-artcie?id=
-router.post('/save-article', async function (req, res) {
+// ../writer/save-draft?id=
+router.post('/save-draft', async function (req, res) {
     // Get draft id
     const draftId = +req.query.id || 0;
     if (draftId === 0) {
@@ -110,22 +110,29 @@ router.post('/save-article', async function (req, res) {
 
     const upload = multer({ storage: storage });
     // Exec upload
-    upload.single('thumbnail')(req, res, function (err) {
+    await upload.single('thumbnail')(req, res, async function (err) {
         if (err) {
             return res.status(500).json({ error: 'Failed to upload file', details: err.message });
         }
 
+        let thumbnailUrl = req.body.oldthumbnail;
         if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded' });
+            console.log('No file uploaded');
+        }
+        else {
+            const newPath = `/static/images/articles/${draftId}/${req.file.filename}`;
+            thumbnailUrl = newPath;
         }
 
         // Draft information
-        const { title, abstract, categories, tags, content } = req.body;
+        let { title, abstract, categories, tags, content } = req.body;
+        if (!categories) { categories = []; }
+        if (!tags) { tags = []; }
         const draft = {
             id: draftId,
             title,
             abstract,
-            main_thumbnail: `/static/images/article/${draftId}/${req.file.filename}`,
+            main_thumb: thumbnailUrl,
             categories,
             tags,
             content,
@@ -133,14 +140,42 @@ router.post('/save-article', async function (req, res) {
 
         // Delete old images
         const newImages = helper.extractImageNames(draft.content);
-        newImages.push(`${req.file.filename}`);
+        const thumbName = thumbnailUrl.split('/').pop();
+        newImages.push(thumbName);
         const directory = `static/images/articles/${draftId}`;
         helper.deleteUnrelatedImages(directory, newImages);
+
+        // Patch data
+        await articleService.patchArticle(draftId, draft);
 
         console.log(`Article #${draftId} saved:\n`, draft);
         res.redirect(`edit-article?id=${draftId}`);
     });
 });
+
+// ../writer/del-artcie?id=
+router.get('/del-draft', async function (req, res) {
+    const draftId = +req.query.id || 0;
+    if (draftId === 0) {
+        return res.status(500).json({ error: 'Failed to delete draft.' });
+    }
+    // Delete folder image
+    const directory = `static/images/articles/${draftId}`;
+    try {
+        await helper.deleteArticleImageFolder(directory);
+    } catch (err) {
+        console.log(err);
+    }
+    // Delete in database
+    await articleService.delArticle(draftId);
+})
+
+// ../writer/submit-draft?id=
+router.get('/submit-draft', async function (req, res) {
+    const draftId = +req.query.id || 0;
+    await articleService.submitDraft(draftId);
+    res.redirect(`edit-article?id=${draftId}`)
+})
 
 // Upload image in article content
 // ../upload-image?id = 

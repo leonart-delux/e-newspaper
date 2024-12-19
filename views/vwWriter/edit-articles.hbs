@@ -48,8 +48,8 @@
 <script>
     tinymce.init({
         selector: '#txtContent',
-        height: 600,
-        plugins: 'image link autolink lists table media',
+        height: 800,
+        plugins: 'image link autolink lists table media wordcount',
         automatic_uploads: true,
         images_upload_url: '/writer/upload-image?id={{this.draft.id}}',
         menubar: false,
@@ -57,22 +57,29 @@
             'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
         ],
         toolbar_sticky: true,
-        language: 'vi'
-    });
-
-    document.getElementById('articleForm').addEventListener('submit', function (e) {
-        const content = tinymce.get('txtContent').getContent({ format: 'text' }).trim();
-        if (!content) {
-            alert('Vui lòng nhập nội dung bài viết!');
-            e.preventDefault();
-        }
+        language: 'vi',
+        setup: function (editor) {
+            editor.on('init', function () {
+                // Cài đặt nội dung mặc định khi editor được khởi tạo
+                const content = `{{{this.draft.content}}}`; // Dùng triple curly braces để tránh escape HTML
+                editor.setContent(content);
+            });
+        },
     });
 </script>
 
 {{!-- file input --}}
 <script>
+    $(document).ready(function () {
+        const existingThumbnail = '{{this.draft.main_thumb}}'; // Đường dẫn ảnh từ server
+        if (existingThumbnail) {
+            $('#preview-image').attr('src', existingThumbnail); // Hiển thị ảnh
+            $('#preview-container').show(); // Hiển thị khung preview
+        }
+    });
+
     $('#fileThumbnail').fileinput({
-        allowedFileExtensions: ['jpg', 'gif'],
+        allowedFileExtensions: ['jpg', 'png', 'webp', 'gif'],
         language: 'vi',
         dropZoneEnabled: false,
         showPreview: false,
@@ -92,13 +99,77 @@
             };
 
             reader.readAsDataURL(file); // Đọc ảnh dưới dạng URL
+            $('#hiddenMainThumb').val(''); // Xóa giá trị cũ
         }
+    });
+</script>
+
+{{!-- sweat alert --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $('#delButton').on('click', function (e) {
+        e.preventDefault();
+        const href = $(this).attr('href'); // Lấy đường dẫn từ thẻ a
+
+        Swal.fire({
+            title: 'Xóa bài viết!',
+            text: 'Bài viết sẽ bị xóa vĩnh viễn và không thể được khôi phục!',
+            icon: 'warning',
+            confirmButtonText: 'Tôi đã hiểu',
+            confirmButtonColor: '#DC3545',
+            showCancelButton: true,
+            cancelButtonText: 'Quay lại',
+            cancelButtonColor: '#5A6268',
+            focusCancel: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Điều hướng đến đường dẫn khi xác nhận
+                window.location.href = href;
+            }
+        });
+    });
+
+    $('#articleForm').on('submit', async function (e) {
+        e.preventDefault();
+
+        await Swal.fire({
+            title: 'Xác nhận lưu?',
+            icon: 'question',
+            showCancelButton: true,
+            cancelButtonText: 'Quay lại',
+            cancelButtonColor: '#5A6268',
+            focusCancel: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Điều hướng đến đường dẫn khi xác nhận
+                this.submit();
+            }
+        });
+    });
+
+    $('#subButton').on('click', function (e) {
+        e.preventDefault();
+        const href = $(this).attr('href'); // Lấy đường dẫn từ thẻ a
+
+        Swal.fire({
+            title: 'Xác nhận đưa kiểm duyệt?',
+            icon: 'info',
+            showCancelButton: true,
+            cancelButtonText: 'Quay lại',
+            cancelButtonColor: '#5A6268',
+            focusCancel: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Điều hướng đến đường dẫn khi xác nhận
+                window.location.href = href;
+            }
+        });
     });
 </script>
 {{/section}}
 
 <div class="main-container d-flex mt-5 mb-5">
-    <form id="articleForm" class="mx-auto" action="/writer/save-article?id={{this.draft.id}}" method="post"
+    <form id="articleForm" class="mx-auto" action="/writer/save-draft?id={{this.draft.id}}" method="post"
         enctype="multipart/form-data">
         <div class="wrapper d-flex mx-auto">
             {{!-- Thanh điều khiển quay lại lưu xóa --}}
@@ -106,13 +177,15 @@
                 <a href="/writer/manage-articles" type="button" class="btn btn-secondary mb-2">
                     <i class="bi bi-reply"></i>
                 </a> <br>
-                <a href="/writer/del-articles?id={{this.draft.id}}" type="button" class="btn btn-danger mb-2">
+                <a href="/writer/del-draft?id={{this.draft.id}}" type="button" id="delButton"
+                    class="btn btn-danger mb-2">
                     <i class="bi bi-trash3"></i>
                 </a> <br>
                 <button type="submit" class="btn btn-primary mb-2">
                     <i class="bi bi-floppy-fill"></i>
                 </button> <br>
-                <a href="/writer/submit-artcile?id={{this.draft.id}}" type="button" class="btn btn-success">
+                <a href="/writer/submit-draft?id={{this.draft.id}}" type="button" id="subButton"
+                    class="btn btn-success {{#if this.isPending}}disabled{{/if}}">
                     <i class="bi bi-file-earmark-arrow-up-fill"></i>
                 </a>
             </div>
@@ -144,25 +217,25 @@
                 {{/if}}
 
                 <div class="form-group">
-                    <label class="ml-2" for="txtTitle">Tiêu đề</label>
+                    <label class="ml-2" for="txtTitle"><b class="text-danger">Tiêu đề</b></label>
                     <input type="text" name="title" id="txtTitle" class="form-control" placeholder="Nhập tiêu đề ở đây"
                         aria-describedby="helpId" value="{{this.draft.title}}" required>
                 </div>
                 <div class="form-group">
-                    <label class="ml-2" for="txtAbstract">Tóm tắt bài viết</label>
+                    <label class="ml-2" for="txtAbstract"><b class="text-danger">Tóm tắt bài viết</b></label>
                     <textarea name="abstract" class="form-control" id="txtAbstract"
-                        placeholder="Nhập tóm tắt bài viết ở đây" rows="3" aria-describedby="helpId"
-                        required>{{this.draft.abstract}}</textarea>
+                        placeholder="Nhập tóm tắt bài viết ở đây" rows="3"
+                        aria-describedby="helpId">{{this.draft.abstract}}</textarea>
                     <small id="helpId" class="text-muted ml-1">Nội dung tóm tắt hấp dẫn sẽ thu hút người đọc
                         hơn.</small>
                 </div>
                 <div class="form-group">
-                    <label class="ml-2" for="fileThumbnail">Ảnh đại diện bài viết</label>
-                    <input type="file" name="thumbnail" id="fileThumbnail" class="file" aria-describedby="helpId"
-                        required>
+                    <label class="ml-2" for="fileThumbnail"><b class="text-danger">Ảnh đại diện bài viết</b></label>
+                    <input type="hidden" name="oldthumbnail" id="hiddenMainThumb" value="{{this.draft.main_thumb}}">
+                    <input type="file" name="thumbnail" id="fileThumbnail" class="file" aria-describedby="helpId">
                     <small id="helpId" class="text-muted ml-1">Chọn hình ảnh đại diện phù hợp cho bài viết.</small>
 
-                    <div id="preview-container" style="margin-top: 10px; display: none;">
+                    <div id="preview-container" style="margin-top: 10px; display:none;">
                         <img id="preview-image" src="" alt="Preview"
                             style="max-width: 100%; height: auto; object-fit: cover;">
                     </div>
@@ -170,9 +243,9 @@
                 <hr class="mt-0 mb-2">
 
                 <div class="form-group">
-                    <label class="ml-2" for="selectCat">Danh mục</label>
+                    <label class="ml-2" for="selectCat"><b class="text-danger">Danh mục</b></label>
                     <select class="" name="categories" id="selectCat" placeholder="Chọn danh sách danh mục phù hợp..."
-                        autocomplete="off" multiple required>
+                        autocomplete="off" multiple>
                         {{#each this.cData}}
                         <optgroup class="p-5" label="{{name}}">
                             {{#each children}}
@@ -183,9 +256,9 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="ml-2" for="selectTag">Nhãn</label>
+                    <label class="ml-2" for="selectTag"><b class="text-danger">Nhãn</b></label>
                     <select class="" name="tags" id="selectTag" placeholder="Chọn danh sách nhãn phù hợp..."
-                        autocomplete="off" multiple required>
+                        autocomplete="off" multiple>
                         {{#each this.tData}}
                         <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
                         {{/each}}
@@ -194,8 +267,8 @@
                 <hr class="mb-2">
 
                 <div class="form-group">
-                    <label class="ml-2" for="txtContent">Nội dung bài viết</label>
-                    <textarea name="content" id="txtContent"></textarea>
+                    <label class="ml-2" for="txtContent"><b class="text-danger">Nội dung bài viết</b></label>
+                    <textarea class="form-group" name="content" id="txtContent"></textarea>
                 </div>
             </div>
         </div>

@@ -51,6 +51,10 @@ export default {
 
         return images;
     },
+    // Delete article image folder
+    deleteArticleImageFolder(directory) {
+        fsExtra.remove(directory);
+    },
     // Format date to hh/mm dd/mm/yyyy
     formatSimpleDatetime(datetime) {
         return datetime.toLocaleString("vi-VN", {

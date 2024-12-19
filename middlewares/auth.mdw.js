@@ -10,7 +10,7 @@ export function isAuth(req, res, next) {
 export function isWriter(req, res, next) {
     // Chỉnh lại sau
     req.session.authUser = {
-        role: 'guest',
+        role: 'writer',
     };
     if (req.session.authUser.role !== 'writer') {
         const script = `
