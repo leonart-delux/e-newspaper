@@ -7,16 +7,14 @@ import applyService from "../services/applyService.js";
 import subscriberService from "../services/subscriberService.js";
 import writerService from "../services/writerService.js";
 import editorCategoriesService from "../services/editorCategoriesService.js";
+import {isAuth} from "../middlewares/auth.mdw.js";
 
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-
-
     res.redirect('/account/information');
 });
-
 
 router.get('/information', async function (req, res) {
     //Đáng lẽ là lấy từ session nhưng tạm thời lấy từ db đã
@@ -184,9 +182,16 @@ router.post('/role-register', async function (req, res) {
     res.redirect('/account/role-register');
 });
 
-router.post('/signOut', function (req, res) {
-    req.session.user = null;
-    res.redirect('/');
+// router.post('/signOut', function (req, res) {
+//     req.session.user = null;
+//     res.redirect('/');
+// });
+
+router.post('/logout', isAuth, function (req, res) {
+  req.session.auth = false;
+  req.session.authUser = null
+  req.session.retUrl = null;
+  res.redirect('/')
 });
 
 export default router;

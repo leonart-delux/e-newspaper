@@ -1,8 +1,7 @@
 export function isAuth(req, res, next) {
-    req.session.auth = true;
     if (!req.session.auth) {
         req.session.retUrl = req.originalUrl;
-        return res.redirect('/account/login');
+        return res.redirect('/login-register');
     }
     next();
 }

@@ -77,7 +77,7 @@ app.set("views", "./views");
 // =================================================
 
 app.use('/', articleRoute);
-app.use('/account', getVipUser, accountRoute);
+app.use('/account', isAuth, getVipUser, accountRoute);
 app.use('/category', categoryRoute);
 app.use('/', authRouter);
 app.use('/writer', isAuth, isWriter, writerRouter);
