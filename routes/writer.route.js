@@ -18,17 +18,18 @@ router.get('/manage-articles', async function (req, res) {
 
     // Get list of articles of writer
     const listAvailableArticles = await articleService.getAvailableOfWriterByWriterId(writerId);
-    const listDrafts = await articleService.getDraftOfWriterByWriterId(writerId);
+    let listDrafts = await articleService.getDraftOfWriterByWriterId(writerId);
+    const submittedDraftList = listDrafts.filter(element => !element.is_creating);
 
     const isAvailableEmpty = listAvailableArticles.length === 0;
-    const isDraftEmpty = listDrafts.length === 0;
+    const isDraftEmpty = submittedDraftList.length === 0;
 
     res.render('vwWriter/manage-articles', {
         layout: 'writer',
         title: 'Quản lí bài viết',
         isManage: true,
         availableArticles: listAvailableArticles,
-        draftArticles: listDrafts,
+        draftArticles: submittedDraftList,
         isAvailableEmpty: isAvailableEmpty,
         isDraftEmpty: isDraftEmpty,
     });
@@ -75,7 +76,8 @@ router.get('/edit-article', async function (req, res) {
 
     // Condition control
     const isRejected = fullDraftInfo.status === 'rejected';
-    const isPending = fullDraftInfo.status === 'pending'
+    const isPending = fullDraftInfo.status === 'pending';
+    const isCreating = fullDraftInfo.script === 'creating';
 
     res.render('vwWriter/edit-articles', {
         layout: 'main',
@@ -85,6 +87,7 @@ router.get('/edit-article', async function (req, res) {
         tData: tagList,
         isRejected: isRejected,
         isPending: isPending,
+        isCreating: isCreating,
     });
 });
 

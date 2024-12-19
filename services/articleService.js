@@ -62,7 +62,6 @@ export default {
         const draftsWithCategories = await db('articles')
             .where({ writer_id: id, is_available: 0 })
             .join('drafts', 'articles.id', 'drafts.article_id')
-            .whereIn('drafts.status', ['pending', 'rejected'])
             .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
             .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
             .leftJoin('articles_tags', 'articles.id', 'articles_tags.article_id')
@@ -88,6 +87,8 @@ export default {
                     title: row.title,
                     abstract: row.abstract,
                     main_thumb: row.main_thumb,
+                    is_creating: row.status === 'creating',
+                    is_pending: row.status === 'pending',
                     is_rejected: row.status === 'rejected',
                     categories: [],
                     tags: [],

@@ -216,6 +216,15 @@
                 </div>
                 {{/if}}
 
+                {{#if this.isCreating}}
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    Nội dung được kiểm duyệt kĩ, hãy nghiêm túc khi viết nhé!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{/if}}
+
                 <div class="form-group">
                     <label class="ml-2" for="txtTitle"><b class="text-danger">Tiêu đề</b></label>
                     <input type="text" name="title" id="txtTitle" class="form-control" placeholder="Nhập tiêu đề ở đây"
