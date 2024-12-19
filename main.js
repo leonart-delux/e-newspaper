@@ -80,7 +80,6 @@ app.use('/', articleRoute);
 app.use('/account', getVipUser, accountRoute);
 app.use('/category', categoryRoute);
 app.use('/', authRouter);
-app.use('/account', accountRoute);
 app.use('/writer', isAuth, isWriter, writerRouter);
 
 app.listen(3000, function () {    
