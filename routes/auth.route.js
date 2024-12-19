@@ -36,6 +36,13 @@ router.post("/login-register", async (req, res) => {
       return res.json({ error: "Mật khẩu không đúng." });
     }
 
+    req.session.auth = true;
+    req.session.authUser = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
     return res.json({ success: true, message: "Đăng nhập thành công!" });
   }
   if (formType === "register") {
@@ -166,6 +173,13 @@ router.post("/forgot-password/reset-password", async (req, res) => {
     return res.status(500).json({ success: false, message: "Có lỗi xảy ra. Vui lòng thử lại sau." });
   }
 });
+
+// router.post('/logout', isAuth, function (req, res) {
+//   req.session.auth = false;
+//   req.session.authUser = null
+//   req.session.retUrl = null;
+//   res.redirect('/')
+// });
 
 router.get(
   "/auth/google",
