@@ -41,16 +41,16 @@
         {{/each}}
         <nav>
             <ul class="pagination d-flex justify-content-center flex-wrap pagination-rounded-flat pagination-success">
-                <li class="page-item"><a class="page-link" href="/search?keywords={{this.keywords}}
-                    &page={{this.prevPage}}"
+                <li class="page-item"><a href="/search?keywords={{this.keywords}}&page={{this.prevPage}}"
+                    class="page-link"
                     data-abc="true"><i class="fa fa-angle-left"></i></a>
                 </li>
                 {{#each this.page_items}}
                     {{#if active}}
                         <li class="page-item active"><a class="page-link" href="#" data-abc="true">{{value}}</a></li>
                     {{else}}
-                        <li class="page-item "><a class="page-link" href="/search?keywords={{../this.keywords}}
-                            &page={{value}}"
+                        <li class="page-item "><a href="/search?keywords={{../this.keywords}}&page={{value}}"
+                            class="page-link"
                             data-abc="true">{{value}}</a></li>
                     {{/if}}
                 {{/each}}
