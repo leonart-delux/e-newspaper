@@ -19,38 +19,85 @@ function generateRandomPassword(length = 16) {
     return password;
   }
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        const user = await db("users")
-          .where({ email: profile.emails[0].value })
-          .first();
-        if (!user) {
-          const fakeBcryptPassword = generateRandomPassword();
-          const hashFakePassword = await bcrypt.hash(fakeBcryptPassword, 8);
-          const [newUser] = await db("users")
-            .insert({
-              email: profile.emails[0].value,
-              password: hashFakePassword,
-              role: "guest",
-            })
-            .returning("*");
-          return done(null, newUser);
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const user = await db("users")
+            .where({ email: profile.emails[0].value })
+            .first();
+          if (!user) {
+            const fakeBcryptPassword = generateRandomPassword();
+            const hashFakePassword = await bcrypt.hash(fakeBcryptPassword, 8);
+            const [newUser] = await db("users")
+              .insert({
+                name: profile.displayName,
+                email: profile.emails[0].value,
+                password: hashFakePassword,
+                role: "guest",
+              })
+              .returning("*");
+            return done(null, newUser);
+          }
+          return done(null, user);
+        } catch (err) {
+          console.error("Error during OAuth authentication:", err);
+          return done(err, null);
         }
-        return done(null, user);
-      } catch (err) {
-        console.error("Error during OAuth authentication:", err);
-        return done(err, null);
       }
-    }
-  )
-);
+    )
+  );
+  
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: "http://localhost:3000/auth/facebook/callback",
+        profileFields: ["email", "id", "displayName"],
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          if (profile?.id) {
+            const email = profile.emails?.[0]?.value;
+  
+            if (email) {
+              const user = await db("users")
+                .where({ email })
+                .first();
+  
+              if (!user) {
+                const fakeBcryptPassword = generateRandomPassword();
+                const hashFakePassword = await bcrypt.hash(fakeBcryptPassword, 8);
+                const [newUser] = await db("users")
+                  .insert({
+                    name: profile.displayName,
+                    email,
+                    password: hashFakePassword,
+                    role: "guest",
+                  })
+                  .returning("*");
+                return done(null, newUser);
+              }
+              return done(null, user);
+            } else {
+              return done(null, false, { message: "Tài khoản không có email liên kết. Vui lòng đăng ký bằng email để tiếp tục sử dụng." });
+            }
+          } else {
+            return done(new Error("Không tìm thấy tài khoản."), null);
+          }
+        } catch (error) {
+          console.error("Error during OAuth authentication:", error);
+          return done(error, null);
+        }
+      }
+    )
+  );
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));

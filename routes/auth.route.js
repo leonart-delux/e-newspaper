@@ -198,9 +198,23 @@ router.get(
     "/auth/google/callback",
     passport.authenticate("google", {failureRedirect: "/"}),
     (req, res) => {
-
         req.session.user = req.user;
         res.redirect("/");
     }
 );
+
+router.get(
+  "/auth/facebook",
+  passport.authenticate("facebook", { scope: ["email"] })
+);
+
+router.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", { failureRedirect: "/" }),
+  (req, res) => {
+    req.session.user = req.user;
+    res.redirect("/success");
+  }
+);
+
 export default router;
