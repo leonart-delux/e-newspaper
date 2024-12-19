@@ -1,9 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import fs from 'fs';
-import fsExtra from 'fs-extra/esm';
-import path  from 'path';
-import * as cheerio from 'cheerio';
+import helper from '../utils/helper.js';
 
 import articleService from '../services/articleService.js';
 import categoryService from '../services/categoryService.js';
@@ -134,10 +131,10 @@ router.post('/save-article', async function (req, res) {
         };
 
         // Delete old images
-        const newImages = extractImageNames(draft.content);
+        const newImages = helper.extractImageNames(draft.content);
         newImages.push(`${req.file.filename}`);
         const directory = `static/images/articles/${draftId}`;
-        deleteUnrelatedImages(directory, newImages);
+        helper.deleteUnrelatedImages(directory, newImages);
 
         console.log(`Article #${draftId} saved:\n`, draft);
         res.redirect(`edit-article?id=${draftId}`);
@@ -189,47 +186,5 @@ router.get('/draft-articles', function (req, res) {
 router.get('/create-article', function (req, res) {
     res.render('vwWriter/create-articles');
 });
-
-// Delete redundant images in article folder
-function deleteUnrelatedImages(directory, imagesToKeep) {
-    fs.readdir(directory, (err, files) => {
-        if (err) {
-            console.error('Lỗi khi đọc thư mục:', err);
-            return;
-        }
-
-        // Duyệt qua tất cả các tệp tin trong thư mục
-        files.forEach(file => {
-            // Nếu ảnh không có trong danh sách cần giữ lại, xóa ảnh
-            if (!imagesToKeep.includes(file)) {
-                const filePath = path.join(directory, file);
-
-                // Kiểm tra xem file có phải là ảnh và xóa
-                fsExtra.remove(filePath, (err) => {
-                    if (err) {
-                        console.error('Lỗi khi xóa ảnh:', err);
-                    } else {
-                        console.log(`Đã xóa ảnh không liên quan: ${file}`);
-                    }
-                });
-            }
-        });
-    });
-}
-
-// Filter all image NAME in a HTML doc
-function extractImageNames(content) {
-    const $ = cheerio.load(content);
-    const images = [];
-
-    // Loop through all images
-    $('img').each((i, img) => {
-        const imgSrc = $(img).attr('src');
-        const imgName = imgSrc.split('/').pop();  // Lấy tên ảnh từ src
-        images.push(imgName);
-    });
-
-    return images;
-}
 
 export default router;
