@@ -9,6 +9,8 @@ import {engine} from "express-handlebars";
 import {dirname} from "path";
 import {fileURLToPath} from "url";
 
+import helper from './utils/helper.js';
+
 import accountRoute from "./routes/account.route.js";
 import authRouter from './routes/auth.route.js';
 import writerRouter from './routes/writer.route.js';
@@ -40,11 +42,8 @@ app.engine('hbs', engine({
     defaultLayout: 'main',
     layoutsDir: './views/layouts',
     helpers: {
-        format_number(value) {
-            return numeral(value).format('0,0') + ' vnd';
-        },
+        formatSimpleDatetime: helper.formatSimpleDatetime,
         section: hbs_section(),
-
     },
 }));
 

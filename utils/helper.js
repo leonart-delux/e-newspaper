@@ -1,6 +1,6 @@
 import fs from 'fs';
 import fsExtra from 'fs-extra/esm';
-import path  from 'path';
+import path from 'path';
 import * as cheerio from 'cheerio';
 
 export default {
@@ -50,5 +50,15 @@ export default {
         });
 
         return images;
+    },
+    // Format date to hh/mm dd/mm/yyyy
+    formatSimpleDatetime(datetime) {
+        return datetime.toLocaleString("vi-VN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
     }
 }

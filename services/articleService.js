@@ -30,6 +30,7 @@ export default {
                     title: row.title,
                     abstract: row.abstract,
                     main_thumb: row.main_thumb,
+                    publish_date: row.publish_date,
                     is_published: row.publish_date < Date.now(),
                     categories: [],
                     tags: [],

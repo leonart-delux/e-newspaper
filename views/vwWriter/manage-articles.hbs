@@ -70,10 +70,11 @@
                 {{!-- Thêm link vào bài viết sau nhe --}}
                 <a class="font-weight-bold article-title" href="#">{{title}}</a>
                 <div class="article-text mt-1">{{abstract}}</div>
-                <p class="mb-0 article-text mt-auto">
+                <p class="mb-0 article-text mt-auto d-flex">
                     {{#each tags}}
                     <a href="" class="badge badge-pill badge-light mr-2 mt-auto">{{name}}</a>
                     {{/each}}
+                    <span class="ml-auto">{{formatSimpleDatetime this.publish_date}}</span>
                 </p>
             </div>
         </div>
