@@ -41,7 +41,6 @@ router.post('/information/update-pseudonym', async function (req, res) {
 router.get('/premium', function (req, res) {
 
     const user = req.session.user;
-
     const notSubbed = user.vipStatus === 'notSubbed';
     const waitingSubAccept = user.vipStatus === 'waiting';
     const activeSub = user.vipStatus === 'active';
@@ -72,7 +71,7 @@ router.post('/premium', async function (req, res) {
         return;
     }
 
-    req.session.user = await subscriberService.getVipStatus(userId);
+    req.session.user = await subscriberService.getVipStatus(user.id);
 
     user = req.session.user;
 
@@ -167,7 +166,6 @@ router.get('/role-register', async function (req, res) {
         editor: userRole === 'editor',
         writer: userRole === 'writer',
         categoryNames: categoryNames,
-
     })
 });
 
@@ -183,8 +181,7 @@ router.post('/role-register', async function (req, res) {
     }
 
     const ret = await applyService.addApplyRole(apply);
-    console.log(ret);
-
+    res.redirect('/account/role-register');
 });
 
 router.post('/signOut', function (req, res) {
