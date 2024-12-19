@@ -20,6 +20,7 @@ import {getVipUser} from "./middlewares/user.mdw.js";
 import categoryRoute from "./routes/category.route.js";
 import articleRoute from "./routes/article.route.js";
 import adminRoute from "./routes/admin.route.js";
+import adminCategoriesRoute from "./routes/admin/admin-categories.route.js";
 
 const liveReloadServer = livereload.createServer();
 liveReloadServer.server.once("connection", () => {
@@ -79,6 +80,7 @@ app.use('/writer', writerRouter);
 
 app.use('/admin', adminRoute);
 
+app.use('/admin/categories', adminCategoriesRoute);
 app.listen(3000, function () {
     console.log("Server started on http://localhost:3000");
 });
