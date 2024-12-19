@@ -11,37 +11,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/categories', async function (req, res) {
-    const categories = await categoryService.getAllCategoriesAndItsChildCat();
-    res.render('vwAdmin/categories/categories-menu', {
-        layout: 'admin',
-        categories: true,
-        categoryList: categories,
-        // title:'Category'
-    });
-});
 
-router.get('/categories/add', async function (req, res) {
-    res.render('vwAdmin/categories/categories-add', {
-        layout: 'admin',
-        categories: true,
-    });
-});
-
-router.post('/categories/add', async function (req, res) {
-    const childCats = req.body.childCats;
-    const categoryName = req.body.categoryName;
-    const ret = await categoryService.addCategories(categoryName, childCats);
-    res.render('vwAdmin/categories/categories-add', {
-        layout: 'admin',
-        categories: true,
-        added: ret,
-        catName: categoryName,
-
-    });
-
-
-});
 
 
 router.get('/tags', function (req, res) {
