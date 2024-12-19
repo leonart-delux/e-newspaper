@@ -180,6 +180,7 @@ router.get('/del-draft', async function (req, res) {
     }
     // Delete in database
     await articleService.delArticle(draftId);
+    res.redirect('manage-articles');
 })
 
 // ../writer/submit-draft?id=
