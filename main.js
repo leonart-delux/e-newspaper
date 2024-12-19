@@ -12,6 +12,9 @@ import {engine} from "express-handlebars";
 import {dirname} from "path";
 import {fileURLToPath} from "url";
 
+import helper from './utils/helper.js';
+import { isAuth, isWriter } from './middlewares/auth.mdw.js';
+
 import accountRoute from "./routes/account.route.js";
 import authRouter from './routes/auth.route.js';
 import writerRouter from './routes/writer.route.js';
@@ -60,6 +63,7 @@ app.engine('hbs', engine({
     defaultLayout: 'main',
     layoutsDir: './views/layouts',
     helpers: {
+        formatSimpleDatetime: helper.formatSimpleDatetime,
         section: hbs_section(),
     },
 }));
@@ -76,7 +80,8 @@ app.use('/', articleRoute);
 app.use('/account', getVipUser, accountRoute);
 app.use('/category', categoryRoute);
 app.use('/', authRouter);
-app.use('/writer', writerRouter);
+app.use('/account', accountRoute);
+app.use('/writer', isAuth, isWriter, writerRouter);
 
 app.listen(3000, function () {    
     console.log("Server started on http://localhost:3000");
