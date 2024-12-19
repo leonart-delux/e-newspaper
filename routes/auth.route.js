@@ -12,7 +12,7 @@ const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
 
 router.get("/login-register", (req, res) => {
-  res.render("vwAccount/login-register", {
+  res.render("vwAuthent/login-register", {
     title: "Login/Register",
     layout: "main",
   });
@@ -69,7 +69,7 @@ router.post("/login-register", async (req, res) => {
 });
 
 router.get("/forgot-password", (req, res) => {
-  res.render("vwAccount/forgot-password", {
+  res.render("vwAuthent/forgot-password", {
     title: "Forgot Password",
     layout: "main",
   });
@@ -107,7 +107,7 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 router.get("/forgot-password/otp-verify", (req, res) => {
-  res.render("vwAccount/forgot-password-2", {
+  res.render("vwAuthent/forgot-password-2", {
     title: "Forgot Password OTP Verify",
     layout: "main",
   });
@@ -134,7 +134,7 @@ router.post("/forgot-password/otp-verify", async (req, res) => {
 });
 
 router.get("/forgot-password/reset-password", (req, res) => {
-  res.render("vwAccount/forgot-password-3", {
+  res.render("vwAuthent/forgot-password-3", {
     title: "Reset Password",
     layout: "main",
   });

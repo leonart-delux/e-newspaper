@@ -7,7 +7,9 @@ export default {
     async getArticlesByCat(catId, limit, offset) {
         //Lấy tất cả các báo theo category ra
         let articlesList = await db('articles')
-            .where('articles_categories.category_id', catId).limit(limit).offset(offset)
+            .where('is_available', 1)
+            .where('articles_categories.category_id', catId)
+            .limit(limit).offset(offset)
             .join('articles_categories', 'articles.id', '=', 'articles_categories.article_id')
             .select('id', 'title', 'abstract', 'main_thumb', 'articles.id as article_id', 'publish_date');
 
@@ -45,6 +47,7 @@ export default {
     },
     async getArticlesByKeywords(keywords, limit, offset) {
         let articlesList = await db('articles')
+            .where('is_available', 1)
             .whereRaw('MATCH(title,content,abstract) against (? in natural language mode)', [keywords])
             .limit(limit)
             .offset(offset)
@@ -57,6 +60,7 @@ export default {
     },
     async countByKeywords(keywords) {
         const count = await db('articles')
+            .where('is_available', 1)
             .whereRaw('MATCH(title,content,abstract) against (? in natural language mode)', [keywords])
             .count('* as quantity').first();
         return count;
@@ -64,6 +68,7 @@ export default {
 
     async getArticlesByTags(tagId, limit, offset) {
         const articlesList = await db('articles')
+            .where('is_available', 1)
             .where('articles_tags.tag_id', tagId)
             .limit(limit)
             .offset(offset)
@@ -76,6 +81,7 @@ export default {
     async getNewestArticles(limit, offset) {
         //Lấy tất cả các báo theo category ra
         let articlesList = await db('articles')
+            .where('is_available', 1)
             .orderBy('publish_date', 'desc')
             .limit(limit)
             .offset(offset)
