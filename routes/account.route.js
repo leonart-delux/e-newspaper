@@ -17,8 +17,6 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/information', async function (req, res) {
-    //Đáng lẽ là lấy từ session nhưng tạm thời lấy từ db đã
-
     const user = req.session.user;
     res.render('vwAccount/information', {
         layout: 'account',
@@ -37,7 +35,6 @@ router.post('/information/update-pseudonym', async function (req, res) {
 });
 
 router.get('/premium', function (req, res) {
-
     const user = req.session.user;
     const notSubbed = user.vipStatus === 'notSubbed';
     const waitingSubAccept = user.vipStatus === 'waiting';
@@ -55,13 +52,11 @@ router.get('/premium', function (req, res) {
 });
 
 router.post('/premium', async function (req, res) {
-
-    //Lấy user ra bằng session
     let user = req.session.user;
 
     const subscribers = {
         user_id: user.id,
-        status: 'waiting',
+        vipStatus: 'waiting',
     }
 
     let ret = await subscriberService.addSubscriber(subscribers);
