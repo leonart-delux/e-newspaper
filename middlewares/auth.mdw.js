@@ -33,6 +33,8 @@ export function isEditor(req, res, next) {
         `;
         return res.status(403).send(script);
     }
+
+    req.session.editor = {};
     next();
 }
 
@@ -54,6 +56,7 @@ export async function isValidWriter(req, res, next) {
         `;
         return res.status(403).send(script);
     }
+    
     next();
 }
 
@@ -70,13 +73,26 @@ export async function isEditorWorkAvailable(req, res, next) {
         `;
         return res.send(script);
     }
+
     req.session.editor.categories = categoryListOfEditor;
     req.session.editor.minCategory = categoryListOfEditor.reduce((min, item) => item.category_id < min.category_id ? item : min, categoryListOfEditor[0]);
     next();
 }
 
-// When editor do an action in editor route, check if category (of article) is under his/her permission
-export async function isValidEditor(req, res, next) {
+export async function isEditorHasPermissonOnCategory(req, res, next) {
+    const inConmingCatId = +req.query.catId || 0;
+    const editorCategories = req.session.editor.categories;
+
+    // Check if in coming category id is under editor business
+    if (!editorCategories.some(cat => cat.category_id === inConmingCatId)) {
+        const script = `
+        <script>
+            alert('Bạn không có quyền truy cập vào phần quản lí danh mục này.');
+            window.location.href = '/editor';
+        </script>
+        `;
+        return res.send(script);
+    }
 
     next();
 }
