@@ -13,7 +13,8 @@ router.get('/', isEditorWorkAvailable, async function (req, res) {
 });
 
 // ../editor/drafts?catId=
-router.get('/drafts', isEditorWorkAvailable, isEditorHasPermissonOnCategory, async function (req, res) {;
+router.get('/drafts', isEditorWorkAvailable, isEditorHasPermissonOnCategory, async function (req, res) {
+    ;
     const editorId = req.session.user.id;
     const activeCatId = +req.query.catId || 0;
     if (activeCatId === 0) {
@@ -52,6 +53,17 @@ router.get('/drafts/view', isEditorWorkAvailable, isEditorHasPermissionOnArticle
     // Get draft
     const draftId = +req.query.id || 0;
     const draft = await articleService.getFullDraftInfoById(draftId);
+
+    // Invalid case: draft is published (editor try to access a published draft)
+    if (draft.is_available === 1) {
+        const script = `
+        <script>
+            alert('Bài viết đã được xuất bản.');
+            window.location.href = '/editor';
+        </script>
+        `;
+        return res.send(script);
+    }
 
     // Prepare data for categories and tags
     // For approve action
@@ -94,10 +106,10 @@ router.post('/approve', isEditorWorkAvailable, isEditorHasPermissionOnArticle, a
         publish_date: req.body.publish_time,
         is_premium: req.body.isPremium === 'on' ? 1 : 0,
     };
-    
+
     await articleService.patchArticle(article_id, articleChanges, newCategories, newTags);
     await articleService.delDraft(article_id);
-    
+
     res.redirect('/editor');
 });
 
