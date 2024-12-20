@@ -1,6 +1,16 @@
 import express from "express";
+import adminCategoriesRoute from "./admin-categories.route.js";
+import adminTagsRoute from "./admin-tags.route.js";
 
 const router = express.Router();
+
+router.use('/categories', adminCategoriesRoute);
+
+router.use('/tags', adminTagsRoute);
+
+
+
+
 
 router.get('/', function (req, res) {
     res.render('vwAdmin/dashboard', {
@@ -13,12 +23,7 @@ router.get('/', function (req, res) {
 
 
 
-router.get('/tags', function (req, res) {
-    res.render('vwAdmin/categories-menu', {
-        layout: 'admin',
-        tags: true,
-    });
-});
+
 
 router.get('/articles', function (req, res) {
     res.render('vwAdmin/categories-menu', {
