@@ -6,6 +6,7 @@ import fsExtra from 'fs-extra';
 import articleService from '../services/articleService.js';
 import categoryService from '../services/categoryService.js';
 import tagService from '../services/tagService.js';
+import { isValidWriter} from '../middlewares/auth.mdw.js';
 
 const router = express.Router();
 
@@ -36,7 +37,7 @@ router.get('/manage-articles', async function (req, res) {
 });
 
 // ../writer/edit-article?id=
-router.get('/edit-article', async function (req, res) {
+router.get('/edit-article', isValidWriter, async function (req, res) {
     // Get article info (draft)
     const articleId = +req.query.id || 0;
     const fullDraftInfo = await articleService.getFullDraftInfoById(articleId);
@@ -92,7 +93,7 @@ router.get('/edit-article', async function (req, res) {
 });
 
 // ../writer/save-draft?id=
-router.post('/save-draft', async function (req, res) {
+router.post('/save-draft', isValidWriter, async function (req, res) {
     // Get draft id
     const draftId = +req.query.id || 0;
     if (draftId === 0) {
@@ -162,8 +163,8 @@ router.post('/save-draft', async function (req, res) {
     });
 });
 
-// ../writer/del-artcie?id=
-router.get('/del-draft', async function (req, res) {
+// ../writer/del-draft?id=
+router.get('/del-draft', isValidWriter, async function (req, res) {
     const draftId = +req.query.id || 0;
     if (draftId === 0) {
         return res.status(500).json({ error: 'Failed to delete draft.' });
@@ -181,7 +182,7 @@ router.get('/del-draft', async function (req, res) {
 })
 
 // ../writer/submit-draft?id=
-router.get('/submit-draft', async function (req, res) {
+router.get('/submit-draft', isValidWriter, async function (req, res) {
     const draftId = +req.query.id || 0;
     await articleService.submitDraft(draftId);
     res.redirect(`edit-article?id=${draftId}`)
@@ -189,7 +190,7 @@ router.get('/submit-draft', async function (req, res) {
 
 // Upload image in article content
 // ../upload-image?id = 
-router.post('/upload-image', async function (req, res) {
+router.post('/upload-image', isValidWriter, async function (req, res) {
     const draftId = +req.query.id || 0;
 
     const directoryPath = `./static/images/articles/${draftId}`;
