@@ -23,7 +23,7 @@
     <!--    Phần này để cho select được nhiều category một lúc, sau này vào admin thêm category cho editor lấy cái này ra xài-->
     <script>
         $(document).ready(function () {
-            $.getJSON('/category/category/get-all-category-names', function (datas) {
+            $.getJSON('/category/get-all-category-names', function (datas) {
                 if (!datas) {
                     Swal.fire({
                         title: 'Error!',
@@ -75,24 +75,15 @@
 
     </script>
     <script>
-
         $(document).ready(function () {
-            // $('#liveToastBtn').on('click', function (e) {
-            //     $('#liveToast').toast('show');
-            // });
+
             const added = $('#added').val().toString();
             if (added === 'true') {
                 $('#liveToastTrue').toast('show');
-            } else {
+            } else if (added === 'false') {
                 $('#liveToastFalse').toast('show');
             }
         });
-
-        // $(document).ready(function(){
-        //     document.getElementById('liveToast').toast('show');
-        // });
-
-
     </script>
 {{/section}}
 
