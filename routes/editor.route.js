@@ -4,7 +4,7 @@ import articleService from "../services/articleService.js";
 import categoryService from "../services/categoryService.js";
 import tagService from "../services/tagService.js";
 
-import { isEditorWorkAvailable } from "../middlewares/auth.mdw.js";
+import { isEditorWorkAvailable, isEditorHasPermissonOnCategory } from "../middlewares/auth.mdw.js";
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get('/', isEditorWorkAvailable, async function (req, res) {
 });
 
 // ../editor/drafts?catId=
-router.get('/drafts', isEditorWorkAvailable, async function (req, res) {;
+router.get('/drafts', isEditorWorkAvailable, isEditorHasPermissonOnCategory, async function (req, res) {;
     const editorId = req.session.user.id;
     const activeCatId = +req.query.catId || 0;
     if (activeCatId === 0) {
