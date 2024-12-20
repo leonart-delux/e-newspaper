@@ -207,6 +207,7 @@ router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   async (req, res) => {
+    req.session.auth = true;
     req.session.user = req.user;
     res.redirect("/");
   }
@@ -221,6 +222,7 @@ router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", { failureRedirect: "/" }),
   async (req, res) => {
+    req.session.auth = true;
     req.session.user = req.user;
     res.redirect("/");
   }
