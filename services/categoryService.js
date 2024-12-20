@@ -1,14 +1,28 @@
 import db from "../utils/db.js";
+import transaction from 'knex';
 
 export default {
     getAllCategories() {
         return db('categories').select('*');
     },
-    getChildCategories(catId) {
-        return db('categories').where('parent_id', catId);
+    getAllNonParentCategories() {
+        return db('categories').where('parent_id', null).select('*');
     },
+
+    getChildCategories(catId) {
+        return db('categories').where('parent_id', catId).select('*');
+    },
+
     getCategory(catId) {
         return db('categories').where('id', catId).first();
+    },
+    async getCategoryAndItsChildCat(catId) {
+        const category = await this.getCategory(catId);
+
+        const childCategories = await this.getChildCategories(catId);
+
+        category.childCats = childCategories || null;
+        return category;
     },
     getCategoryListFromAnArticle(articleId) {
         //Only get category_name
@@ -30,60 +44,111 @@ export default {
         });
         return await Promise.all(promises);
     },
-    addChildCatToACategory(childId, entity) {
-        return db('categories').where('id', childId).update(entity);
+
+    //Đã thêm transaction
+    async addChildCatToACategory(childId, entity, trx) {
+        return db('categories').where('id', childId).update(entity).transacting(trx);
     },
 
-
+    //Đã thêm transaction
     async addCategories(categoryName, childCats) {
         let newCat = null;
+        const trx = await db.transaction();
         try {
             newCat = await db('categories').insert({name: categoryName});
+            if (!newCat) {
+                throw new Error('Error in insert new category to db');
+            }
+            childCats = childCats.split(',');
+
+            if (childCats.length > 0) {
+                const updatePromises = childCats
+                    .map(childCat => this.addChildCatToACategory(childCat, {parent_id: newCat}, trx));
+                await Promise.all(updatePromises);
+            }
+            trx.commit();
+            return true;
         } catch (error) {
             return false;
         }
-
-        console.log(childCats);
-        childCats = childCats.split(',');
-        const childCatRet = await Promise.all(childCats.map(async (childCat) => {
-                console.log(`child:${childCat}`);
-                const entity = {
-                    parent_id: newCat,
-                };
-                await this.addChildCatToACategory(childCat, entity);
-            }
-        ));
-
-        if (childCats === null) {
-            return newCat !== null;
-        }
-        return newCat !== null && childCatRet !== null;
     },
 
-    //Delete category and set null at its child category's parent_id
+    //Đã thêm transaction
     async deleteCategory(catId) {
         const childCats = await this.getChildCategories(catId);
+        const trx = await db.transaction();
 
         try {
-            if (childCats.length!==0) {
-                const childCatRet = await Promise.all(childCats.map(async (childCat) => {
-                        const entity = {
-                            parent_id: null,
-                        };
-                        await this.addChildCatToACategory(childCat.id, entity);
-                    }
-                ));
+            //Set null cho parent_id của tất cả child Cat con
+            if (childCats.length > 0) {
+                const updatePromises = childCats.map(childCat =>
+                    this.addChildCatToACategory(childCat.id, {parent_id: null}, trx)
+                );
+                await Promise.all(updatePromises);
             }
+
+            //Xóa 3 table lquan đến category trong db
+            const deleteQueries = [
+                {table: 'categories', condition: {id: catId}},
+                {table: 'editors_categories', condition: {category_id: catId}},
+                {table: 'articles_categories', condition: {category_id: catId}}
+            ];
+
+            for (const {table, condition} of deleteQueries) {
+                const ret = await db(table).where(condition).first();
+                if (ret) {
+                    const result = await trx(table).where(condition).delete();
+                    if (!result) {
+                        throw new Error(`Failed to delete from ${table}, category ID: ${catId}`);
+                    }
+                }
+            }
+
+            //Nếu thực hiện thành công thì commit để db thực hiện
+            await trx.commit();
+            return true;
         } catch (e) {
+            //Lỗi thì dừng việc thay đổi trong db (toàn bộ)
+            await trx.rollback();
+            console.error(`Transaction failed in deleteCategory, category ID: ${catId}`, e);
+            return false;
+        } finally {
+            await trx.destroy();
+        }
+    },
+
+    //Đã thêm transaction
+    updateCategory(catId, entity, trx) {
+        return db('categories').where('id', catId).update(entity).transacting(trx);
+    },
+
+    //Đã thêm transaction
+    async updateCategoryAndItsChildCat(catId, newChildCats, newCatName) {
+        //Ta có childCat cũ và mới
+        //Để cập nhật được child cat, ta phải tìm ra những childCat bị bỏ (
+        //childCats mới có thể
+        const trx = await db.transaction();
+        try {
+            const oldChildCats = await this.getChildCategories(catId);
+            if (oldChildCats.length > 0) {
+                const updatePromises = oldChildCats.map((oldCat) => this.updateCategory(oldCat.id, {parent_id: null}, trx))
+                await Promise.all(updatePromises);
+            }
+            newChildCats = newChildCats.split(',');
+            if (newChildCats.length > 0) {
+                const updatePromises = newChildCats.map((newCat) => this.updateCategory(newCat, {parent_id: catId}, trx))
+                await Promise.all(updatePromises);
+            }
+            const ret = await db('categories').where('id', catId).update({name: newCatName}).transacting(trx);
+            if (!ret) {
+                throw new Error("Error on updateCategoryAndItsChildCat:");
+            }
+            trx.commit();
+            return true;
+        } catch (e) {
+            console.log('Error on updateCategoryAndItsChildCat: ', e)
+            trx.rollback();
             return false;
         }
-        const result =await db('categories').where('id', catId).delete();
-        if (result) {
-            return true;
-        }
-        return false;
-
-    }
-
-
+    },
 }
