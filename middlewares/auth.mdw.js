@@ -1,3 +1,4 @@
+import { extensions } from "sequelize/lib/utils/validator-extras";
 import writerService from "../services/writerService.js";
 
 export function isAuth(req, res, next) {
@@ -34,7 +35,7 @@ export function isEditor(req, res, next) {
     next();
 }
 
-// When writer do an action, check if this writer has auth to do that action
+// When writer do an action in writer route, check if this writer has auth to do that action
 // It's like modifying another writer's article
 export async function isValidWriter(req, res, next) {
     const article_id = +req.query.id || 0;
@@ -52,5 +53,11 @@ export async function isValidWriter(req, res, next) {
         `;
         return res.status(403).send(script);
     }
+    next();
+}
+
+// When editor do an action in editor route, check if category (of article) is under his/her permission
+export async function isValidEditor(req, res, next) {
+    
     next();
 }
