@@ -13,7 +13,7 @@ import {dirname} from "path";
 import {fileURLToPath} from "url";
 
 import helper from './utils/helper.js';
-import { isAuth, isWriter } from './middlewares/auth.mdw.js';
+import { isAuth, isEditor, isWriter } from './middlewares/auth.mdw.js';
 
 import accountRoute from "./routes/account.route.js";
 import authRouter from './routes/auth.route.js';
@@ -83,7 +83,7 @@ app.use('/account', isAuth, getVipUser, accountRoute);
 app.use('/category', categoryRoute);
 app.use('/', authRouter);
 app.use('/writer', isAuth, isWriter, writerRouter);
-app.use('/editor', editorRouter);
+app.use('/editor', isAuth, isEditor, editorRouter);
 
 app.listen(3000, function () {    
     console.log("Server started on http://localhost:3000");
