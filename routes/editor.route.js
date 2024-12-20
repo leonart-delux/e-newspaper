@@ -7,7 +7,7 @@ import tagService from "../services/tagService.js";
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    const editorId = 1;
+    const editorId = req.session.user.id;
     const categoryListOfEditor = await editorCategoriesService.getEditorCategories(editorId);
     if (categoryListOfEditor.length === 0) {
         const script = `
@@ -27,7 +27,7 @@ router.get('/', async function (req, res) {
 
 // ../editor/drafts?catId=
 router.get('/drafts', async function (req, res) {
-    const editorId = 1;
+    const editorId = req.session.user.id;
     const activeCatId = +req.query.catId || 0;
     const categoryListOfEditor = await editorCategoriesService.getEditorCategoriesFullDetail(editorId);
     let activeCatName = "";
