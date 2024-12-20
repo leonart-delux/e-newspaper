@@ -6,7 +6,6 @@
     <script>
         $(document).ready(function () {
             const deleted = $('#deleted').val().toString();
-            console.log(deleted);
             if (deleted === 'true') {
                 $('#liveToastTrue').toast('show');
             } else if (deleted === 'false') {
@@ -40,10 +39,10 @@
             <div class="row  border  category-section">
                 <div class="col-3  category-section__category-name"><span>{{name}}</span>
                 </div>
-                <div class="col-6   category-section__child-category">
+                <div class="col-6 overflow-x-hidden category-section__child-category">
                     {{#if this.childCats}}
                         {{#each childCats}}
-                            <a class="m-1">{{name}}</a>
+                            <a href="/admin/categories/edit?catId={{id}}"  class="m-1">{{name}}</a>
                         {{/each}}
                     {{else}}
                         Không có gì hết :3.
