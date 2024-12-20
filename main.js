@@ -65,6 +65,7 @@ app.engine('hbs', engine({
     layoutsDir: './views/layouts',
     helpers: {
         formatSimpleDatetime: helper.formatSimpleDatetime,
+        toUpperCase: helper.toUpperCase,
         section: hbs_section(),
     },
 }));
