@@ -19,7 +19,7 @@ import writerRouter from './routes/writer.route.js';
 import {getVipUser} from "./middlewares/user.mdw.js";
 import categoryRoute from "./routes/category.route.js";
 import articleRoute from "./routes/article.route.js";
-import adminRoute from "./routes/admin.route.js";
+import adminRoute from "./routes/admin/admin.route.js";
 import adminCategoriesRoute from "./routes/admin/admin-categories.route.js";
 
 const liveReloadServer = livereload.createServer();
