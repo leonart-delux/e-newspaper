@@ -9,7 +9,7 @@
             console.log(deleted);
             if (deleted === 'true') {
                 $('#liveToastTrue').toast('show');
-            } else {
+            } else if (deleted === 'false') {
                 $('#liveToastFalse').toast('show');
             }
         });
@@ -62,7 +62,7 @@
     </div>
     <input hidden="hidden" value="{{this.deleted}}" id="deleted">
     <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
-        <div id="liveToastFalse" class="toast show" role="alert" aria-live="assertive" aria-atomic="true"
+        <div id="liveToastFalse" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
              data-delay="4000">
             <div class="toast-header">
                 <img src="/static/images/others/unchecked.png" class=" mr-1" width="20px" height="20px"/>
