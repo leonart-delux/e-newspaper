@@ -253,7 +253,7 @@
 
                 <div class="form-group">
                     <label class="ml-2" for="selectCat"><b class="text-danger">Danh mục</b></label>
-                    <select class="" name="categories" id="selectCat" placeholder="Chọn danh sách danh mục phù hợp..."
+                    <select class="" name="categories[]" id="selectCat" placeholder="Chọn danh sách danh mục phù hợp..."
                         autocomplete="off" multiple>
                         {{#each this.cData}}
                         <optgroup class="p-5" label="{{name}}">
@@ -266,7 +266,7 @@
                 </div>
                 <div class="form-group">
                     <label class="ml-2" for="selectTag"><b class="text-danger">Nhãn</b></label>
-                    <select class="" name="tags" id="selectTag" placeholder="Chọn danh sách nhãn phù hợp..."
+                    <select class="" name="tags[]" id="selectTag" placeholder="Chọn danh sách nhãn phù hợp..."
                         autocomplete="off" multiple>
                         {{#each this.tData}}
                         <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>

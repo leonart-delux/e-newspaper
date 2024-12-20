@@ -114,5 +114,8 @@ export default {
             month: "2-digit",
             year: "numeric",
         });
-    }
+    },
+    toUpperCase(str) {
+        return str.toUpperCase();
+    },
 }

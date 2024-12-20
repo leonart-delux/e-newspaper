@@ -145,8 +145,6 @@ router.post('/save-draft', async function (req, res) {
             title,
             abstract,
             main_thumb: thumbnailUrl,
-            categories,
-            tags,
             content,
         };
 
@@ -158,7 +156,7 @@ router.post('/save-draft', async function (req, res) {
         helper.deleteUnrelatedImages(directory, newImages);
 
         // Patch data
-        await articleService.patchArticle(draftId, draft);
+        await articleService.patchArticle(draftId, draft, categories, tags);
 
         console.log(`Article #${draftId} saved:\n`, draft);
         res.redirect(`edit-article?id=${draftId}`);
@@ -229,14 +227,6 @@ router.post('/upload-image', async function (req, res) {
         // Return path URL
         const imageUrl = `/static/images/articles/${draftId}/${req.file.filename}`;
         res.json({ location: imageUrl });
-    });
-});
-
-router.get('/draft-articles', function (req, res) {
-    res.render('vwWriter/draft-articles', {
-        layout: 'writer',
-        title: 'Đăng tin mới',
-        isCreate: true,
     });
 });
 

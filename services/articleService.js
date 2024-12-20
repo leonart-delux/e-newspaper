@@ -271,10 +271,10 @@ export default {
         return (Object.values(draftMap))[0];
     },
     // Update information of draft
-    async patchArticle(id, entity) {
+    async patchArticle(id, entity, categories, tags) {
         try {
             // Kiểm tra đầu vào (entity)
-            if (!entity || !entity.tags || !entity.categories) {
+            if (!entity || !tags || !categories) {
                 throw new Error('Invalid entity data');
             }
 
@@ -283,20 +283,15 @@ export default {
             const deleteCategories = db('articles_categories').where('article_id', id).del();
 
             // Add new article_tag and article_category 
-            const addTags = entity.tags.map(tag =>
+            const addTags = tags.map(tag =>
                 db('articles_tags').insert({ article_id: id, tag_id: tag })
             );
-            const addCategories = entity.categories.map(cat =>
+            const addCategories = categories.map(cat =>
                 db('articles_categories').insert({ article_id: id, category_id: cat })
             );
 
             // Update article
-            const updateArticle = db('articles').where('id', id).update({
-                title: entity.title,
-                abstract: entity.abstract,
-                main_thumb: entity.main_thumb,
-                content: entity.content,
-            });
+            const updateArticle = db('articles').where('id', id).update(entity);
 
             // Wait all to complete
             await Promise.all([
@@ -313,11 +308,25 @@ export default {
             throw error;
         }
     },
+    patchDraft(id, entity) {
+        return db('drafts').where('article_id', id).update(entity);
+    },
     delArticle(id) {
         return db('articles').where('id', id).del();
     },
+    delDraft(id) {
+        return db('drafts').where('article_id', id).del();
+    },
     submitDraft(id) {
-        const entity = { status: 'pending', date: Date.now() };
+        let datetime = new Date();
+        const formattedLocalTime = datetime.getFullYear() + '/' +
+            String(datetime.getMonth() + 1).padStart(2, '0') + '/' +
+            String(datetime.getDate()).padStart(2, '0') + 'T' +
+            String(datetime.getHours()).padStart(2, '0') + ':' +
+            String(datetime.getMinutes()).padStart(2, '0') + ':' +
+            String(datetime.getSeconds()).padStart(2, '0');
+
+            const entity = { status: 'pending', date: formattedLocalTime };
         return db('drafts').where('article_id', id).update(entity);
     },
     async createNewDraft(writerId) {
@@ -335,5 +344,20 @@ export default {
         await db('drafts').insert(draft);
 
         return artId;
+    },
+    getPendingDraftsByCatId(catId) {
+        return db('articles')
+            .where('is_available', 0)
+            .leftJoin('drafts', 'articles.id', '=', 'drafts.article_id')
+            .where('drafts.status', 'pending')
+            .leftJoin('articles_categories', 'articles.id', '=', 'articles_categories.article_id')
+            .where('articles_categories.category_id', catId)
+            .select(
+                'articles.id as id',
+                'articles.title as title',
+                'articles.abstract as abstract',
+                'articles.main_thumb as main_thumb',
+                'drafts.date as submit_time',
+            );
     }
 };
