@@ -4,7 +4,7 @@ import articleService from "../services/articleService.js";
 import categoryService from "../services/categoryService.js";
 import tagService from "../services/tagService.js";
 
-import { isEditorWorkAvailable, isEditorHasPermissonOnCategory } from "../middlewares/auth.mdw.js";
+import { isEditorWorkAvailable, isEditorHasPermissonOnCategory, isEditorHasPermissionOnArticle } from "../middlewares/auth.mdw.js";
 
 const router = express.Router();
 
@@ -48,7 +48,7 @@ router.get('/drafts', isEditorWorkAvailable, isEditorHasPermissonOnCategory, asy
 });
 
 // ../editor/drafts/view?id=
-router.get('/drafts/view', isEditorWorkAvailable, async function (req, res) {
+router.get('/drafts/view', isEditorWorkAvailable, isEditorHasPermissionOnArticle, async function (req, res) {
     // Get draft
     const draftId = +req.query.id || 0;
     const draft = await articleService.getFullDraftInfoById(draftId);
@@ -85,7 +85,7 @@ router.get('/drafts/view', isEditorWorkAvailable, async function (req, res) {
 });
 
 // ../editor/approve?id=
-router.post('/approve', isEditorWorkAvailable, async function (req, res) {
+router.post('/approve', isEditorWorkAvailable, isEditorHasPermissionOnArticle, async function (req, res) {
     const article_id = +req.query.id || 0;
     const newCategories = req.body.newCategories;
     const newTags = req.body.newTags;
@@ -102,7 +102,7 @@ router.post('/approve', isEditorWorkAvailable, async function (req, res) {
 });
 
 // ../editor/reject?id=
-router.post('/reject', isEditorWorkAvailable, async function (req, res) {
+router.post('/reject', isEditorWorkAvailable, isEditorHasPermissionOnArticle, async function (req, res) {
     const article_id = +req.query.id || 0;
     const draftChanges = {
         status: 'rejected',
