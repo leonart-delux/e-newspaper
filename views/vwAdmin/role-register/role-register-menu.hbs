@@ -1,0 +1,78 @@
+{{#section 'css'}}
+<style>
+    #pills-tab button.nav-link.active {
+        background-color: #ED1C24;
+        color: white;
+    }
+
+    .article-title {
+        color: black;
+        font-size: large;
+    }
+
+    .article-title:hover {
+        color: black;
+        text-decoration: none;
+    }
+
+    .article-text {
+        color: #7E8299;
+    }
+
+    .category-link {
+        color: #7E8299;
+    }
+
+    .category-link:hover {
+        text-decoration: none;
+    }
+</style>
+{{/section}}
+
+<div class="container p-4 mt-4"
+    style="background-color: #ffffff; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+
+    <!-- Tabs -->
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-reporter-tab" data-toggle="pill" data-target="#pills-reporter"
+                type="button" role="tab" aria-controls="pills-reporter" aria-selected="true">
+                <b>Ứng tuyển writer</b>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-editor-tab" data-toggle="pill" data-target="#pills-editor" type="button"
+                role="tab" aria-controls="pills-editor" aria-selected="false">
+                <b>Ứng tuyển editor</b>
+            </button>
+        </li>
+    </ul>
+
+    <!-- Search và Filter -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm theo tên ứng viên...">
+        </div>
+        <div class="col-md-6">
+            <select id="statusFilter" class="form-control">
+                <option value="">Tất cả trạng thái</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="tab-content p-3" id="pills-tabContent">
+        <!-- Tab ứng tuyển writer -->
+        <div class="tab-pane fade show active" id="pills-reporter" role="tabpanel" aria-labelledby="pills-reporter-tab">
+
+        </div>
+
+        <!-- Tab ứng tuyển editor -->
+        <div class="tab-pane fade" id="pills-editor" role="tabpanel" aria-labelledby="pills-editor-tab">
+            
+        </div>
+    </div>
+</div>
+
