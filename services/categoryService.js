@@ -1,5 +1,4 @@
 import db from "../utils/db.js";
-import transaction from 'knex';
 
 export default {
     getAllCategories() {
