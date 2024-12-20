@@ -4,31 +4,22 @@ import articleService from "../services/articleService.js";
 import categoryService from "../services/categoryService.js";
 import tagService from "../services/tagService.js";
 
+import { isEditorWorkAvailable } from "../middlewares/auth.mdw.js";
+
 const router = express.Router();
 
-router.get('/', async function (req, res) {
-    const editorId = req.session.user.id;
-    const categoryListOfEditor = await editorCategoriesService.getEditorCategories(editorId);
-    if (categoryListOfEditor.length === 0) {
-        const script = `
-        <script>
-            alert('Bạn chưa có chuyên mục nào để quản lý. Hãy quay lại sau!');
-            window.location.href = '/';
-        </script>
-        `;
-        res.send(script);
-        return;
-    }
-
-    // Have some cat to work on
-    const minCategory = categoryListOfEditor.reduce((min, item) => item.category_id < min.category_id ? item : min, categoryListOfEditor[0]);
-    res.redirect(`/editor/drafts?catId=${minCategory.category_id}`);
+router.get('/', isEditorWorkAvailable, async function (req, res) {
+    res.redirect(`/editor/drafts?catId=${req.session.editor.minCategory.category_id}`);
 });
 
 // ../editor/drafts?catId=
-router.get('/drafts', async function (req, res) {
+router.get('/drafts', isEditorWorkAvailable, async function (req, res) {;
     const editorId = req.session.user.id;
     const activeCatId = +req.query.catId || 0;
+    if (activeCatId === 0) {
+        activeCatId = req.editor.minCategory.category_id;
+    }
+
     const categoryListOfEditor = await editorCategoriesService.getEditorCategoriesFullDetail(editorId);
     let activeCatName = "";
     let activeParentName = "";
@@ -57,7 +48,7 @@ router.get('/drafts', async function (req, res) {
 });
 
 // ../editor/drafts/view?id=
-router.get('/drafts/view', async function (req, res) {
+router.get('/drafts/view', isEditorWorkAvailable, async function (req, res) {
     // Get draft
     const draftId = +req.query.id || 0;
     const draft = await articleService.getFullDraftInfoById(draftId);
@@ -94,7 +85,7 @@ router.get('/drafts/view', async function (req, res) {
 });
 
 // ../editor/approve?id=
-router.post('/approve', async function (req, res) {
+router.post('/approve', isEditorWorkAvailable, async function (req, res) {
     const article_id = +req.query.id || 0;
     const newCategories = req.body.newCategories;
     const newTags = req.body.newTags;
@@ -111,7 +102,7 @@ router.post('/approve', async function (req, res) {
 });
 
 // ../editor/reject?id=
-router.post('/reject', async function (req, res) {
+router.post('/reject', isEditorWorkAvailable, async function (req, res) {
     const article_id = +req.query.id || 0;
     const draftChanges = {
         status: 'rejected',
