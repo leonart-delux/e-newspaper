@@ -10,7 +10,7 @@ router.get('/', async function (req, res) {
             layout: 'admin',
             categories: true,
             categoryList: categories,
-
+            deleted: null,
         });
     } else {
         res.render('vwAdmin/categories/categories-menu', {
@@ -59,5 +59,59 @@ router.get('/delete', async function (req, res) {
     res.redirect('/admin/categories');
 
 
+});
+
+router.get('/edit', async function (req, res) {
+    let catId = +req.query.catId || null;
+    if (req.session.editedCatId !== null && req.session.editedCatId !== undefined) {
+        catId = req.session.editedCatId;
+    }
+    if (!catId || catId <= 0 ) {
+        res.redirect('/admin/categories');
+    }
+    const category = await categoryService.getCategoryAndItsChildCat(catId);
+    if (req.session.edited === null || req.session.edited === undefined) {
+        res.render('vwAdmin/categories/categories-edit', {
+            layout: 'admin',
+            category: category,
+            catId: catId,
+            edited: null,
+        });
+    } else if (req.session.edited === true) {
+        res.render('vwAdmin/categories/categories-edit', {
+            layout: 'admin',
+            category: category,
+            catId: req.session.editedCatId,
+            edited: true,
+            catName: req.session.editedCatName,
+        });
+    } else if (req.session.edited === false) {
+        res.render('vwAdmin/categories/categories-edit', {
+            layout: 'admin',
+            category: category,
+            catId: req.session.editedCatId,
+            edited: false,
+            catName: req.session.editedCatName,
+        });
+    }
+    req.session.edited = null;
+    req.session.editedCatName = null;
+    req.session.editedCatId = null;
+});
+
+router.post('/edit', async function (req, res) {
+    const childCats = req.body.childCats;
+    const categoryNewName = req.body.categoryName;
+    const catId = +req.body.catId;
+
+    const ret = await categoryService.updateCategoryAndItsChildCat(catId, childCats, categoryNewName);
+    req.session.editedCatName = categoryNewName;
+    req.session.editedCatId = catId;
+    if (!ret) {
+        req.session.edited = null;
+    } else {
+        req.session.edited = true;
+    }
+    res.redirect('/admin/categories/edit');
 });
 export default router;
