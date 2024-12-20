@@ -80,7 +80,9 @@ app.use('/writer', writerRouter);
 
 app.use('/admin', adminRoute);
 
-app.use('/admin/categories', adminCategoriesRoute);
+// app.use('/admin/categories', adminCategoriesRoute);y
+
+
 app.listen(3000, function () {
     console.log("Server started on http://localhost:3000");
 });
