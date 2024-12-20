@@ -6,8 +6,8 @@ export default {
     },
     getEditorCategoryNames(userId) {
         return db('editors_categories')
-            .join('categories', 'editors_categories.category_id', '=', 'categories.id')
             .where('editors_categories.editor_id', userId)
+            .join('categories', 'editors_categories.category_id', '=', 'categories.id')
             .select('categories.name');
     },
 
