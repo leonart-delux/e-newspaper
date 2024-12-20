@@ -14,8 +14,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/manage-articles', async function (req, res) {
-    // NHỚ ĐỔI LẤY WRITER ID TỪ SESSION
-    const writerId = 1;
+    const writerId = req.session.user.id;
 
     // Get list of articles of writer
     const listAvailableArticles = await articleService.getAvailableOfWriterByWriterId(writerId);
@@ -231,8 +230,7 @@ router.post('/upload-image', async function (req, res) {
 });
 
 router.get('/create-articles', async function (req, res) {
-    // NHỚ ĐỔI LẤY WRITER ID TỪ SESSION
-    const writerId = 1;
+    const writerId = req.session.user.id;
 
     // Get list of articles of writer
     let listDrafts = await articleService.getDraftOfWriterByWriterId(writerId);
@@ -250,8 +248,7 @@ router.get('/create-articles', async function (req, res) {
 });
 
 router.get('/create-new', async function (req, res) {
-    // Chỉnh lại lấy bằng session nhe
-    const writer_id = 1;
+    const writer_id = req.session.user.id;
     const newDraftId = await articleService.createNewDraft(writer_id);
     res.redirect(`edit-article?id=${newDraftId}`);
 })
