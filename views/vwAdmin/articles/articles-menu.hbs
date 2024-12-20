@@ -1,0 +1,72 @@
+{{#section 'css'}}
+<style>
+    .article-row {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+
+    .btn-action {
+        margin-right: 5px;
+    }
+</style>
+{{/section}}
+
+<div class="container mt-4 p-4" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <!-- Tìm kiếm và lọc -->
+    {{!-- Đoạn này đang hard code --}}
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm bài viết theo tiêu đề...">
+        </div>
+        <div class="col-md-2">
+            <select id="tagFilter" class="form-control">
+                <option value="">Tất cả thẻ</option>
+                <option value="technology">Công nghệ</option>
+                <option value="lifestyle">Đời sống</option>
+                <option value="education">Giáo dục</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select id="categoryFilter" class="form-control">
+                <option value="">Tất cả chuyên mục</option>
+                <option value="news">Tin tức</option>
+                <option value="blog">Blog</option>
+                <option value="review">Đánh giá</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select id="dateFilter" class="form-control">
+                <option value="">Tất cả thời gian</option>
+                <option value="last24h">Trong 24 giờ qua</option>
+                <option value="last7days">Trong 7 ngày qua</option>
+                <option value="last30days">Trong 30 ngày qua</option>
+            </select>
+        </div>
+        <div class="col-md-2 text-right">
+            <a href="/admin/articles/add" class="btn btn-primary">Thêm bài viết</a>
+        </div>
+    </div>
+
+    <!-- Danh sách bài viết -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="text-center">
+                    <th>#</th>
+                    <th>Tiêu đề</th>
+                    <th>Tag</th>
+                    <th>Chuyên mục</th>
+                    <th>Ngày đăng</th>
+                    {{!-- Trạng thái của bài viết như là đã được duyệt chưa hay đang chờ để duyệt --}}
+                    <th>Trạng thái</th> 
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            {{!-- Logic hiển thị các bài viết dưới này --}}
+        </table>
+    </div>
+</div>
+
+
