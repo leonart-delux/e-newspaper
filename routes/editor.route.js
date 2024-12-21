@@ -14,7 +14,6 @@ router.get('/', isEditorWorkAvailable, async function (req, res) {
 
 // ../editor/drafts?catId=
 router.get('/drafts', isEditorWorkAvailable, isEditorHasPermissonOnCategory, async function (req, res) {
-    ;
     const editorId = req.session.user.id;
     const activeCatId = +req.query.catId || 0;
     if (activeCatId === 0) {
