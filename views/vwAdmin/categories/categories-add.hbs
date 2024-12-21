@@ -76,7 +76,6 @@
     </script>
     <script>
         $(document).ready(function () {
-
             const added = $('#added').val().toString();
             if (added === 'true') {
                 $('#liveToastTrue').toast('show');
@@ -86,10 +85,6 @@
         });
     </script>
 {{/section}}
-
-
-
-
 <div class="bg-white p-4 shadow position-relative" style="border-radius: 10px; min-height: 797px">
     <div class="d-flex justify-content-between">
         <h3>Thêm mới chuyên mục </h3>
@@ -126,6 +121,9 @@
             <div class="toast-body text-center">
                 Đã thêm chuyên mục '{{this.catName}}'
             </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
+            </div>
         </div>
     </div>
     <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
@@ -143,6 +141,9 @@
             <div class="toast-body text-center">
                 Không thể thêm chuyên mục '{{this.catName}}' <br/>
                 Có thể chuyên mục này đã tồn tại.
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
             </div>
         </div>
     </div>
