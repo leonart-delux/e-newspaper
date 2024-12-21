@@ -9,9 +9,27 @@ import helper from "../utils/helper.js";
 
 const router = express.Router();
 
-router.get('', function (req, res) {
+router.get('/', async function (req, res) {
+    // Authorization
+    const isAuth = req.session.user !== undefined;
+    let isWriter, isEditor, isAdmin = false;
+    if (isAuth) {
+        isWriter = req.session.user.role === 'writer';
+        isEditor = req.session.user.role === 'editor';
+        isAdmin = req.session.user.role === 'admin';
+    }
+
+    const categoryTree = await categoryService.getCategoryTree();
+
     res.render('vwHome/home', {
         layout: 'home',
+        title: 'Tuổi Già Offline',
+        isAuth: isAuth,
+        isWriter: isWriter,
+        isEditor: isEditor,
+        isWriter: isWriter,
+        isAdmin: isAdmin,
+        categoryTree: categoryTree,
     });
 });
 
