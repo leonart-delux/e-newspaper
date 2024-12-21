@@ -30,6 +30,8 @@ export default {
             .select('name', 'articles_categories.category_id');
     },
 
+
+
     async getAllCategoriesAndItsChildCat() {
         const categories = await this.getAllCategories();
 
@@ -88,9 +90,9 @@ export default {
 
             //Xóa 3 table lquan đến category trong db
             const deleteQueries = [
-                {table: 'categories', condition: {id: catId}},
+                {table: 'articles_categories', condition: {category_id: catId}},
                 {table: 'editors_categories', condition: {category_id: catId}},
-                {table: 'articles_categories', condition: {category_id: catId}}
+                {table: 'categories', condition: {id: catId}},
             ];
 
             for (const {table, condition} of deleteQueries) {
@@ -133,11 +135,14 @@ export default {
                 const updatePromises = oldChildCats.map((oldCat) => this.updateCategory(oldCat.id, {parent_id: null}, trx))
                 await Promise.all(updatePromises);
             }
-            newChildCats = newChildCats.split(',');
-            if (newChildCats.length > 0) {
-                const updatePromises = newChildCats.map((newCat) => this.updateCategory(newCat, {parent_id: catId}, trx))
-                await Promise.all(updatePromises);
+            if (newChildCats !== null) {
+                newChildCats = newChildCats.split(',');
+                if (newChildCats.length > 0) {
+                    const updatePromises = newChildCats.map((newCat) => this.updateCategory(newCat, {parent_id: catId}, trx))
+                    await Promise.all(updatePromises);
+                }
             }
+
             const ret = await db('categories').where('id', catId).update({name: newCatName}).transacting(trx);
             if (!ret) {
                 throw new Error("Error on updateCategoryAndItsChildCat:");
