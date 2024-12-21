@@ -100,7 +100,7 @@ router.get('/edit', async function (req, res) {
 });
 
 router.post('/edit', async function (req, res) {
-    const childCats = req.body.childCats;
+    const childCats = req.body.childCats || null;
     const categoryNewName = req.body.categoryName;
     const catId = +req.body.catId;
 
