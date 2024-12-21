@@ -7,12 +7,20 @@ let now = new Date().toISOString();
 export default {
     async getArticlesByCat(catId, limit, offset) {
         //Lấy tất cả các báo theo category ra
+        let childCats = await categoryService.getChildCategories(catId);
+        if (childCats.length !== 0) {
+            childCats = childCats.map(cat => cat.id);
+            childCats.push(catId);
+        } else {
+            childCats = Array.of(catId);
+        }
         let articlesList = await db('articles')
-            .where('is_available', 1)
-            .where('publish_date', '<', now)
-            .where('articles_categories.category_id', catId).limit(limit).offset(offset)
-            .join('articles_categories', 'articles.id', '=', 'articles_categories.article_id')
-            .select('id', 'title', 'abstract', 'main_thumb', 'articles.id as article_id', 'publish_date');
+            .where('articles.is_available', 1)
+            .where('articles.publish_date', '<', now)
+            .join('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .whereIn('articles_categories.category_id', childCats)
+            .select('articles.id', 'articles.title', 'articles.abstract', 'articles.main_thumb', 'articles.id as article_id', 'articles.publish_date')
+            .limit(limit).offset(offset);
         // Với mỗi aricle thì thêm category names và tag names cho nó
         return this.getCatsAndTagsForAnArticle(articlesList);
     },
@@ -33,12 +41,19 @@ export default {
 
         return articlesList;
     },
-    countByCatId(catId) {
-        return db('articles_categories')
-            .where('articles_categories.category_id', catId)
-            .join('articles', 'articles_categories.article_id', 'articles.id')
-            .where('is_available', 1)
-            .where('publish_date', '<', now)
+    async countByCatId(catId) {
+        let childCats = await categoryService.getChildCategories(catId);
+        if (childCats.length !== 0) {
+            childCats = childCats.map(cat => cat.id);
+            childCats.push(catId);
+        } else {
+            childCats = Array.of(catId);
+        }
+        return db('articles')
+            .where('articles.is_available', 1)
+            .where('articles.publish_date', '<', now)
+            .join('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .whereIn('articles_categories.category_id', childCats)
             .count('* as quantity')
             .first();
     },
