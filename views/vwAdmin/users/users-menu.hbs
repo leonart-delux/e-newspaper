@@ -1,0 +1,71 @@
+<div class="container mt-4 p-4"
+    style="background-color: #ffffff; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" id="" class="form-control" placeholder="Tìm kiếm người dùng...">
+        </div>
+
+        <div class="col-md-2">
+            <select id="t" class="form-control">
+                <option value="">Theo ID</option>
+                <option value="">Theo tên</option>
+                <option value="">Theo vai trò</option>
+                <option value="">Theo trạng thái VIP</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button id="" class="btn btn-primary w-100">Tìm kiếm</button>
+        </div>
+
+        <div class="col-md-2">
+            <button id="" class="btn btn-secondary w-100">Xóa bộ lọc</button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="text-center">
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Vai trò</th>
+                    <th>VIP</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{!-- Hàng sẽ được thêm ở đây --}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{!-- Hardcode để hiển thị danh sách cái đã --}}
+
+<script>
+    const users = [
+        { id: 1, name: "Biện Xuân Huy", role: "Vua", vip: true },
+        { id: 2, name: "Biện Xuy Huân", role: "Biên tập viên", vip: false },
+        { id: 3, name: "Biện Huân Xuy", role: "Nhà báo", vip: true },
+        { id: 4, name: "Biện Huy Xuân", role: "Khách", vip: false },
+    ];
+
+    const tableBody = document.querySelector("table tbody");
+
+    // Hiển thị toàn bộ người dùng ban đầu
+    renderTable(users);
+
+    function renderTable(users) {
+        tableBody.innerHTML = ""; // Xóa bảng hiện tại
+        users.forEach(user => {
+            const row = `<tr class="text-center">
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.role}</td>
+                            <td>${user.vip ? "Có" : "Không"}</td>
+                         </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+</script>
