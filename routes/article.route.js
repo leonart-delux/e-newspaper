@@ -2,6 +2,7 @@ import express from "express";
 import categoryService from "../services/categoryService.js";
 import articleService from "../services/articleService.js";
 import tagService from "../services/tagService.js";
+import commentService from "../services/commentService.js";
 import moment from "moment";
 import helper from "../utils/helper.js";
 
@@ -13,6 +14,58 @@ router.get('', function (req, res) {
         layout: 'home',
     });
 });
+
+// ../article?id=
+router.get('/article', async function (req, res) {
+    // Get article id
+    const articleId = +req.query.id || 0;
+    if (articleId === 0) {
+        const script = `
+        <script>
+            alert('Vui lòng nhập ID bài viết khi truy cập bằng phương thức này.');
+            window.location.href = '/';
+        </script>
+        `;
+        return res.send(script);
+    }
+
+    // Get article information from database
+    const fullInfoArticle = await articleService.getFullArticleInfoById(articleId);
+    if (!fullInfoArticle) {
+        const script = `
+        <script>
+            alert('Bài viết không tồn tại!');
+            window.location.href = '/';
+        </script>
+        `;
+        return res.send(script);
+    }
+
+    // Get comments of article
+    const articleComments = await commentService.fetchCommentsOfArticleByArticleId(articleId);
+    articleComments.forEach(comment => {
+        if (!comment.user) {
+            comment.user = 'Vô Danh';
+        }
+    });
+
+    // Get relevants articles
+    // Get category IDs of main article first
+    const catIDsList = fullInfoArticle.categories.map(row => row.id)
+    // Query to fetch data
+    const relevantArticles = await articleService.getRandomSameCatArticles(articleId, catIDsList, 5);
+    const noRelevantArticles = relevantArticles.length === 0;
+
+    res.render('vwHome/article', {
+        layout: 'home',
+        article: fullInfoArticle,
+        comments: articleComments,
+        commentCount: articleComments.length,
+        relevantArticles: relevantArticles,
+        noRelevantArticles: noRelevantArticles,
+    })
+});
+
 router.get('/cat', async function (req, res) {
     const catId = +req.query.catId || 6;
     const limit = 2;
@@ -60,13 +113,6 @@ router.get('/search', async function (req, res) {
 
     })
 });
-
-router.get('/article', async function (req, res) {
-    res.render('vwHome/article', {
-        layout: 'home',
-    })
-});
-
 
 router.get('/tag', async function (req, res) {
     const tagId = +req.query.tagId || 1;

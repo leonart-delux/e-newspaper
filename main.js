@@ -21,6 +21,7 @@ import writerRouter from './routes/writer.route.js';
 import categoryRoute from "./routes/category.route.js";
 import articleRoute from "./routes/article.route.js";
 import editorRouter from './routes/editor.route.js';
+import commentRoute from './routes/commentRoute.js';
 
 import {getVipUser} from "./middlewares/user.mdw.js";
 
@@ -79,6 +80,7 @@ app.set("views", "./views");
 // =================================================
 
 app.use('/', articleRoute);
+app.use('/', commentRoute);
 app.use('/account', isAuth, getVipUser, accountRoute);
 app.use('/category', categoryRoute);
 app.use('/', authRouter);
