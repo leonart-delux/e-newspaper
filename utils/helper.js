@@ -107,6 +107,9 @@ export default {
     },
     // Format date to hh/mm dd/mm/yyyy
     formatSimpleDatetime(datetime) {
+        if (!datetime) {
+            return '8:00 12/12/2024';
+        }
         return datetime.toLocaleString("vi-VN", {
             hour: "2-digit",
             minute: "2-digit",
@@ -114,6 +117,14 @@ export default {
             month: "2-digit",
             year: "numeric",
         });
+    },
+    formatFullDateTime(datetime) {
+        return datetime.getFullYear() + '/' +
+            String(datetime.getMonth() + 1).padStart(2, '0') + '/' +
+            String(datetime.getDate()).padStart(2, '0') + 'T' +
+            String(datetime.getHours()).padStart(2, '0') + ':' +
+            String(datetime.getMinutes()).padStart(2, '0') + ':' +
+            String(datetime.getSeconds()).padStart(2, '0');
     },
     toUpperCase(str) {
         return str.toUpperCase();
