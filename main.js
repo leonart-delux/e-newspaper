@@ -7,7 +7,6 @@ import {engine} from "express-handlebars";
 import path from 'path';
 import {dirname} from "path";
 import {fileURLToPath} from "url";
-
 import accountRoute from "./routes/account.route.js";
 import authRouter from './routes/auth.route.js';
 import writerRouter from './routes/writer.route.js';
