@@ -184,7 +184,9 @@ router.post('/role-register', async function (req, res) {
 
 router.post('/logout', isAuth, function (req, res) {
   req.session.auth = false;
-  req.session.authUser = null
+  req.session.user = undefined;
+  req.session.editor = undefined;
+  req.session.writer = undefined;
   req.session.retUrl = null;
   res.redirect('/')
 });
