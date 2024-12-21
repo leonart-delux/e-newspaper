@@ -1,0 +1,36 @@
+.tag {
+    padding: 5px 12px;
+    /*border-radius: 20px;*/
+    /*background-color: #929492;*/
+    color: #FFFFFF;
+    border-bottom: 2px solid #EBE9E7;
+    text-decoration: none;
+    font-weight: bold;
+    max-width: 180px;
+    min-width: 120px;
+    min-height: 45px;
+}
+
+.tag-name {
+    display: block;
+    /*max-width: 180px;*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tag button {
+    display: none;
+    padding: 0;
+}
+
+.tag i {
+    width: 16px;
+    height: 16px;
+    padding: 2px 4px;
+}
+
+.tag:hover button {
+    cursor: pointer;
+    display: block;
+}

@@ -1,0 +1,190 @@
+{{#section 'css'}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <style>
+        .selected-item {
+            background-color: #ED1C24; /* Màu nền */
+            color: white; /* Màu chữ */
+            border-radius: 10px; /* Bo tròn góc */
+            padding: 1px 5px 2px;
+        }
+    </style>
+{{/section}}
+{{#section 'js'}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.getJSON('/category/get-child-categories?catId={{catId}}', function (datas) {
+                if (!datas) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'categories empty',
+                        icon: 'error',
+                    });
+                    return;
+                }
+                $(".prompt").select2({
+                    data: datas.map((data) => {
+                        return {
+                            id: data.id,
+                            text: data.name,
+                            selected: data.selected,
+                        };
+                    }),
+                    theme: "classic",
+                    width: '100%',
+                    multiple: true,
+                    placeholder: "Hãy nhập chuyên mục con bạn muốn thêm cho chuyên mục này",
+                    templateSelection: function (data) {
+                        return $('<span class="selected-item">' + data.text + '</span>');
+                    }
+                });
+            });
+
+
+            $('#editCategoryFrom').on('submit', function (e) {
+                e.preventDefault();
+                $.getJSON('/category/is-This-Category-Child?catId={{catId}}', function (data) {
+                    const categoryName = $('#txtCategoryName').val();
+                    if (!categoryName) {
+                        Swal.fire
+                        ({
+                            title: 'Error!',
+                            text: 'Category name must not be empty',
+                            icon: 'error',
+                        })
+                        return;
+                    }
+                    var datas = $('.prompt').select2('data');
+                    const categories = datas.map((data) => data.id);
+                    //Thg này là child cat
+
+                    if (data === true) {
+                        if (categories === null || categories.length === 0) {
+                            $('#editCategoryFrom').off('submit').submit();
+                        } else {
+                            $('#liveToastEditFalse').toast('show');
+                        }
+                    } else {
+                        console.log(data);
+                        var hiddenInput = $('<input>')
+                                .attr('type', 'hidden')
+                                .attr('name', 'childCats')
+                                .attr('value', categories);
+                        $('#editCategoryFrom').append(hiddenInput);
+                        $('#editCategoryFrom').off('submit').submit();
+                    }
+
+
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            const edited = $('#edited').val().toString();
+            if (edited === 'true') {
+                $('#liveToastTrue').toast('show');
+            } else if (edited === 'false') {
+                $('#liveToastFalse').toast('show');
+            }
+        });
+    </script>
+
+{{/section}}
+<div class="bg-white p-4 shadow position-relative" style="border-radius: 10px; min-height: 797px">
+    <div class="d-flex justify-content-between">
+        <h3>Sửa chuyên mục </h3>
+    </div>
+    <input value="{{edited}}" hidden="hidden" id="edited">
+    <form class="mt-2" id="editCategoryFrom" method="post" action="">
+        <input value="{{catId}}" name="catId" hidden="hidden">
+        <div class="form-group">
+            <label for="txtCategoryName">Tên chuyên mục</label>
+            <input type="text" name="categoryName" value="{{this.category.name}}" id="txtCategoryName"
+                   class="form-control font-weight-bold w-25"
+                   placeholder="Tên chuyên mục"
+                   aria-describedby="helpId">
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-8">
+                    <select class="prompt" multiple placeholder="Search countries...">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button type="submit" style="border-radius: 10px; " class="btn btn-outline-primary">Xác nhận</button>
+    </form>
+
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastTrue" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000" style="min-width: 300px">
+            <div class="toast-header">
+                <img src="/static/images/others/checked.png" class=" mr-1" width="20px" height="20px"/>
+                <strong class="mr-auto text-white px-3" style="background-color: #1E8E23; border-radius: 10px">Sửa
+                    thành công</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Đã chỉnh sửa chuyên mục '{{this.catName}}'
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
+            </div>
+
+        </div>
+    </div>
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastFalse" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000" style="min-width: 300px">
+            <div class="toast-header">
+                <img src="/static/images/others/unchecked.png" class=" mr-1" width="16px" height="16px"/>
+                <strong class="mr-auto text-white px-3" style="background-color: #FC3850; border-radius: 10px">Sửa thất
+                    bại</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Không thể chỉnh sửa chuyên mục '{{this.catName}}'! <br/>
+                Chúng tôi gặp vấn đề trong quá trình xử lý :(.
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
+            </div>
+        </div>
+    </div>
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastEditFalse" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000" style="min-width: 300px">
+            <div class="toast-header">
+                <img src="/static/images/others/unchecked.png" class=" mr-1" width="16px" height="16px"/>
+                <strong class="mr-auto text-white px-3" style="background-color: #FC3850; border-radius: 10px">Sửa thất
+                    bại</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Không thể chỉnh sửa chuyên mục '{{this.catName}}'! <br/>
+                Đây là một chuyên mục con, không thể thêm chuyên mục con cho chuyên mục này
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+.dash-board__brief-info {
+    display: flex;
+    justify-content: space-around;
+
+}
+.dash-board__brief-info__square-info {
+    border-radius: 15px;
+    padding: 1rem;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    height: 115px;
+    max-width: 235px;
+    min-width: 235px;
+
+    margin: 0 10px;
+}
+.dash-board__brief-info__square-info div h5 {
+    color: #67748E;
+    min-height: 48px;
+    padding:0 5px;
+    font-size: 17px;
+}
+.dash-board__brief-info__square-info h4 {
+    color: #344767;
+    margin-bottom: 0;
+    font-weight: bolder;
+}
+.dash-board__brief-info__square-info img {
+    width: 50px;
+    height: 50px;
+
+}
+.dash-board__brief-info__square-info__detail-number {
+    display: flex;
+    align-items: center;
+}
+.dash-board__brief-info__square-info__detail-number img{
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+}
+.line-chart {
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    margin-left: 10px;
+}

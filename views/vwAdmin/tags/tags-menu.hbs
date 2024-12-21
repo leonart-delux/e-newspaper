@@ -1,0 +1,292 @@
+{{#section 'css'}}
+    <link rel="stylesheet"
+          href="/static/css/admin/admin-categories.css">
+    <link rel="stylesheet"
+          href="/static/css/admin/admin-tags.css">
+{{/section}}
+{{#section 'js'}}
+    <script>
+        $(document).ready(function () {
+            const deleted = $('#deleted').val().toString();
+            if (deleted === 'true') {
+                $('#liveToastDeleteTrue').toast('show');
+            } else if (deleted === 'false') {
+                $('#liveToastDeleteFalse').toast('show');
+            }
+
+            const added = $('#added').val().toString();
+            if (added === 'true') {
+                $('#liveToastAddTrue').toast('show');
+            } else if (added === 'false') {
+                $('#liveToastAddFalse').toast('show');
+            }
+
+            const edited = $('#edited').val().toString();
+            if (edited === 'true') {
+                $('#liveToastEditTrue').toast('show');
+            } else if (edited === 'false') {
+                $('#liveToastEditFalse').toast('show');
+            }
+        });
+    </script>
+
+    <script>
+        $('.deleteTagModalBtn').on('click', function (e) {
+            const tagId = $(this).data('tagid');
+            $('.tagIdDeleted').val(tagId);
+        });
+
+        $('.editTagModalBtn').on('click', function (e) {
+            const tagId = $(this).data('tagid');
+            $('.tagIdEdited').val(tagId);
+        });
+    </script>
+
+    <script>
+        $('#addTagForm').on('submit', function (e) {
+            e.preventDefault();
+            const tagName = $('#tagNameAdded').val();
+            if (!tagName) {
+                $('#liveToastAddFalse').toast('show');
+            }
+            $('#addTagForm').off('submit').submit();
+        });
+    </script>
+{{/section}}
+<div class="bg-white shadow px-4 pt-3 pb-5 position-relative" style="border-radius: 10px;min-height: 797px ">
+    <div class="d-flex justify-content-between">
+        <h3>Danh sách nhãn </h3>
+        <button class="btn btn-outline-danger font-weight-bold d-flex align-items-center"
+                data-toggle="modal" data-target="#addTagModal">
+            <i class="bi bi-plus-square-fill mr-1"></i>
+            <span>
+            Thêm nhãn mới
+            </span>
+        </button>
+    </div>
+    <div class="row d-flex justify-content-center mt-4">
+        <div class="d-flex justify-content-around flex-wrap col-12">
+            {{# each this.tagList}}
+                <div style="min-width: 185px;max-width: 185px">
+                    <div class="tag d-flex justify-content-center  px-1 py-2 mx-1" style="max-width:207px ">
+                        <span
+                                class="tag-name px-3"
+                                style="background-color:#FE9900; font-style: italic; border-radius: 10px;">
+                            {{name}}
+                        </span>
+                        <div class="d-flex">
+                            <button class="btn btn-success p-0 ml-2 mr-1 editTagModalBtn" type="button"
+                                    data-toggle="modal" data-tagid="{{id}}"
+                                    data-target="#editTagNameModal">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-danger p-0 deleteTagModalBtn" id="" type="button" data-toggle="modal"
+                                    data-tagid="{{id}}"
+                                    data-target="#deleteTagModal">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="modal fade" id="deleteTagModal" tabindex="-1" aria-labelledby="deleteTagModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <div class="d-flex justify-content-center w-100">
+                        <h3 class="modal-title text-center font-weight-bolder" id="deleteTagModal">Xóa nhãn</h3>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex mb-2">
+                        <div class="font-weight-bold mr-2">
+                            Bạn có chắc chắn muốn xóa nhãn này
+                        </div>
+                        <img src="/others/question.png" width="24px" height="24px"/>
+                    </div>
+
+                    <div>Việc xóa nhãn đồng nghĩa hủy toàn bộ nhãn này trong những bài báo liên quan.</div>
+                    <form id="" method="post" action="/admin/tags/delete">
+                        <input name="tagIdDeleted" class="tagIdDeleted" id="" hidden="hidden">
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-danger">
+                                <span class="font-weight-bold">
+                                    Xóa Nhãn
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editTagNameModal" tabindex="-1" aria-labelledby="editTagNameModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <div class="d-flex justify-content-center w-100">
+                        <h3 class="modal-title text-center font-weight-bolder" id="editTagNameModal">Sửa tên nhãn</h3>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="" method="post" action="/admin/tags/edit">
+                        <input name="tagIdEdited" class="tagIdEdited" id="" hidden="hidden">
+                        <input class="form-control" placeholder="Tên nhãn mới" name="tagNameEdited">
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-danger">
+                                <span class="font-weight-bold">
+                                    Sửa Nhãn
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <div class="d-flex justify-content-center w-100">
+                        <h3 class="modal-title text-center font-weight-bolder" id="addTagModal">Thêm nhãn mới</h3>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTagForm" method="post" action="/admin/tags/add">
+                        <input class="form-control" placeholder="Tên nhãn mới" name="tagName" id="tagNameAdded">
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-danger">
+                                <span class="font-weight-bold">
+                                    Thêm Nhãn
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input hidden="hidden" value="{{this.added}}" id="added">
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastAddFalse" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000">
+            <div class="toast-header">
+                <img src="/static/images/others/unchecked.png" class=" mr-1" width="20px" height="20px"/>
+                <strong class="mr-auto text-white px-3" style="background-color: #FC3850; border-radius: 10px">Thêm thất
+                    bại</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Tên nhãn trống, vui lòng điền tên nhãn.
+            </div>
+        </div>
+    </div>
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastAddTrue" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000" style="min-width: 300px">
+            <div class="toast-header">
+                <img src="/static/images/others/checked.png" class=" mr-1" width=20px" height="20px"/>
+                <strong class="mr-auto  text-white px-3" style="background-color: #1E8E23; border-radius: 10px">Thêm
+                    thành công</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Đã thêm nhãn '{{this.tagName}}'
+            </div>
+        </div>
+    </div>
+    <input hidden="hidden" value="{{this.edited}}" id="edited">
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastEditFalse" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000">
+            <div class="toast-header">
+                <img src="/static/images/others/unchecked.png" class=" mr-1" width="20px" height="20px"/>
+                <strong class="mr-auto text-white px-3" style="background-color: #FC3850; border-radius: 10px">Sửa thất
+                    bại</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Xin lỗi, chúng tôi gặp vấn đề khi sửa nhãn '{{this.categoryName}}'
+            </div>
+        </div>
+    </div>
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastEditTrue" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000" style="min-width: 300px">
+            <div class="toast-header">
+                <img src="/static/images/others/checked.png" class=" mr-1" width=20px" height="20px"/>
+                <strong class="mr-auto  text-white px-3" style="background-color: #1E8E23; border-radius: 10px">Sửa
+                    thành công</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Đã sửa nhãn '{{this.tagName}}'
+            </div>
+        </div>
+    </div>
+    <input hidden="hidden" value="{{this.deleted}}" id="deleted">
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastDeleteFalse" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000">
+            <div class="toast-header">
+                <img src="/static/images/others/unchecked.png" class=" mr-1" width="20px" height="20px"/>
+                <strong class="mr-auto text-white px-3" style="background-color: #FC3850; border-radius: 10px">Xóa thất
+                    bại</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Xin lỗi, chúng tôi gặp vấn đề khi xóa nhãn '{{this.categoryName}}'
+            </div>
+        </div>
+    </div>
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastDeleteTrue" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000" style="min-width: 300px">
+            <div class="toast-header">
+                <img src="/static/images/others/checked.png" class=" mr-1" width=20px" height="20px"/>
+                <strong class="mr-auto  text-white px-3" style="background-color: #1E8E23; border-radius: 10px">Xóa
+                    thành công</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Đã xóa nhãn '{{this.tagName}}'
+            </div>
+        </div>
+    </div>
+</div>
+{{#section 'js'}}
+{{/section}}

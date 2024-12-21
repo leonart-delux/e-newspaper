@@ -22,7 +22,7 @@ import categoryRoute from "./routes/category.route.js";
 import articleRoute from "./routes/article.route.js";
 import editorRouter from './routes/editor.route.js';
 import commentRoute from './routes/commentRoute.js';
-
+import adminRoute from "./routes/admin/admin.route.js";
 import {getVipUser} from "./middlewares/user.mdw.js";
 
 
@@ -79,14 +79,16 @@ app.set("views", "./views");
 //                  SERVER ROUTING
 // =================================================
 
+app.use('/', authRouter);
 app.use('/', articleRoute);
 app.use('/', commentRoute);
 app.use('/account', isAuth, getVipUser, accountRoute);
 app.use('/category', categoryRoute);
-app.use('/', authRouter);
 app.use('/writer', isAuth, isWriter, writerRouter);
 app.use('/editor', isAuth, isEditor, editorRouter);
+app.use('/admin', adminRoute);
 
-app.listen(3000, function () {    
+
+app.listen(3000, function () {
     console.log("Server started on http://localhost:3000");
 });
