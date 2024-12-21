@@ -31,6 +31,26 @@ export default {
     },
 
 
+    async getCategoryTree() {
+        const categories = await db('categories');
+
+        // Loop 2 times to create category hierachy
+        const categoryMap = {};
+        categories.forEach(cat => {
+            categoryMap[cat.id] = { ...cat, children: [] };
+        });
+
+        const tree = [];
+        categories.forEach(cat => {
+            if (cat.parent_id) {
+                categoryMap[cat.parent_id].children.push(categoryMap[cat.id]);
+            } else {
+                tree.push(categoryMap[cat.id]);
+            }
+        });
+
+        return tree;
+    },
 
     async getAllCategoriesAndItsChildCat() {
         const categories = await this.getAllCategories();
@@ -56,7 +76,7 @@ export default {
         let newCat = null;
         const trx = await db.transaction();
         try {
-            newCat = await db('categories').insert({name: categoryName});
+            newCat = await db('categories').insert({ name: categoryName });
             if (!newCat) {
                 throw new Error('Error in insert new category to db');
             }
@@ -64,7 +84,7 @@ export default {
 
             if (childCats.length > 0) {
                 const updatePromises = childCats
-                    .map(childCat => this.addChildCatToACategory(childCat, {parent_id: newCat}, trx));
+                    .map(childCat => this.addChildCatToACategory(childCat, { parent_id: newCat }, trx));
                 await Promise.all(updatePromises);
             }
             trx.commit();
@@ -83,19 +103,19 @@ export default {
             //Set null cho parent_id của tất cả child Cat con
             if (childCats.length > 0) {
                 const updatePromises = childCats.map(childCat =>
-                    this.addChildCatToACategory(childCat.id, {parent_id: null}, trx)
+                    this.addChildCatToACategory(childCat.id, { parent_id: null }, trx)
                 );
                 await Promise.all(updatePromises);
             }
 
             //Xóa 3 table lquan đến category trong db
             const deleteQueries = [
-                {table: 'articles_categories', condition: {category_id: catId}},
-                {table: 'editors_categories', condition: {category_id: catId}},
-                {table: 'categories', condition: {id: catId}},
+                { table: 'articles_categories', condition: { category_id: catId } },
+                { table: 'editors_categories', condition: { category_id: catId } },
+                { table: 'categories', condition: { id: catId } },
             ];
 
-            for (const {table, condition} of deleteQueries) {
+            for (const { table, condition } of deleteQueries) {
                 const ret = await db(table).where(condition).first();
                 if (ret) {
                     const result = await trx(table).where(condition).delete();
@@ -132,18 +152,18 @@ export default {
         try {
             const oldChildCats = await this.getChildCategories(catId);
             if (oldChildCats.length > 0) {
-                const updatePromises = oldChildCats.map((oldCat) => this.updateCategory(oldCat.id, {parent_id: null}, trx))
+                const updatePromises = oldChildCats.map((oldCat) => this.updateCategory(oldCat.id, { parent_id: null }, trx))
                 await Promise.all(updatePromises);
             }
             if (newChildCats !== null) {
                 newChildCats = newChildCats.split(',');
                 if (newChildCats.length > 0) {
-                    const updatePromises = newChildCats.map((newCat) => this.updateCategory(newCat, {parent_id: catId}, trx))
+                    const updatePromises = newChildCats.map((newCat) => this.updateCategory(newCat, { parent_id: catId }, trx))
                     await Promise.all(updatePromises);
                 }
             }
 
-            const ret = await db('categories').where('id', catId).update({name: newCatName}).transacting(trx);
+            const ret = await db('categories').where('id', catId).update({ name: newCatName }).transacting(trx);
             if (!ret) {
                 throw new Error("Error on updateCategoryAndItsChildCat:");
             }

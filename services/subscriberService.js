@@ -11,7 +11,7 @@ export default {
             return user;
         }
 
-        if (subscriber.status === 'waiting') {
+        if (subscriber.vipStatus === 'waiting') {
             user.vipStatus = 'waiting';
             return user;
         }

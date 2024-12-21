@@ -1,0 +1,285 @@
+{{#section 'css'}}
+
+<style>
+    .main-container {
+        width: 1280px;
+        margin: auto;
+    }
+
+    .article-container {
+        width: 730px;
+    }
+
+    .sticky-control {
+        position: sticky;
+        top: 10px;
+        align-self: flex-start;
+    }
+
+    .optgroup-header {
+        font-weight: 500;
+        font-size: medium;
+    }
+
+    .option {
+        margin-left: 15px;
+    }
+
+    .file-preview-image {
+        object-fit: cover !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+</style>
+{{/section}}
+
+{{#section 'js'}}
+{{!-- Phần này để cho select được nhiều category một lúc --}}
+<script>
+    new TomSelect('#selectCat', {
+        plugins: ['remove_button'],
+    });
+    new TomSelect('#selectTag', {
+        plugins: ['remove_button'],
+    });
+</script>
+
+{{!-- WYSIWYG --}}
+<script>
+    tinymce.init({
+        selector: '#txtContent',
+        height: 800,
+        plugins: 'image link autolink lists table media wordcount',
+        automatic_uploads: true,
+        images_upload_url: '/writer/upload-image?id={{this.draft.id}}',
+        menubar: false,
+        toolbar: [
+            'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+        ],
+        toolbar_sticky: true,
+        language: 'vi',
+        setup: function (editor) {
+            editor.on('init', function () {
+                // Cài đặt nội dung mặc định khi editor được khởi tạo
+                const content = `{{{this.draft.content}}}`; // Dùng triple curly braces để tránh escape HTML
+                editor.setContent(content);
+            });
+        },
+    });
+</script>
+
+{{!-- file input --}}
+<script>
+    $(document).ready(function () {
+        const existingThumbnail = '{{this.draft.main_thumb}}'; // Đường dẫn ảnh từ server
+        if (existingThumbnail) {
+            $('#preview-image').attr('src', existingThumbnail); // Hiển thị ảnh
+            $('#preview-container').show(); // Hiển thị khung preview
+        }
+    });
+
+    $('#fileThumbnail').fileinput({
+        allowedFileExtensions: ['jpg', 'png', 'webp', 'gif'],
+        language: 'vi',
+        dropZoneEnabled: false,
+        showPreview: false,
+        showUpload: false,
+        showRemove: false,
+    });
+
+    $('#fileThumbnail').on('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Set ảnh vào trong khung preview
+                $('#preview-image').attr('src', e.target.result);
+                $('#preview-container').show();  // Hiển thị khung preview
+            };
+
+            reader.readAsDataURL(file); // Đọc ảnh dưới dạng URL
+            $('#hiddenMainThumb').val(''); // Xóa giá trị cũ
+        }
+    });
+</script>
+
+{{!-- sweat alert --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $('#delButton').on('click', function (e) {
+        e.preventDefault();
+        const href = $(this).attr('href'); // Lấy đường dẫn từ thẻ a
+
+        Swal.fire({
+            title: 'Xóa bài viết!',
+            text: 'Bài viết sẽ bị xóa vĩnh viễn và không thể được khôi phục!',
+            icon: 'warning',
+            confirmButtonText: 'Tôi đã hiểu',
+            confirmButtonColor: '#DC3545',
+            showCancelButton: true,
+            cancelButtonText: 'Quay lại',
+            cancelButtonColor: '#5A6268',
+            focusCancel: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Điều hướng đến đường dẫn khi xác nhận
+                window.location.href = href;
+            }
+        });
+    });
+
+    $('#articleForm').on('submit', async function (e) {
+        e.preventDefault();
+
+        await Swal.fire({
+            title: 'Xác nhận lưu?',
+            icon: 'question',
+            showCancelButton: true,
+            cancelButtonText: 'Quay lại',
+            cancelButtonColor: '#5A6268',
+            focusCancel: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Điều hướng đến đường dẫn khi xác nhận
+                this.submit();
+            }
+        });
+    });
+
+    $('#subButton').on('click', function (e) {
+        e.preventDefault();
+        const href = $(this).attr('href'); // Lấy đường dẫn từ thẻ a
+
+        Swal.fire({
+            title: 'Xác nhận đưa kiểm duyệt?',
+            icon: 'info',
+            showCancelButton: true,
+            cancelButtonText: 'Quay lại',
+            cancelButtonColor: '#5A6268',
+            focusCancel: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Điều hướng đến đường dẫn khi xác nhận
+                window.location.href = href;
+            }
+        });
+    });
+</script>
+{{/section}}
+
+<div class="main-container d-flex mt-5 mb-5">
+    <form id="articleForm" class="mx-auto" action="/writer/save-draft?id={{this.draft.id}}" method="post"
+        enctype="multipart/form-data">
+        <div class="wrapper d-flex mx-auto">
+            {{!-- Thanh điều khiển quay lại lưu xóa --}}
+            <div class="sticky-control bg-light p-2 mr-3 rounded">
+                <a href="/writer/manage-articles" type="button" class="btn btn-secondary mb-2">
+                    <i class="bi bi-reply"></i>
+                </a> <br>
+                <a href="/writer/del-draft?id={{this.draft.id}}" type="button" id="delButton"
+                    class="btn btn-danger mb-2">
+                    <i class="bi bi-trash3"></i>
+                </a> <br>
+                <button type="submit" class="btn btn-primary mb-2">
+                    <i class="bi bi-floppy-fill"></i>
+                </button> <br>
+                <a href="/writer/submit-draft?id={{this.draft.id}}" type="button" id="subButton"
+                    class="btn btn-success {{#if this.isPending}}disabled{{/if}}">
+                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                </a>
+            </div>
+
+            {{!-- Nội dung chính --}}
+            <div class="article-container mx-auto p-3 bg-light rounded">
+                <h4 class="ml-4 mb-2" style="color: #6B6869; font-size: 18px"><b>Chỉnh sửa bài viết</b></h4>
+                <hr class="mt-0">
+
+                {{#if this.isPending}}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Bài viết của bạn vẫn đang chờ được duyệt, bạn có thể chỉnh sửa nó bây giờ!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{/if}}
+
+                {{#if this.isRejected}}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Bài viết của bạn không được duyệt, lí do là: <br>
+                    <b>{{this.draft.reject_reason}}</b> <br>
+                    <hr class="m-2">
+                    Hãy chỉnh sửa trước khi đăng kiểm duyệt lại!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{/if}}
+
+                {{#if this.isCreating}}
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    Nội dung được kiểm duyệt kĩ, hãy nghiêm túc khi viết nhé!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{/if}}
+
+                <div class="form-group">
+                    <label class="ml-2" for="txtTitle"><b class="text-danger">Tiêu đề</b></label>
+                    <input type="text" name="title" id="txtTitle" class="form-control" placeholder="Nhập tiêu đề ở đây"
+                        aria-describedby="helpId" value="{{this.draft.title}}" required>
+                </div>
+                <div class="form-group">
+                    <label class="ml-2" for="txtAbstract"><b class="text-danger">Tóm tắt bài viết</b></label>
+                    <textarea name="abstract" class="form-control" id="txtAbstract"
+                        placeholder="Nhập tóm tắt bài viết ở đây" rows="3"
+                        aria-describedby="helpId">{{this.draft.abstract}}</textarea>
+                    <small id="helpId" class="text-muted ml-1">Nội dung tóm tắt hấp dẫn sẽ thu hút người đọc
+                        hơn.</small>
+                </div>
+                <div class="form-group">
+                    <label class="ml-2" for="fileThumbnail"><b class="text-danger">Ảnh đại diện bài viết</b></label>
+                    <input type="hidden" name="oldthumbnail" id="hiddenMainThumb" value="{{this.draft.main_thumb}}">
+                    <input type="file" name="thumbnail" id="fileThumbnail" class="file" aria-describedby="helpId">
+                    <small id="helpId" class="text-muted ml-1">Chọn hình ảnh đại diện phù hợp cho bài viết.</small>
+
+                    <div id="preview-container" style="margin-top: 10px; display:none;">
+                        <img id="preview-image" src="" alt="Preview"
+                            style="max-width: 100%; height: auto; object-fit: cover;">
+                    </div>
+                </div>
+                <hr class="mt-0 mb-2">
+
+                <div class="form-group">
+                    <label class="ml-2" for="selectCat"><b class="text-danger">Danh mục</b></label>
+                    <select class="" name="categories[]" id="selectCat" placeholder="Chọn danh sách danh mục phù hợp..."
+                        autocomplete="off" multiple>
+                        {{#each this.cData}}
+                        <optgroup class="p-5" label="{{name}}">
+                            {{#each children}}
+                            <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+                            {{/each}}
+                        </optgroup>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="ml-2" for="selectTag"><b class="text-danger">Nhãn</b></label>
+                    <select class="" name="tags[]" id="selectTag" placeholder="Chọn danh sách nhãn phù hợp..."
+                        autocomplete="off" multiple>
+                        {{#each this.tData}}
+                        <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <hr class="mb-2">
+
+                <div class="form-group">
+                    <label class="ml-2" for="txtContent"><b class="text-danger">Nội dung bài viết</b></label>
+                    <textarea class="form-group" name="content" id="txtContent"></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

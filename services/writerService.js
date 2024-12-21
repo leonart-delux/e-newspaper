@@ -15,4 +15,9 @@ export default {
         return db('writers').insert(entity);
     },
 
+    fetchArticleOfWriter(writer_id, article_id) {
+        return db('articles')
+            .where('id', article_id)
+            .where('writer_id', writer_id);
+    }
 }

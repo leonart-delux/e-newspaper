@@ -14,39 +14,26 @@
 
 <body style="background-color: #E6E9F1">
     <div class="bg-danger d-flex justify-content-center align-items-center " style="height: 50px">
-        <a href="/" style="text-decoration: none">
-            <h3 class="font-weight-bold text-white ">Tuổi Già</h3>
-        </a>
+        <h3 class="font-weight-bold text-white ">WebSite Name</h3>
     </div>
     <div class="account-container__content justify-content-between mt-5 mb-5 d-flex">
         <div class="account-container__content__sidebar  pb-3" style="background-color: transparent;">
-            <div class="account-container__content__sidebar__section"
-                style="background-color: white; border-radius: 10px">
-                <div class=" account-container__content__sidebar__section--link">
-                    <div class="mt-1">
-                        <a href="/writer/manage-articles">
-                            {{#if this.isManage}}
-                            <img src="/others/newspaper (1).png" class="mr-2">
-                            <span style="color: red;">Quản lí tin</span>
-                            {{else}}
-                            <img src="/others/newspaper.png" class="mr-2">
-                            Quản lí tin
-                            {{/if}}
-                        </a>
-                    </div>
-                    <div>
-                        <a href="/writer/create-articles">
-                            {{#if this.isCreate}}
-                            <img src="/others/quill-pen (1).png" class="mr-2">
-                            <span style="color: red;">Đăng tin mới</span>
-                            {{else}}
-                            <img src="/others/quill-pen.png" class="mr-2">
-                            Đăng tin mới
-                            {{/if}}
-                        </a>
-                    </div>
+            {{#each this.catList}}
+            <div class="card mb-4 bg-light" style="width: 18rem; border-radius: 10px; border-color: #FF474C;">
+                <div class="card-header text-danger">
+                    <h5><b>{{name}}</b></h5>
                 </div>
+                <ul class="list-group list-group-flush" style="border-radius: 10px;">
+                    {{#each children}}
+                    <li class="list-group-item pl-5" {{#if isActive}}style="color: red;" {{/if}}>
+                        <a href="/editor/drafts?catId={{id}}" class="text-decoration-none" style="color:{{#if isActive}}#FF474C;{{else}}dimgray;{{/if}}">
+                            {{name}}
+                        </a>
+                    </li>
+                    {{/each}}
+                </ul>
             </div>
+            {{/each}}
         </div>
 
 
@@ -64,19 +51,20 @@
         </div>
         <div class="row mt-3 pb-3" style="border-bottom: 1px solid  #EEEEEE">
             <div class="col-5 flex-column justify-content-between">
-                <div>Tổng biên tập: T.T. Biện Xuân Huy</div>
-                <div>Giấy phép hoạt động báo điện tử tiếng Việt, tiếng Anh Số 561/GP-BTTTT, cấp ngày 25-11-2022
+                <div>Tổng biên tập: Lê Thế Chữ</div>
+                <div>Giấy phép hoạt động báo điện tử tiếng Việt, tiếng Anh Số 561/GP-BTTTT, cấp ngày 25-11-2022.
                 </div>
-                <div>Thông tin tòa soạn - FIE_K22 HCMUTE</div>
+                <div>Thông tin tòa soạn - Thành Đoàn TP.HCM</div>
             </div>
+
             <div class="col-5 d-flex flex-column justify-content-between">
                 <div>
-                    Địa chỉ: Số 1 Võ Văn Ngân, TP. Thủ Đức, Tp. Hồ Chí Minh
+                    Địa chỉ: 60A Hoàng Văn Thụ, P.9, Q.Phú Nhuận, Tp. Hồ Chí Minh
                 </div>
                 <div>
-                    Hotline: 0908.338.918 - Email: 22110031@student.hcmute.edu.vn
+                    Hotline: 0918.033.133 - Email: tto@tuoitre.com.vn
                 </div>
-                <div>Phòng Quảng Cáo Báo Tuổi Già: 0908.338.918</div>
+                <div>Phòng Quảng Cáo Báo Tuổi Trẻ: 028.39974848</div>
             </div>
             <div class="col-2 footer__contact-link d-flex flex-column justify-content-between">
                 <div>
@@ -93,18 +81,19 @@
         </div>
         <div class="d-flex justify-content-between py-3">
             <div>
-                © Copyright 2024 TuoiGia Online, All rights reserved ® Tuổi Già Online giữ bản quyền nội dung trên
-                website này
+                © Copyright 2023 TuoiTre Online, All rights reserved ® Tuổi Trẻ Online giữ bản quyền nội dung trên
+                website
+                này
             </div>
             <div>
-                <a href="https://youtu.be/xvFZjo5PgG0?si=v_lXYe0q33sw9RkO" target="_blank">
-                    <img src="/static/images/others/social.png" />
+                <a>
+                    <img src="/others/social.png" />
                 </a>
-                <a href="https://youtu.be/xvFZjo5PgG0?si=v_lXYe0q33sw9RkO" target="_blank">
-                    <img src="/static/images/others/facebook.png" style="width: 26px;height: 26px;margin-left: -2px" />
+                <a>
+                    <img src="/others/facebook.png" style="width: 26px;height: 26px;margin-left: -2px" />
                 </a>
-                <a href="https://youtu.be/xvFZjo5PgG0?si=v_lXYe0q33sw9RkO" target="_blank">
-                    <img src="/static/images/others/instagram.png" style="width: 26px;height: 26px" />
+                <a>
+                    <img src="/others/instagram.png" style="width: 26px;height: 26px" />
                 </a>
             </div>
         </div>

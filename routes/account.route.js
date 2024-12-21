@@ -7,20 +7,16 @@ import applyService from "../services/applyService.js";
 import subscriberService from "../services/subscriberService.js";
 import writerService from "../services/writerService.js";
 import editorCategoriesService from "../services/editorCategoriesService.js";
+import {isAuth} from "../middlewares/auth.mdw.js";
 
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-
-
     res.redirect('/account/information');
 });
 
-
 router.get('/information', async function (req, res) {
-    //Đáng lẽ là lấy từ session nhưng tạm thời lấy từ db đã
-
     const user = req.session.user;
     res.render('vwAccount/information', {
         layout: 'account',
@@ -39,9 +35,7 @@ router.post('/information/update-pseudonym', async function (req, res) {
 });
 
 router.get('/premium', function (req, res) {
-
     const user = req.session.user;
-
     const notSubbed = user.vipStatus === 'notSubbed';
     const waitingSubAccept = user.vipStatus === 'waiting';
     const activeSub = user.vipStatus === 'active';
@@ -58,13 +52,11 @@ router.get('/premium', function (req, res) {
 });
 
 router.post('/premium', async function (req, res) {
-
-    //Lấy user ra bằng session
     let user = req.session.user;
 
     const subscribers = {
         user_id: user.id,
-        status: 'waiting',
+        vipStatus: 'waiting',
     }
 
     let ret = await subscriberService.addSubscriber(subscribers);
@@ -72,7 +64,7 @@ router.post('/premium', async function (req, res) {
         return;
     }
 
-    req.session.user = await subscriberService.getVipStatus(userId);
+    req.session.user = await subscriberService.getVipStatus(user.id);
 
     user = req.session.user;
 
@@ -167,7 +159,6 @@ router.get('/role-register', async function (req, res) {
         editor: userRole === 'editor',
         writer: userRole === 'writer',
         categoryNames: categoryNames,
-
     })
 });
 
@@ -183,13 +174,21 @@ router.post('/role-register', async function (req, res) {
     }
 
     const ret = await applyService.addApplyRole(apply);
-    console.log(ret);
-
+    res.redirect('/account/role-register');
 });
 
-router.post('/signOut', function (req, res) {
-    req.session.user = null;
-    res.redirect('/');
+// router.post('/signOut', function (req, res) {
+//     req.session.user = null;
+//     res.redirect('/');
+// });
+
+router.post('/logout', isAuth, function (req, res) {
+  req.session.auth = false;
+  req.session.user = undefined;
+  req.session.editor = undefined;
+  req.session.writer = undefined;
+  req.session.retUrl = null;
+  res.redirect('/')
 });
 
 export default router;
