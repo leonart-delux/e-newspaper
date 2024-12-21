@@ -95,6 +95,26 @@ export default {
             .count('* as quantity')
             .first();
     },
+    async getRandomSameCatArticles(root_article_id, category_id_list, amount) {
+        // Fetch random article IDs
+        const randomSameCatArticlesId = await db('articles_categories')
+            .whereIn('category_id', category_id_list)
+            .whereNot('article_id', root_article_id)
+            .pluck('article_id') 
+            .orderByRaw('RAND()')
+            .limit(amount);
+
+        if (randomSameCatArticlesId.length === 0) {
+            return [];
+        }
+
+        // Get articles's details
+        const randomArticles = await db('articles')
+            .whereIn('id', randomSameCatArticlesId)
+            .select('id', 'title', 'main_thumb', 'publish_date');
+
+        return randomArticles;
+    },
 
     // =============================
     // PHẦN NÀY BÊN CHỨC NĂNG WRITER
@@ -270,6 +290,60 @@ export default {
         // Dump to an object
         return (Object.values(draftMap))[0];
     },
+    async getFullArticleInfoById(id) {
+        // Retrieve article information
+        const fullInfoArticle = await db('articles')
+            .where('articles.id', id)
+            .leftJoin('writers', 'articles.writer_id', 'writers.user_id')
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
+            .leftJoin('articles_tags', 'articles.id', 'articles_tags.article_id')
+            .leftJoin('tags', 'articles_tags.tag_id', 'tags.id')
+            .select(
+                'articles.*',
+                'writers.pseudonym as writer_pseudonym',
+                'categories.id as cat_id',
+                'categories.name as cat_name',
+                'tags.id as tag_id',
+                'tags.name as tag_name'
+            );
+
+        if (!fullInfoArticle.length) {
+            return null; // Return null if no data found
+        }
+
+        const article = {
+            id: fullInfoArticle[0].id,
+            title: fullInfoArticle[0].title,
+            abstract: fullInfoArticle[0].abstract,
+            main_thumb: fullInfoArticle[0].main_thumb,
+            content: fullInfoArticle[0].content,
+            is_premium: fullInfoArticle[0].is_premium,
+            is_available: fullInfoArticle[0].is_available,
+            publish_date: fullInfoArticle[0].publish_date,
+            writer_id: fullInfoArticle[0].writer_id,
+            writer_pseudonym: fullInfoArticle[0].writer_pseudonym,
+            view_count: fullInfoArticle[0].view_count,
+            categories: [],
+            tags: [],
+        };
+
+        const categorySet = new Set();
+        const tagSet = new Set();
+
+        fullInfoArticle.forEach(row => {
+            if (row.cat_id && !categorySet.has(row.cat_id)) {
+                article.categories.push({ id: row.cat_id, name: row.cat_name });
+                categorySet.add(row.cat_id);
+            }
+            if (row.tag_id && !tagSet.has(row.tag_id)) {
+                article.tags.push({ id: row.tag_id, name: row.tag_name });
+                tagSet.add(row.tag_id);
+            }
+        });
+
+        return article;
+    },
     // Update information of draft
     async patchArticle(id, entity, categories, tags) {
         try {
@@ -319,14 +393,9 @@ export default {
     },
     submitDraft(id) {
         let datetime = new Date();
-        const formattedLocalTime = datetime.getFullYear() + '/' +
-            String(datetime.getMonth() + 1).padStart(2, '0') + '/' +
-            String(datetime.getDate()).padStart(2, '0') + 'T' +
-            String(datetime.getHours()).padStart(2, '0') + ':' +
-            String(datetime.getMinutes()).padStart(2, '0') + ':' +
-            String(datetime.getSeconds()).padStart(2, '0');
+        const formattedLocalTime = helper.formatFullDateTime(datetime);
 
-            const entity = { status: 'pending', date: formattedLocalTime };
+        const entity = { status: 'pending', date: formattedLocalTime };
         return db('drafts').where('article_id', id).update(entity);
     },
     async createNewDraft(writerId) {
