@@ -47,29 +47,41 @@
             });
 
 
-
             $('#editCategoryFrom').on('submit', function (e) {
                 e.preventDefault();
-                const categoryName = $('#txtCategoryName').val();
-                console.log(categoryName);
-                if (!categoryName) {
-                    Swal.fire
-                    ({
-                        title: 'Error!',
-                        text: 'Category name must not be empty',
-                        icon: 'error',
-                    })
-                    return;
-                }
-                var datas = $('.prompt').select2('data');
-                const categories = datas.map((data) => data.id);
+                $.getJSON('/category/is-This-Category-Child?catId={{catId}}', function (data) {
+                    const categoryName = $('#txtCategoryName').val();
+                    if (!categoryName) {
+                        Swal.fire
+                        ({
+                            title: 'Error!',
+                            text: 'Category name must not be empty',
+                            icon: 'error',
+                        })
+                        return;
+                    }
+                    var datas = $('.prompt').select2('data');
+                    const categories = datas.map((data) => data.id);
+                    //Thg này là child cat
 
-                var hiddenInput = $('<input>')
-                        .attr('type', 'hidden')
-                        .attr('name', 'childCats')
-                        .attr('value', categories);
-                $(this).append(hiddenInput);
-                $(this).off('submit').submit();
+                    if (data === true) {
+                        if (categories === null || categories.length === 0) {
+                            $('#editCategoryFrom').off('submit').submit();
+                        } else {
+                            $('#liveToastEditFalse').toast('show');
+                        }
+                    } else {
+                        console.log(data);
+                        var hiddenInput = $('<input>')
+                                .attr('type', 'hidden')
+                                .attr('name', 'childCats')
+                                .attr('value', categories);
+                        $('#editCategoryFrom').append(hiddenInput);
+                        $('#editCategoryFrom').off('submit').submit();
+                    }
+
+
+                });
             });
         });
     </script>
@@ -127,6 +139,10 @@
             <div class="toast-body text-center">
                 Đã chỉnh sửa chuyên mục '{{this.catName}}'
             </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
+            </div>
+
         </div>
     </div>
     <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
@@ -144,6 +160,30 @@
             <div class="toast-body text-center">
                 Không thể chỉnh sửa chuyên mục '{{this.catName}}'! <br/>
                 Chúng tôi gặp vấn đề trong quá trình xử lý :(.
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
+            </div>
+        </div>
+    </div>
+    <div class="position-absolute bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+        <div id="liveToastEditFalse" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
+             data-delay="4000" style="min-width: 300px">
+            <div class="toast-header">
+                <img src="/static/images/others/unchecked.png" class=" mr-1" width="16px" height="16px"/>
+                <strong class="mr-auto text-white px-3" style="background-color: #FC3850; border-radius: 10px">Sửa thất
+                    bại</strong>
+                <small>mới đây</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-center">
+                Không thể chỉnh sửa chuyên mục '{{this.catName}}'! <br/>
+                Đây là một chuyên mục con, không thể thêm chuyên mục con cho chuyên mục này
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <a href="/admin/categories" class="btn btn-outline-primary p-1">Trở về trang chủ chuyên mục </a>
             </div>
         </div>
     </div>
