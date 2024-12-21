@@ -68,6 +68,7 @@ app.engine('hbs', engine({
         formatSimpleDatetime: helper.formatSimpleDatetime,
         toUpperCase: helper.toUpperCase,
         section: hbs_section(),
+        eq: helper.eq,
     },
 }));
 

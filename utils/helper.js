@@ -129,4 +129,9 @@ export default {
     toUpperCase(str) {
         return str.toUpperCase();
     },
+
+    // Dùng để so sánh 2 giá trị
+    eq(value1, value2) {
+        return value1 === value2;
+    },
 }

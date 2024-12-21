@@ -16,8 +16,4 @@ export default {
     isAvailableEmail(email) {
         return db('users').where('email', email).first();
     },
-
-
-
-
 }
