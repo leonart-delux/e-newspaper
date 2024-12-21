@@ -1,6 +1,131 @@
-<div class="bg-white " style="border-radius: 10px">
-    <div class="d-flex justify-content-center">
-        <img src="/others/empty-folder.png"/>
+{{#section 'css'}}
+    <link rel="stylesheet"
+          href="/static/css/admin/admin-dashboard.css">
+
+{{/section}}
+
+{{#section 'js'}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const chLine = document.getElementById("chLine");
+
+        if (chLine) {
+            const ctx = chLine.getContext('2d');
+
+            // Tạo gradient cho phần bên dưới line
+            const gradientBelowLine = ctx.createLinearGradient(0, 0, 0, chLine.height);
+            gradientBelowLine.addColorStop(1, 'rgba(242, 73, 115, 0.3)'); // Màu đậm ở phía trên
+
+            const chartData = {
+                labels: ["S", "M", "T", "W", "T", "F", "S", "X", "Y", "Z"],
+                datasets: [{
+                    label: "Gradient Below Line",
+                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500, 2000], // Dữ liệu của line
+                    borderColor: '#F24973', // Màu đường line
+                    borderWidth: 4, // Độ rộng của line
+                    pointBackgroundColor: '#F24973', // Màu các điểm
+                    tension: 0.4, // Độ cong của line
+                    backgroundColor: gradientBelowLine, // Gradient cho phần bên dưới
+                    fill: true // Bật chế độ tô màu bên dưới line
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    scales: {
+                        x: {
+                            grid: { display: false }, // Loại bỏ grid dọc
+                            beginAtZero: true // Bắt đầu từ 0 nếu cần
+                        },
+                        y: {
+                            grid: {
+                                drawBorder: false, // Loại bỏ kẻ dọc ở hai bên
+                                borderDash: [5, 5] // Đường ngang đứt đoạn
+                            },
+                            ticks: {
+                                beginAtZero: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hiển thị legend
+                        },
+                    },
+                    responsive: true // Biểu đồ tự điều chỉnh kích thước
+                }
+            });
+        }
+    </script>
+
+
+{{/section}}
+
+
+<div class=" mt-5" style="border-radius: 10px">
+    <div class="dash-board__brief-info">
+        <div class="dash-board__brief-info__square-info">
+            <div>
+                <h5>
+                    MONTH'S TOTAL VIEW
+                </h5>
+                <div class="dash-board__brief-info__square-info__detail-number ">
+                    <h4>120,000</h4>
+                    <img src="/others/visual.png"/>
+                </div>
+            </div>
+            <img src="/others/visual.png"/>
+        </div>
+        <div class="dash-board__brief-info__square-info">
+            <div>
+                <h5>
+                    MONTH'S TOTAL ARTICLES
+                </h5>
+                <div class="dash-board__brief-info__square-info__detail-number ">
+                    <h4>120,000</h4>
+                    <img src="/others/newspaper (3).png"/>
+                </div>
+            </div>
+            <img src="/others/newspaper (3).png"/>
+        </div>
+        <div class="dash-board__brief-info__square-info">
+            <div>
+                <h5>
+                    TOTAL PREMIUM USERS
+                </h5>
+                <div class="dash-board__brief-info__square-info__detail-number ">
+                    <h4>120,000</h4>
+                    <img src="/others/premium (3).png"/>
+                </div>
+            </div>
+            <img src="/others/premium (3).png"/>
+        </div>
+        <div class="dash-board__brief-info__square-info">
+            <div>
+                <h5>
+                    TOTAL USER
+                </h5>
+                <div class="dash-board__brief-info__square-info__detail-number ">
+                    <h4>120,000</h4>
+                    <img src="/others/user (3).png"/>
+                </div>
+            </div>
+            <img src="/others/user (3).png"/>
+        </div>
     </div>
-    <h3 class="text-center">Tạm thời chưa có gì, rảnh thì làm </h3>
+    <div class="line-chart mt-4 ">
+        <div class="row my-3">
+            <div class="col mt-3">
+                <h4 class="ml-3">Bootstrap 4 Chart.js - Line Chart</h4>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md-9">
+                <canvas id="chLine" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+
 </div>
