@@ -106,10 +106,10 @@
 
                 {{#each this.categoryTree}}
                 <li class="nav-item dropdown-cluster d-flex align-items-center" style="margin-right: 15px;">
-                    <a class="drop-link toggle mr-2" href="#">{{name}}</a>
+                    <a class="drop-link toggle mr-2" href="/cat?catId={{id}}">{{name}}</a>
                     <div class="drop-menu">
                         {{#each children}}
-                        <a class="drop-link drop-menu-item" href="#">{{name}}</a>
+                        <a class="drop-link drop-menu-item" href="/cat?catId={{id}}">{{name}}</a>
                         {{/each}}
                     </div>
                 </li>
