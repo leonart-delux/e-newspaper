@@ -181,6 +181,7 @@
     function showEditModal(id) {
         const editModal = document.getElementById('editModal');
         openModal('editModal');
+
         const user = users.find(user => user.id === id);
         if (user) {
             document.getElementById('editID').value = user.id;
@@ -189,6 +190,7 @@
             document.getElementById('editNickname').value = user.nickname;
             document.getElementById('editEmail').value = user.email;
             document.getElementById('editDOB').value = user.dob ? "2024-12-31T23:59" : "";
+            
             document.getElementById('saveChanges').onclick = () => {
                 user.id = document.getElementById('editID').value;
                 user.name = document.getElementById('editName').value;
