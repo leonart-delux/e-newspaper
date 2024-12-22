@@ -11,20 +11,28 @@
     }
 
     .article-title:hover {
-        color:  black;
+        color: black;
         text-decoration: none;
     }
 
     .article-text {
         color: #7E8299;
     }
+
+    .category-link {
+        color: #7E8299;
+    }
+
+    .category-link:hover {
+        text-decoration: none;
+    }
 </style>
 {{/section}}
 
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-approved-tab" data-toggle="pill" data-target="#pills-approved" type="button"
-            role="tab" aria-controls="pills-approved" aria-selected="true">
+        <button class="nav-link active" id="pills-approved-tab" data-toggle="pill" data-target="#pills-approved"
+            type="button" role="tab" aria-controls="pills-approved" aria-selected="true">
             Tin của bạn
         </button>
     </li>
@@ -35,29 +43,77 @@
         </button>
     </li>
 </ul>
+
 <div class="tab-content p-2" id="pills-tabContent">
+    {{!-- Danh sách các bài viết đã được duyệt --}}
     <div class="tab-pane fade show active" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
-        <div class="row" style="border-radius: 10px; ">
+        {{#if this.isAvailableEmpty}}
+        Bạn chưa có tin nào xuất bản hay chờ xuất bản, viết một tin mới tại <a href="/writer/create-articles">đây</a>.
+        {{/if}}
+        {{#each this.availableArticles}}
+        <div class="row mb-3" style="border-radius: 10px; ">
             <div class="col-3">
-                <picture style="max-width: 200px; max-height: 200px">
-                    <img src="/others/test.webp " class="w-100 h-100 rounded" />
-                </picture>
-            </div>
-            <div class="col-9 pl-0">
-                <p style="color: #7E8299" class="mb-0 article-text">
-                    Đời sống
-                </p>
-                <a class="font-weight-bold article-title" href="#">
-                    Xe máy có thời gian sản xuất trên 5 năm phải kiểm định khí thải
+                <a href="">
+                    <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 170px;" />
                 </a>
-                <div class="article-text mt-1">
-                    Việc kiểm định khí thải xe máy theo định kỳ sẽ được áp dụng với xe có thời gian sản xuất trên 5 năm.
-                    Chủ xe phải mang xe đến cơ sở đăng kiểm để kiểm định.
-                </div>
+            </div>
+            <div class="col-9 pl-0 d-flex flex-column">
+                <p class="mb-0 article-text d-flex">
+                    {{#each categories}}
+                    <a href="" class="category-link mr-2">{{name}}</a>
+                    {{/each}}
+
+                    {{#unless is_published}}
+                    <span class="badge badge-info ml-auto">Chờ xuất bản</span>
+                    {{/unless}}
+                </p>
+                {{!-- Thêm link vào bài viết sau nhe --}}
+                <a class="font-weight-bold article-title" href="#">{{title}}</a>
+                <div class="article-text mt-1">{{abstract}}</div>
+                <p class="mb-0 article-text mt-auto d-flex">
+                    {{#each tags}}
+                    <a href="" class="badge badge-pill badge-light mr-2 mt-auto">{{name}}</a>
+                    {{/each}}
+                    <span class="ml-auto">{{formatSimpleDatetime this.publish_date}}</span>
+                </p>
             </div>
         </div>
+        {{/each}}
     </div>
+
+    {{!-- Danh sách các bài viết chưa được duyệt --}}
     <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
-        Tin dang duyet
+        {{#if this.isDraftEmpty}}
+        Bạn chưa có tin nào đang chờ được duyệt, viết một tin mới tại <a href="/writer/create-articles">đây</a>.
+        {{/if}}
+        {{#each this.draftArticles}}
+        <div class="row mb-3" style="border-radius: 10px; ">
+            <div class="col-3">
+                <a href="/writer/edit-article?id={{id}}">
+                    <img src="{{main_thumb}}" class="rounded" style="object-fit:cover; width: 200px; height: 170px;" />
+                </a>
+            </div>
+            <div class="col-9 pl-0 d-flex flex-column">
+                <p style="color: #7E8299" class="mb-0 article-text d-flex">
+                    {{#each categories}}
+                    <a href="" class="category-link mr-2">{{name}}</a>
+                    {{/each}}
+
+                    {{#if is_rejected}}
+                    <span class="badge badge-danger ml-auto">Bị từ chối</span>
+                    {{else}}
+                    <span class="badge badge-warning ml-auto">Đang chờ duyệt</span>
+                    {{/if}}
+                </p>
+                <a class="font-weight-bold article-title" href="/writer/edit-article?id={{id}}">{{title}}</a>
+                <div class="article-text mt-1">{{abstract}}</div>
+                <p class="mb-0 article-text mt-auto">
+                    {{#each tags}}
+                    <a href="" class="badge badge-pill badge-light mr-2 mt-auto">{{name}}</a>
+                    {{/each}}
+                </p>
+            </div>
+        </div>
+        {{/each}}
     </div>
 </div>

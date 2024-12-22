@@ -18,28 +18,45 @@
 
 <div class="bg-white " style="border-radius: 10px">
     <div class="p-4 d-flex align-items-center" style="border-bottom: 1px solid #EEEEEE">
-        {{#if this.waiting}}
-            <h5 style="font-weight: bold; " class="mb-0 ">Đơn đăng ký của bạn đã được tiếp nhận, chúng tôi sẽ cố gắng
-                phản hồi sớm nhất có thể </h5>
-            <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
-        {{else if this.guest}}
-            <h5 style="font-weight: bold; " class="mb-0 ">Đăng ký vai trò bạn muốn để cùng chúng tôi xây dựng những bài
-                báo
-                chất lượng hơn </h5>
-            <img src="/others/partners.png " class="ml-3" style="width: 40px;height: 40px"/>
-        {{else if this.writer}}
-            <h5 style="font-weight: bold; " class="mb-0 ">Bạn đang là một phóng viên, hãy tiếp tục phát huy sở trường
-                của mình nào.</h5>
-            <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
-        {{else if this.editor}}
-            <h5 style="font-weight: bold; " class="mb-0 ">Bạn đang là một Editor, hãy tiếp tục kiểm duyệt nội dung một
-                cách kỹ càng nhé</h5>
-            <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
+
+        {{!-- Thông báo nếu thiếu thông tin --}}
+        {{#if missingInfo}}
+            <div class="alert alert-warning w-100">
+                <strong>Thông báo:</strong> Bạn cần cập nhật thông tin sau trước khi tiếp tục: {{missingInfo}}.
+                <a href="{{updateLink}}" class="btn btn-primary btn-sm" style="background: #dc3545; border: none;">Cập nhật ngay</a>
+            </div>
+        {{else}}
+            {{#if this.waiting}}
+                <h5 style="font-weight: bold; " class="mb-0 ">Đơn đăng ký của bạn đã được tiếp nhận, chúng tôi sẽ cố gắng
+                    phản hồi sớm nhất có thể </h5>
+                <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
+            {{else if this.guest}}
+                <h5 style="font-weight: bold; " class="mb-0 ">Đăng ký vai trò bạn muốn để cùng chúng tôi xây dựng những bài
+                    báo
+                    chất lượng hơn </h5>
+                <img src="/others/partners.png " class="ml-3" style="width: 40px;height: 40px"/>
+            {{else if this.writer}}
+                <h5 style="font-weight: bold; " class="mb-0 ">Bạn đang là một phóng viên, hãy tiếp tục phát huy sở trường
+                    của mình nào.</h5>
+                <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
+            {{else if this.editor}}
+                <h5 style="font-weight: bold; " class="mb-0 ">Bạn đang là một Editor, hãy tiếp tục kiểm duyệt nội dung một
+                    cách kỹ càng nhé</h5>
+                <img src="/others/laughing.png " class="ml-3" style="width: 40px;height: 40px"/>
+            {{/if}}
         {{/if}}
 
     </div>
     <div style="width: 700px; margin: auto" class="user-information mt-3 pb-5 ">
-        {{#if this.waiting}}
+        {{!-- Phần nội dung cho từng vai trò --}}
+        {{#if missingInfo}}
+            <div class="d-flex justify-content-center">
+                <img src="/others/unchecked.png" style="width: 250px; height: 250px"/>
+            </div>
+            <div class="font-weight-bold mt-3 text-center">
+                Bạn cần cập nhật thông tin cá nhân để tiếp tục đăng ký vai trò. Nhấn vào nút "Cập nhật ngay" để hoàn thành thông tin!
+            </div>
+        {{else if this.waiting}}
             <div class="d-flex justify-content-center">
                 <img src="/others/time-management.png" style=" width: 250px; height: 250px"/>
             </div>
@@ -146,7 +163,7 @@
                     </div>
                 {{/each}}
             </div>
-            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đi đến <a href="/"
+            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đi đến <a href="/editor"
                                                                                      style="text-decoration: underline">nơi
                 làm việc</a> của bạn!
             </div>
@@ -155,7 +172,7 @@
                 <img src="/others/writer.png" style=" width: 250px; height: 250px"/>
 
             </div>
-            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đi đến <a href="/"
+            <div style="color: #ED1C24" class="font-weight-bold mr-3 mt-3">Đi đến <a href="/writer"
                                                                                      style="text-decoration: underline">nơi
                 làm việc</a> của bạn!
             </div>

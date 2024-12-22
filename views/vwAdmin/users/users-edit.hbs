@@ -1,0 +1,54 @@
+<div class="container mt-4 p-4"
+    style="background-color: #ffffff; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h3 class="mb-4">Chỉnh sửa thông tin người dùng</h3>
+    <form id="editUserForm" action="/admin/users/edit" method="POST">
+        <div class="mb-3">
+            <label for="userId" class="form-label">ID</label>
+            <input type="text" id="userId" name="id" class="form-control" value="{{user.id}}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="userName" class="form-label">Tên</label>
+            <input type="text" id="userName" name="name" class="form-control" value="{{user.name}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="userRole" class="form-label">Vai trò</label>
+            <select id="userRole" name="role" class="form-control" required>
+                <option value="editor" {{#if (eq user.role 'editor')}}selected{{/if}}>Editor</option>
+                <option value="writer" {{#if (eq user.role 'writer')}}selected{{/if}}>Writer</option>
+                <option value="guest" {{#if (eq user.role 'guest')}}selected{{/if}}>Guest</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="userPseudonym" class="form-label">Bút danh</label>
+            <input type="text" id="userPseudonym" name="pseudonym" class="form-control" value="{{user.pseudonym}}">
+        </div>
+        <div class="mb-3">
+            <label for="userEmail" class="form-label">Email</label>
+            <input type="email" id="userEmail" name="email" class="form-control" value="{{user.email}}" required>
+        </div>
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            <a href="/admin/users" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const roleDropdown = document.getElementById('userRole');
+        const pseudonymField = document.getElementById('userPseudonym');
+
+        function togglePseudonymField() {
+            if (roleDropdown.value === 'guest' || roleDropdown.value === 'editor') {
+                pseudonymField.value = ''; 
+                pseudonymField.setAttribute('disabled', 'disabled'); 
+            } else {
+                pseudonymField.removeAttribute('disabled'); 
+            }
+        }
+
+        togglePseudonymField();
+
+        roleDropdown.addEventListener('change', togglePseudonymField);
+    });
+</script>

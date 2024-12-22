@@ -11,6 +11,9 @@ export default {
         return db('tags').where('id', tagId).select('name as tagName').first();
     },
 
+    getAll() {
+        return db('tags');
+    },
     getAllTags() {
         return db('tags').select('*');
     },

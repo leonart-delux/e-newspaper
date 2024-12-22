@@ -2,8 +2,10 @@ import express from "express";
 import adminArticlesRoute from "./admin-articles.route.js";
 import adminCategoriesRoute from "./admin-categories.route.js";
 import adminTagsRoute from "./admin-tags.route.js";
+import adminUsersRoute from "./admin-users.route.js";
 import adminRoleRegistersRoute from "./admin-role-register.route.js";
 import adminVipUsersRoute from "./admin-vip-users.route.js";
+
 const router = express.Router();
 
 router.use('/articles', adminArticlesRoute);
@@ -15,6 +17,9 @@ router.use('/tags', adminTagsRoute);
 router.use('/role-registers', adminRoleRegistersRoute);
 
 router.use('/vip-users', adminVipUsersRoute);
+
+router.use('/users', adminUsersRoute);
+
 
 router.get('/', function (req, res) {
     res.render('vwAdmin/dashboard', {
