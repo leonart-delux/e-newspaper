@@ -134,4 +134,28 @@ export default {
     eq(value1, value2) {
         return value1 === value2;
     },
+
+    greater(value1, value2) {
+        return value1 > value2;
+    },
+
+    less(value1, value2) {
+        return value1 < value2;
+    },
+
+    range(start, end) {
+        const rangeArray = [];
+        for (let i = start; i <= end; i++) {
+            rangeArray.push(i);
+        }
+        return rangeArray;
+    },
+
+    add(value1, value2) {
+        return value1 + value2;
+    },
+    
+    subtract(value1, value2) {
+        return value1 - value2;
+    },
 }

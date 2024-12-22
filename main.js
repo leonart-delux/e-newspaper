@@ -69,6 +69,11 @@ app.engine('hbs', engine({
         toUpperCase: helper.toUpperCase,
         section: hbs_section(),
         eq: helper.eq,
+        greater: helper.greater,
+        less: helper.less,
+        range: helper.range,
+        add: helper.add,
+        subtract: helper.subtract,  
     },
 }));
 
