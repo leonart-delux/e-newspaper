@@ -62,3 +62,26 @@ img:hover {
 .more-icon:hover {
     color: darkred;
 }
+
+.article-card {
+    border-top: 4px solid #B60000;
+    border-bottom: 2px solid lightgray;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+
+.masonry-layout {
+    column-count: 2;
+    column-gap: 20px;
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 20px;
+}
+
+.masonry-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
