@@ -182,7 +182,7 @@ router.post('/role-register', async function (req, res) {
 //     res.redirect('/');
 // });
 
-router.post('/logout', isAuth, function (req, res) {
+router.get('/logout', isAuth, function (req, res) {
   req.session.auth = false;
   req.session.user = undefined;
   req.session.editor = undefined;
