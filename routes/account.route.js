@@ -8,7 +8,7 @@ import subscriberService from "../services/subscriberService.js";
 import writerService from "../services/writerService.js";
 import editorCategoriesService from "../services/editorCategoriesService.js";
 import {isAuth} from "../middlewares/auth.mdw.js";
-
+import db from "../utils/db.js";
 
 const router = express.Router();
 
@@ -78,8 +78,14 @@ router.post('/premium', async function (req, res) {
 router.post('/information/update-name', async function (req, res) {
     const name = req.body.name;
     const user = req.session.user;
-    const entity = {name: name}
+
+    // Cập nhật tên
+    const entity = { name: name };
     await accountService.updateUser(user.id, entity);
+
+    // Cập nhật hoặc tạo mới pseudonym
+    await writerService.createOrUpdateWriter(user.id, name);
+
     res.redirect('/account');
 });
 
@@ -142,15 +148,32 @@ router.get('/role-register', async function (req, res) {
     const user = req.session.user;
 
     const waiting = user.roleStatus !== undefined;
-    console.log(user.roleStatus);
-    console.log(user);
-    console.log(waiting);
     const userRole = user.role;
 
+    // Kiểm tra thông tin người dùng từ database
+    const dbUser = await db('users').where('id', user.id).first();
+    const dbWriter = await db('writers').where('user_id', user.id).first();
+
+    // Danh sách các thông tin còn thiếu
+    const missingInfo = [];
+    if (!dbUser.name) missingInfo.push('Họ và tên');
+    if (!dbUser.birth_date) missingInfo.push('Ngày sinh');
+    if (userRole === 'writer' && (!dbWriter || !dbWriter.pseudonym)) {
+        missingInfo.push('Bút danh');
+    }
+
+    // Nếu thiếu thông tin, hiển thị thông báo
+    if (missingInfo.length > 0) {
+        return res.render('vwAccount/role-register', {
+            layout: 'account',
+            roleRegister: true,
+            missingInfo: missingInfo.join(', '),
+            updateLink: '/account/information', // Link đến trang cập nhật thông tin
+        });
+    }
+
+    // Lấy danh sách các chuyên mục nếu là editor
     const categoryNames = await editorCategoriesService.getEditorCategoryNames(user.id);
-    console.log(categoryNames);
-
-
     res.render('vwAccount/role-register', {
         layout: 'account',
         roleRegister: true,
