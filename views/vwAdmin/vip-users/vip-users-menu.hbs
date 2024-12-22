@@ -1,0 +1,298 @@
+{{#section 'css'}}
+    <link rel="stylesheet"
+          href="/static/css/admin/admin-vip-users.css">
+    <link rel="stylesheet"
+          href="/static/css/admin/admin-categories.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+{{/section}}
+
+
+{{#section 'js'}}
+    <script type="module" src="https://unpkg.com/@lamplightdev/aeon"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.getJSON('/account/unvip-users', function (datas) {
+                $(".prompt").select2({
+                    data: datas.map((data) => {
+                        return {
+                            id: data.id,
+                            text: data.email,
+                        };
+                    }),
+                    theme: "classic",
+                    width: '100%',
+                    multiple: true,
+                    placeholder: "Hãy chon người dùng",
+                });
+            });
+            $('#addVipForm').on('submit', function (e) {
+                var datas = $('.prompt').select2('data');
+                const usersId = datas.map((data) => data.id);
+                //Thg này là child cat
+                var hiddenInput = $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'users')
+                        .attr('value', usersId);
+                $('#addVipForm').append(hiddenInput);
+                $('#addVipForm').off('submit').submit();
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+        document.getElementById('dataSelector').addEventListener('change', function () {
+            const lists = document.querySelectorAll('.data-list');
+            lists.forEach(list => {
+                list.style.display = 'none'; // Ẩn tất cả các danh sách
+            });
+
+            const selectedList = document.getElementById(this.value);
+            if (selectedList) {
+                selectedList.style.display = 'block'; // Hiển thị danh sách được chọn
+            }
+        });
+
+        // Tùy chọn: Hiển thị danh sách đầu tiên khi trang tải
+        document.getElementById('dataSelector').dispatchEvent(new Event('change'));
+
+    </script>
+{{/section}}
+
+
+<div class="bg-white p-4 shadow position-relative" style="border-radius: 10px; min-height: 797px">
+    <div class="d-flex justify-content-between">
+        <h3>Danh sách đơn đăng ký VIP</h3>
+        <button class="btn btn-outline-danger font-weight-bold d-flex align-items-center"
+                data-toggle="modal" data-target="#addVIPModal">
+            <i class="bi bi-plus-square-fill mr-1"></i>
+            <span>
+            Thêm VIP cho người dùng
+            </span>
+        </button>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-9 px-0 mt-4">
+            <select id="dataSelector" class="form-control ">
+                <option value="activeSubscriber">Người dùng VIP</option>
+                <option value="pendingSubscriber">Đang chờ duyệt đơn đăng ký VIP</option>
+                <option value="outdatedSubscriber">Hết hạn VIP</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div id="activeSubscriber" class="data-list activeSubscriber col-9">
+            <div class="row text-white rounded d-flex py-0 align-items-center"
+                 style="padding: 0.5rem;background-color: #EF314C">
+
+                <h5 class="col-3 px-0 d-flex mb-0 py-2 justify-content-center ">
+                    <span>Email</span>
+                </h5>
+                <h5 class="col-3 px-0 d-flex mb-0 py-2 justify-content-center ">
+                    <span class="">Ngày đăng ký</span>
+                </h5>
+                <h5 class="col-4 px-0 d-flex mb-0 py-2 justify-content-center ">
+                    <span class="">Ngày hết hạn</span>
+                </h5>
+                <div class="col-2 d-flex justify-content-center">
+                </div>
+            </div>
+            {{#each this.activeVipUsers}}
+
+                <form class="row  border  section" action="/admin/vip-users/renewVip" method="post">
+                    <input name="subId" value="{{id}}" hidden="hidden">
+                    <div class="col-3  section__row">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                {{email}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3  section__row">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                {{subscribe_time}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4  section__row">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                <!--                                style="--aeon-rgb: 0,0,0; --aeon-bgRgb: 255, 219, 108"-->
+                                <aeon-datepicker>
+                                    <input type="date" id="date" name="date" value="{{date}}"/>
+                                    <input type="time" id="time" name="time" value="{{time}}"/>
+                                </aeon-datepicker>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2  section__row border-0">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                <button class="btn btn-outline-success" data-toggle="tooltip" data-placement="top"
+                                        type="submit"
+                                        title="Gia hạn VIP">
+                                    <i class="bi bi-calendar-check"></i>
+                                </button>
+                                <a class="btn btn-outline-danger " href="/admin/vip-users/delete?subId={{id}}"
+                                data-toggle="tooltip" data-placement="top"
+                                title="Hủy VIP">
+                                <i class="bi bi-x-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            {{/each}}
+        </div>
+        <div id="pendingSubscriber" class="data-list col-9">
+            <div class="row text-white rounded d-flex py-0 justify-content-between align-items-center"
+                 style="padding: 0.5rem;background-color: #EF314C">
+                <h5 class="col-10 px-0 d-flex mb-0 py-2 justify-content-center ">
+                    <span>Email</span>
+                </h5>
+                <div class="col-2 d-flex justify-content-center">
+                </div>
+            </div>
+            {{#each this.waitingVipUsers}}
+                <div class="row   border  section">
+                    <div class="col-10  section__row">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                {{email}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2  section__row border-0">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                <a class="btn btn-outline-success" href="/admin/vip-users/accept?subId={{id}}"
+                                data-toggle="tooltip" data-placement="top"
+                                title="Chấp nhận đơn">
+                                <i class="bi bi-check2-square"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+
+        <div id="outdatedSubscriber" class="data-list col-9">
+            <form action="/admin/vip-users/renewVip" method="post"
+                  class="row text-white rounded d-flex py-0 align-items-center"
+                  style="padding: 0.5rem;background-color: #EF314C">
+
+                <h5 class="col-3 px-0 d-flex mb-0 py-2 justify-content-center ">
+                    <span>Email</span>
+                </h5>
+                <h5 class="col-3 px-0 d-flex mb-0 py-2 justify-content-center ">
+                    <span class="">Ngày đăng ký</span>
+                </h5>
+                <h5 class="col-4 px-0 d-flex mb-0 py-2 justify-content-center ">
+                    <span class="">Ngày hết hạn</span>
+                </h5>
+                <div class="col-2 d-flex justify-content-center">
+                </div>
+            </form>
+            {{# each this.outdatedVipUsers}}
+                <div class="row   border  section">
+                    <div class="col-3  section__row">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                {{email}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3  section__row">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                {{subscribe_time}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4  section__row">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                <!--                                style="--aeon-rgb: 0,0,0; --aeon-bgRgb: 255, 219, 108"-->
+                                <aeon-datepicker>
+                                    <input type="date" id="date" name="date" value="{{date}}"/>
+                                    <input type="time" id="time" name="time" value="{{time}}"/>
+                                </aeon-datepicker>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2  section__row border-0">
+                        <div class="section__part">
+                            <div class="section__part__info">
+                                <input value="{{id}}" name="subId" hidden="hidden">
+                                <button type="submit" class="btn btn-outline-success  " data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Gia hạn VIP">
+                                    <i class="bi bi-calendar-check"></i>
+                                </button>
+                                <a class="btn btn-outline-danger " href="/admin/vip-users/delete?subId={{id}}"
+                                data-toggle="tooltip" data-placement="top"
+                                title="Xóa VIP">
+                                <i class="bi bi-x-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {{/each}}
+        </div>
+    </div>
+    <div class="modal fade" id="addVIPModal" tabindex="-1" aria-labelledby="addVIPModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header  border-0">
+                    <div class="d-flex justify-content-center w-100">
+                        <h3 class="modal-title text-center font-weight-bolder" id="addVIPModal">Nạp VIP cho người
+                            dùng</h3>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addVipForm" method="post" action="/admin/vip-users/add">
+                        <!--                        <input name="tagIdEdited" class="tagIdEdited" id="" hidden="hidden">-->
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-9">
+                                <select class="prompt " multiple placeholder="Search countries...">
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--                        <input class="form-control" placeholder="Tên nhãn mới" name="tagNameEdited">-->
+                        <div class="modal-footer d-flex justify-content-center border-0">
+                            <button type="submit" class="btn btn-danger">
+                                <span class="font-weight-bold">
+                                    Xác nhập thêm VIP
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,48 @@
+.data-list {
+    margin: 20px auto;
+}
+
+.activeSubscriber-section {
+    margin-top: 10px;
+    border-radius: 10px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+}
+
+.activeSubscriber h5 {
+    border-right: 2px solid #FE9900;
+}
+
+.section__part__info {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.section__part {
+    display: flex;
+    justify-content: center;
+    white-space: normal;
+    width: 100%;
+    word-break: break-word;
+}
+
+.section__row {
+    border-right: 2px solid #DEE2E6;
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.section{
+    margin-top: 10px;
+}
+
+#date, #time {
+    border: none; /* Remove border */
+    outline: none; /* Remove outline when focused */
+    background-color: transparent; /* Make background transparent if needed */
+}
+
