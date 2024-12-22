@@ -100,7 +100,7 @@ export default {
         const randomSameCatArticlesId = await db('articles_categories')
             .whereIn('category_id', category_id_list)
             .whereNot('article_id', root_article_id)
-            .pluck('article_id') 
+            .pluck('article_id')
             .orderByRaw('RAND()')
             .limit(amount);
 
@@ -114,6 +114,45 @@ export default {
             .select('id', 'title', 'main_thumb', 'publish_date');
 
         return randomArticles;
+    },
+    async topViewArticlesWithCat(amount) {
+        const topViewsArticlesRawData = await db('articles')
+            .orderBy('views', 'desc')
+            .limit(amount)
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
+            .select(
+                'articles.id',
+                'articles.title',
+                'articles.publish_date',
+                'categories.id as category_id',
+                'categories.name as category_name',
+            );
+        
+        if (topViewsArticlesRawData.length === 0) {
+            return [];
+        }
+
+        let topViewsArticlesMap = {};
+        topViewsArticlesRawData.forEach(row => {
+            if(!topViewsArticlesMap[row.id]) {
+                topViewsArticlesMap[row.id] = {
+                    id: row.id,
+                    title: row.title,
+                    publish_date: row.publish_date,
+                    categories: [],
+                };
+            }
+
+            if(row.category_id && !topViewsArticlesMap[row.id].categories.some(cat => cat.id === row.category_id)) {
+                topViewsArticlesMap[row.id].categories.push({
+                    id: row.category_id,
+                    name: row.category_name,
+                });
+            }
+        });
+
+        return Object.values(topViewsArticlesMap);
     },
 
     // =============================
