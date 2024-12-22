@@ -125,6 +125,7 @@ export default {
                 'articles.id',
                 'articles.title',
                 'articles.publish_date',
+                'articles.main_thumb',
                 'categories.id as category_id',
                 'categories.name as category_name',
             );
@@ -140,6 +141,7 @@ export default {
                     id: row.id,
                     title: row.title,
                     publish_date: row.publish_date,
+                    main_thumb: row.main_thumb,
                     categories: [],
                 };
             }
