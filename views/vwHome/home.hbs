@@ -1,36 +1,5 @@
 {{#section 'css'}}
-<style>
-    .wrapper {
-        width: 1320px;
-    }
-
-    #hotWeek .carousel-item img {
-        height: 400px;
-        object-fit: cover;
-        overflow: hidden;
-        border-radius: 5px;
-    }
-
-    #hotWeek .carousel-caption {
-        background: linear-gradient(to top, black 10%, transparent);
-        position: absolute;
-        bottom: 0%;
-        left: 50%;
-        transform: translateX(-50%);
-        text-align: left;
-        width: 100%;
-    }
-
-    .hot-all-item {
-        overflow: hidden;
-    }
-
-    .hot-all-img {
-        height: 200px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-</style>
+<link rel="stylesheet" href="/static/css/home-articleList/home-content.css">
 {{/section}}
 
 <div class="wrapper mx-auto mt-4 mb-5 container">
@@ -76,203 +45,34 @@
                     Tin mới nhất
                 </h6>
 
+                {{#each this.newestArticles}}
                 <div class="row mb-4" style="border-radius: 10px;">
                     <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        <a href="/article?id={{id}}">
+                            <img src="{{main_thumb}}" class="rounded"
+                                style="object-fit:cover; height: 130px; width: 100%" />
                         </a>
                     </div>
                     <div class="col-8 pl-0 pb-2 d-flex flex-column">
                         <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
+                            {{#each categories}}
+                            <a href="/cat?catId={{id}}" class="cat-link mr-2">{{name}}</a>
+                            {{/each}}
                         </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
+                        <a class="font-weight-bold article-title title-link" href="/article?id={{id}}"
+                            style="font-size: large;">
+                            {{title}}
                         </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                        <small style="position:absolute; bottom: 0%">
+                            <i class="bi bi-calendar3"></i>
+                            {{formatSimpleDatetime publish_date}}
+                        </small>
                     </div>
                 </div>
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
-                <div class="row mb-4" style="border-radius: 10px;">
-                    <div class="col-4">
-                        <a href="">
-                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
-                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
-                        </a>
-                    </div>
-                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
-                        <p class="mb-0 article-text d-flex">
-                            <a href="">Tới chơi</a>
-                        </p>
-                        {{!-- Thêm link vào bài viết sau nhe --}}
-                        <a class="font-weight-bold article-title" href="#">
-                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
-                            tiêu đề quá dài
-                        </a>
-                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
-                    </div>
-                </div>
+                {{/each}}
 
                 <div class="text-center">
-                    <a href="">
+                    <a href="/newest" class="more-icon">
                         <i class="bi bi-arrow-bar-down" style="font-size: 20px;"></i>
                     </a>
                 </div>
@@ -283,116 +83,32 @@
                     Top chuyên mục
                 </h6>
                 <div class="row rounded">
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
+                    {{#each this.newestArticlesOfTopCat}}
+                    <div class="col-6 article-card mt-1 mb-2 px-3 p-0" style="">
+                        <h5 class="d-flex justify-content-between px-3">
+                            <a href="/cat?catId={{catId}}" class="cat-link">
+                                {{catName}}
+                            </a>
+                            <span class="text-secondary">
+                                <i class="bi bi-eyeglasses"></i>
+                                {{total_views}}
+                            </span>
                         </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
+                        </a>
+                        <a href="/aricle?id={{article.id}}">
+                            <img src="{{article.main_thumb}}" style="border-radius:10px; object-fit:cover; width:100%;">
+                        </a>
+                        <a href="/article?id={{article.id}}" class="title-link">
+                            <h6 class="mt-2">
+                                {{article.title}}
+                            </h6>
+                        </a>
+                        <small>
+                            <i class="bi bi-calendar3"></i>
+                            {{formatSimpleDatetime article.publish_date}}
+                        </small>
                     </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
-                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
-                        <h5 class="text-secondary text-center">
-                            Đời sống
-                        </h5>
-                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
-                        <h6 class="mt-2">
-                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
-                            tiêu đề nào đó dài vãi ò
-                        </h6>
-                        <small>10:00 27/10/2022</small>
-                    </div>
+                    {{/each}}
                 </div>
             </div>
 
@@ -402,145 +118,38 @@
             <h6 class="ml-3 pl-2" style="border-left: 4px solid red;">
                 Tin nổi bật nhất mọi thời đại
             </h6>
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
+            {{#each this.topViewArticles}}
+            <div class="hot-all-item mt-3 px-1">
+                <a href="/article?id={{id}}">
+                    <img src="{{main_thumb}}" alt="" class="hot-all-img">
+                </a>
+                <div class="px-1">
+                    <p class="mb-0">
+                        {{#each categories}}
+                        <a href="/cat?catId={{id}}">
+                            <small class="mr-1 cat-link">{{name}}</small>
+                        </a>
+                        {{/each}}
+                    </p>
+                    <a href="/article?id={{id}}">
+                        <h6 class="mb-1 title-link">
+                            {{title}}
+                        </h6>
+                    </a>
+                    <small class="d-flex justify-content-between">
+                        <span>
+                            <i class="bi bi-calendar3"></i>
+                            {{formatSimpleDatetime publish_date}}
+                        </span>
+                        <span>
+                            <i class="bi bi-eyeglasses"></i>
+                            {{view_count}}
+                        </span>
+                    </small>
+                </div>
             </div>
+            {{/each}}
 
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
-
-            <div class="hot-all-item mt-3">
-                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
-                    class="hot-all-img">
-                <p class="mb-0">
-                    <small class="mr-2">Đời sống</small>
-                    <small>Sức khỏe</small>
-                </p>
-                <h6 class="mb-1">
-                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
-                    quá dài
-                </h6>
-                <small>10:00 27/12/2023</small>
-            </div>
         </div>
     </div>
 
