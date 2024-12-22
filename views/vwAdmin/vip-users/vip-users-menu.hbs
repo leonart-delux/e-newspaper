@@ -15,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function () {
             $.getJSON('/account/unvip-users', function (datas) {
@@ -44,7 +45,6 @@
             });
         });
     </script>
-
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
@@ -64,6 +64,48 @@
         // Tùy chọn: Hiển thị danh sách đầu tiên khi trang tải
         document.getElementById('dataSelector').dispatchEvent(new Event('change'));
 
+    </script>
+    <script>
+        function checkNewOutdatedTime(dateTime) {
+            const formattedDateTime = dateTime.replace(' ', 'T');
+            const newDateTime = new Date(formattedDateTime)
+            return newDateTime > new Date();
+        }
+
+        $('#renewOutdatedTimeActive').on('submit', function (e) {
+            e.preventDefault();
+            const date = $('#date').val();
+            const time = $('#time').val();
+            const dateTime = `${date} ${time}`;
+            const checkTime = checkNewOutdatedTime(dateTime);
+            if (!checkTime) {
+                Swal.fire({
+                    title: 'THỜI GIAN KHÔNG HỢP LỆ!',
+                    text: 'Thời gian bạn chọn phải sau thời gian hiện tại',
+                    icon: 'error',
+                });
+                return;
+            }
+            $('#renewOutdatedTimeActive').off('submit').submit();
+
+        });
+
+        $('#renewOutdatedTimeOutDated').on('submit', function (e) {
+            e.preventDefault();
+            const date = $('#outdatedDate').val();
+            const time = $('#outdatedTime').val();
+            const dateTime = `${date} ${time}`;
+            const checkTime = checkNewOutdatedTime(dateTime);
+            if (!checkTime) {
+                Swal.fire({
+                    title: 'THỜI GIAN KHÔNG HỢP LỆ!',
+                    text: 'Thời gian bạn chọn phải sau thời gian hiện tại',
+                    icon: 'error',
+                });
+                return;
+            }
+            $('#renewOutdatedTimeOutDated').off('submit').submit();
+        });
     </script>
 {{/section}}
 
@@ -107,7 +149,8 @@
             </div>
             {{#each this.activeVipUsers}}
 
-                <form class="row  border  section" action="/admin/vip-users/renewVip" method="post">
+                <form id="renewOutdatedTimeActive" class="row  border  section" action="/admin/vip-users/renewVip"
+                      method="post">
                     <input name="subId" value="{{id}}" hidden="hidden">
                     <div class="col-3  section__row">
                         <div class="section__part">
@@ -190,7 +233,7 @@
         </div>
 
         <div id="outdatedSubscriber" class="data-list col-9">
-            <form action="/admin/vip-users/renewVip" method="post"
+            <form id="renewOutdatedTimeOutdated" action="/admin/vip-users/renewVip" method="post"
                   class="row text-white rounded d-flex py-0 align-items-center"
                   style="padding: 0.5rem;background-color: #EF314C">
 
@@ -227,8 +270,8 @@
                             <div class="section__part__info">
                                 <!--                                style="--aeon-rgb: 0,0,0; --aeon-bgRgb: 255, 219, 108"-->
                                 <aeon-datepicker>
-                                    <input type="date" id="date" name="date" value="{{date}}"/>
-                                    <input type="time" id="time" name="time" value="{{time}}"/>
+                                    <input type="date" id="outdatedDate" name="date" value="{{date}}"/>
+                                    <input type="time" id="outdatedTime" name="time" value="{{time}}"/>
                                 </aeon-datepicker>
 
                             </div>
