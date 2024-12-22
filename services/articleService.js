@@ -3,6 +3,7 @@ import categoryService from "./categoryService.js";
 import tagService from "./tagService.js";
 import helper from "../utils/helper.js";
 
+let now = new Date().toISOString();
 export default {
     async getArticlesByCat(catId, limit, offset) {
         //Lấy tất cả các báo theo category ra
@@ -115,9 +116,57 @@ export default {
 
         return randomArticles;
     },
-    async topViewArticlesWithCat(amount) {
+    async getTopViewArticlesWithCat(amount) {
         const topViewsArticlesRawData = await db('articles')
-            .orderBy('views', 'desc')
+            .where('is_available', '=', '1')
+            .where('publish_date', '<', now)
+            .orderBy('articles.view_count', 'desc')
+            .limit(amount)
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
+            .select(
+                'articles.id',
+                'articles.title',
+                'articles.publish_date',
+                'articles.main_thumb',
+                'articles.view_count',
+                'categories.id as category_id',
+                'categories.name as category_name',
+            );
+
+        if (topViewsArticlesRawData.length === 0) {
+            return [];
+        }
+
+        let topViewsArticlesMap = {};
+        topViewsArticlesRawData.forEach(row => {
+            if (!topViewsArticlesMap[row.id]) {
+                topViewsArticlesMap[row.id] = {
+                    id: row.id,
+                    title: row.title,
+                    publish_date: row.publish_date,
+                    main_thumb: row.main_thumb,
+                    view_count: row.view_count,
+                    categories: [],
+                };
+            }
+
+            if (row.category_id && !topViewsArticlesMap[row.id].categories.some(cat => cat.id === row.category_id)) {
+                topViewsArticlesMap[row.id].categories.push({
+                    id: row.category_id,
+                    name: row.category_name,
+                });
+            }
+        });
+
+        return Object.values(topViewsArticlesMap);
+    },
+
+    async getNewestArticlesWithCat(amount) {
+        const newestArticlesRawData = await db('articles')
+            .where('is_available', '=', '1')
+            .where('publish_date', '<', now)
+            .orderBy('publish_date', 'desc')
             .limit(amount)
             .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
             .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
@@ -129,15 +178,15 @@ export default {
                 'categories.id as category_id',
                 'categories.name as category_name',
             );
-        
-        if (topViewsArticlesRawData.length === 0) {
+
+        if (newestArticlesRawData.length === 0) {
             return [];
         }
 
-        let topViewsArticlesMap = {};
-        topViewsArticlesRawData.forEach(row => {
-            if(!topViewsArticlesMap[row.id]) {
-                topViewsArticlesMap[row.id] = {
+        let newstArticlesMap = {};
+        newestArticlesRawData.forEach(row => {
+            if (!newstArticlesMap[row.id]) {
+                newstArticlesMap[row.id] = {
                     id: row.id,
                     title: row.title,
                     publish_date: row.publish_date,
@@ -146,15 +195,32 @@ export default {
                 };
             }
 
-            if(row.category_id && !topViewsArticlesMap[row.id].categories.some(cat => cat.id === row.category_id)) {
-                topViewsArticlesMap[row.id].categories.push({
+            if (row.category_id && !newstArticlesMap[row.id].categories.some(cat => cat.id === row.category_id)) {
+                newstArticlesMap[row.id].categories.push({
                     id: row.category_id,
                     name: row.category_name,
                 });
             }
         });
 
-        return Object.values(topViewsArticlesMap);
+        return Object.values(newstArticlesMap);
+    },
+
+    async getNewestArticleByCat(catId) {
+        return db('articles')
+            .where('is_available', '=', '1')
+            .where('publish_date', '<', db.raw('CURRENT_TIMESTAMP'))
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .where('articles_categories.category_id', '=', catId)
+            .orderBy('articles.publish_date', 'desc')
+            .first()
+            .select(
+                'articles.id as id',
+                'articles.title as title',
+                'articles.main_thumb as main_thumb',
+                'articles.publish_date as publish_date',
+                'articles.is_premium as is_premium',
+            );
     },
 
     // =============================
