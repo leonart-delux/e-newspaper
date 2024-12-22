@@ -214,4 +214,10 @@ router.post('/logout', isAuth, function (req, res) {
   res.redirect('/')
 });
 
+router.get('/unvip-users', async function (req, res) {
+    const users = await accountService.getUnVipUsers();
+    return res.json(users);
+
+});
+
 export default router;
