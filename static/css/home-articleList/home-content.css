@@ -1,0 +1,64 @@
+.wrapper {
+    width: 1320px;
+}
+
+#hotWeek .carousel-item img {
+    height: 400px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+#hotWeek .carousel-caption {
+    background: linear-gradient(to top, black 10%, transparent);
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: left;
+    width: 100%;
+}
+
+.hot-all-item {
+    overflow: hidden;
+}
+
+.hot-all-img {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 5px;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+img:hover {
+    transform: scale(1.005);
+    border-radius: 5px;
+}
+
+.cat-link {
+    color: gray;
+}
+
+.cat-link:hover {
+    color: darkgray;
+}
+
+.title-link {
+    overflow: hidden;
+}
+
+.title-link:hover {
+    color: darkred;
+}
+
+.more-icon:hover {
+    color: darkred;
+}
