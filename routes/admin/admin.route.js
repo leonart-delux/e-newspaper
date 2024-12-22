@@ -38,8 +38,9 @@ router.get('/articles', function (req, res) {
         articles: true,
     });
 });
+
 router.get('/users', function (req, res) {
-    res.render('vwAdmin/categories-menu', {
+    res.render('vwAdmin/users/users-menu', {
         layout: 'admin',
         users: true,
     });
@@ -51,4 +52,5 @@ router.get('/role-registers', function (req, res) {
         role: true,
     });
 });
+
 export default router;
