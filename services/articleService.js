@@ -101,6 +101,9 @@ export default {
         const randomSameCatArticlesId = await db('articles_categories')
             .whereIn('category_id', category_id_list)
             .whereNot('article_id', root_article_id)
+            .leftJoin('articles', 'article_id', '=', 'articles.id')
+            .where('is_available', '=', '1')
+            .where('publish_date', '<', db.raw('CURRENT_TIMESTAMP'))
             .pluck('article_id')
             .orderByRaw('RAND()')
             .limit(amount);
@@ -119,7 +122,7 @@ export default {
     async getTopViewArticlesWithCat(amount) {
         const topViewsArticlesRawData = await db('articles')
             .where('is_available', '=', '1')
-            .where('publish_date', '<', now)
+            .where('publish_date', '<', db.raw('CURRENT_TIMESTAMP'))
             .orderBy('articles.view_count', 'desc')
             .limit(amount)
             .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
@@ -165,7 +168,7 @@ export default {
     async getNewestArticlesWithCat(amount) {
         const newestArticlesRawData = await db('articles')
             .where('is_available', '=', '1')
-            .where('publish_date', '<', now)
+            .where('publish_date', '<', db.raw('CURRENT_TIMESTAMP'))
             .orderBy('publish_date', 'desc')
             .limit(amount)
             .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
