@@ -23,20 +23,8 @@ router.get('/', async function (req, res) {
     const categoryTree = await categoryService.getCategoryTree();
     const topViewArticles = await articleService.getTopViewArticlesWithCat(10);
     const newestArticles = await articleService.getNewestArticlesWithCat(10);
-    const topCat = await categoryService.getTopViewCategories(10);
-    let newestArticlesOfTopCat = await Promise.all(
-        topCat.map(async (cat) => {
-            if (cat.total_views !== null) {
-                return  {
-                    catId: cat.category_id,
-                    catName: cat.category_name,
-                    total_views: cat.total_views,
-                    article: await articleService.getNewestArticleByCat(cat.category_id)
-                };
-            }
-        })
-    );
-    newestArticlesOfTopCat = newestArticlesOfTopCat.filter(cat => cat !== undefined);
+    const newestArticlesOfTopCat = await articleService.getNewestArticleOfTopCats(10);
+    const topWeekArticles = await articleService.getTopWeekArticlesWithCat(4)
 
 
     res.render('vwHome/home', {
@@ -51,6 +39,7 @@ router.get('/', async function (req, res) {
         topViewArticles: topViewArticles,
         newestArticles: newestArticles,
         newestArticlesOfTopCat: newestArticlesOfTopCat,
+        topWeekArticles: topWeekArticles,
     });
 });
 
