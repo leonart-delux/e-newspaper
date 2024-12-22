@@ -5,6 +5,10 @@ import userService from '../../services/accountService.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
+    const writerPage = parseInt(req.query.writerPage, 10) || 1;
+    const editorPage = parseInt(req.query.editorPage, 10) || 1;
+    const limit = 10; // Số item trên mỗi trang
+
     const writerApplications = (await applyService.getApplicationsByRole('writer')).reverse();
     const editorApplications = (await applyService.getApplicationsByRole('editor')).reverse();
 
@@ -15,6 +19,10 @@ router.get('/', async function (req, res) {
         editorApplications,
         writerRoleName: 'writer', 
         editorRoleName: 'editor', 
+        writerCurrentPage: writerPage,
+        writerTotalPages: Math.ceil(writerApplications.total / limit),
+        editorCurrentPage: editorPage,
+        editorTotalPages: Math.ceil(editorApplications.total / limit),
     });
 });
 
