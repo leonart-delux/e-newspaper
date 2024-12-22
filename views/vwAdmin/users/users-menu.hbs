@@ -6,7 +6,7 @@
         </div>
 
         <div class="col-md-2">
-            <select id="t" class="form-control">
+            <select id="" class="form-control">
                 <option value="">Theo ID</option>
                 <option value="">Theo tên</option>
                 <option value="">Theo vai trò</option>
@@ -30,7 +30,11 @@
                     <th>ID</th>
                     <th>Tên</th>
                     <th>Vai trò</th>
+                    <th>Bút danh</th>
+                    <th>Email</th>
+                    <th>Ngày sinh</th>                    
                     <th>VIP</th>
+                    <th>Hành động</th>
                 </tr>
             </thead>
 
@@ -41,19 +45,96 @@
     </div>
 </div>
 
-{{!-- Hardcode để hiển thị danh sách cái đã --}}
+<div id="overlay"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1040;">
+</div>
+
+<div class="modal" id="deleteModal" tabindex="-1"
+    style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1050;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content" style="display: flex; justify-content: center; align-items: center;">
+            <div class="modal-body text-center">
+                <h5 class="mb-4" style="font-weight: bolder;">Bạn có chắc muốn xóa người dùng này?</h5>
+
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <button class="btn btn-success btn-sm me-2" id="confirmDelete"
+                        style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                        <i class="fas fa-check" style="font-size: 20px; line-height: 1;"></i>
+                    </button>
+
+                    <button class="btn btn-danger btn-sm" onclick="closeModal('deleteModal')"
+                        style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                        <i class="fas fa-times" style="font-size: 20px; line-height: 1;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="editModal" tabindex="-1"
+    style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1050;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="text-center" style="font-weight: bolder;">Chỉnh sửa thông tin người dùng</h5>
+
+                <div class="mb-3">
+                    <label style="font-weight: bolder;">ID</label>
+                    <input type="text" class="form-control" id="editID">
+                </div>
+
+                <div class="mb-3">
+                    <label style="font-weight: bolder;">Tên</label>
+                    <input type="text" class="form-control" id="editName">
+                </div>
+
+                <div class="mb-3">
+                    <label style="font-weight: bolder;">Vai trò</label>
+                    <input type="text" class="form-control" id="editRole">
+                </div>
+
+                <div class="mb-3">
+                    <label style="font-weight: bolder;">Bút danh</label>
+                    <input type="text" class="form-control" id="editNickname">
+                </div>                
+
+                <div class="mb-3">
+                    <label style="font-weight: bolder;">Email</label>
+                    <input type="text" class="form-control" id="editEmail">
+                </div>
+
+                <div class="mb-3">
+                    <label style="font-weight: bolder;">Ngày sinh</label>
+                    <input type="datetime-local" class="form-control" id="editDOB">
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <button class="btn btn-success btn-sm me-2" id="saveChanges"
+                        style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                        <i class="fas fa-check" style="font-size: 20px; line-height: 1;"></i>
+                    </button>
+
+                    <button class="btn btn-danger btn-sm" onclick="closeModal('editModal')"
+                        style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                        <i class="fas fa-times" style="font-size: 20px; line-height: 1;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     const users = [
-        { id: 1, name: "Biện Xuân Huy", role: "Vua", vip: true },
-        { id: 2, name: "Biện Xuy Huân", role: "Biên tập viên", vip: false },
-        { id: 3, name: "Biện Huân Xuy", role: "Nhà báo", vip: true },
-        { id: 4, name: "Biện Huy Xuân", role: "Khách", vip: false },
-    ];
+        { id: 1, name: "Biện Xuân Huy", role: "Vua", nickname: "Ngài", email: "a1@gmail.com", dob: "1/1/2024", vip: true },
+        { id: 2, name: "Biện Xuy Huân", role: "Biên tập viên", nickname: "", email: "b2@gmail.com", dob: "2/2/2024", vip: false },
+        { id: 3, name: "Biện Huân Xuy", role: "Nhà báo", nickname: "Thợ thầy", email: "c3@gmail.com", dob: "3/3/2024", vip: true },
+        { id: 4, name: "Biện Huy Xuân", role: "Khách", nickname: "", email: "d4@gmail.com", dob: "4/4/2024", vip: false },
+    ]; // Hardcode để hiển thị danh sách cái đã
 
     const tableBody = document.querySelector("table tbody");
 
-    // Hiển thị toàn bộ người dùng ban đầu
     renderTable(users);
 
     function renderTable(users) {
@@ -63,9 +144,73 @@
                             <td>${user.id}</td>
                             <td>${user.name}</td>
                             <td>${user.role}</td>
-                            <td>${user.vip ? "Có" : "Không"}</td>
+                            <td>${user.nickname}</td>
+                            <td>${user.email}</td>
+                            <td>${user.dob}</td>
+                            <td>
+                                <i class="fas ${user.vip ? 'fa-check-circle text-success' : 'fa-times-circle text-danger'} fa-lg"></i>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm me-2" onclick="showDeleteModal(${user.id})">
+                                    <i class="fas fa-trash fa-sm fa-fw"></i>
+                                </button>
+
+                                <button class="btn btn-success btn-sm" onclick="showEditModal(${user.id})">
+                                    <i class="fas fa-random fa-sm fa-fw"></i>
+                                </button>
+                            </td>
                          </tr>`;
             tableBody.innerHTML += row;
         });
+    }
+
+    function showDeleteModal(id) {
+        const deleteModal = document.getElementById('deleteModal');
+        openModal('deleteModal');
+
+        document.getElementById('confirmDelete').onclick = () => {
+            deleteUser(id);
+            closeModal('deleteModal');
+        };
+    }
+
+    function deleteUser(id) {
+        // Làm sau
+    }
+
+    function showEditModal(id) {
+        const editModal = document.getElementById('editModal');
+        openModal('editModal');
+
+        const user = users.find(user => user.id === id);
+        if (user) {
+            document.getElementById('editID').value = user.id;
+            document.getElementById('editName').value = user.name;
+            document.getElementById('editRole').value = user.role;
+            document.getElementById('editNickname').value = user.nickname;
+            document.getElementById('editEmail').value = user.email;
+            document.getElementById('editDOB').value = user.dob ? "2024-12-31T23:59" : "";
+
+            document.getElementById('saveChanges').onclick = () => {
+                user.id = document.getElementById('editID').value;
+                user.name = document.getElementById('editName').value;
+                user.role = document.getElementById('editRole').value;
+                user.nickname = document.getElementById('editNickname').value;
+                user.email = document.getElementById('editEmail').value;
+                user.dob = document.getElementById('editDOB').value !== "";
+                renderTable(users);
+                closeModal('editModal');
+            };
+        }
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
     }
 </script>
