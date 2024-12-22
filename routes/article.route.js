@@ -19,7 +19,25 @@ router.get('/', async function (req, res) {
         isAdmin = req.session.user.role === 'admin';
     }
 
+    // Date for homepage
     const categoryTree = await categoryService.getCategoryTree();
+    const topViewArticles = await articleService.getTopViewArticlesWithCat(10);
+    const newestArticles = await articleService.getNewestArticlesWithCat(10);
+    const topCat = await categoryService.getTopViewCategories(10);
+    let newestArticlesOfTopCat = await Promise.all(
+        topCat.map(async (cat) => {
+            if (cat.total_views !== null) {
+                return  {
+                    catId: cat.category_id,
+                    catName: cat.category_name,
+                    total_views: cat.total_views,
+                    article: await articleService.getNewestArticleByCat(cat.category_id)
+                };
+            }
+        })
+    );
+    newestArticlesOfTopCat = newestArticlesOfTopCat.filter(cat => cat !== undefined);
+
 
     res.render('vwHome/home', {
         layout: 'home',
@@ -30,6 +48,9 @@ router.get('/', async function (req, res) {
         isWriter: isWriter,
         isAdmin: isAdmin,
         categoryTree: categoryTree,
+        topViewArticles: topViewArticles,
+        newestArticles: newestArticles,
+        newestArticlesOfTopCat: newestArticlesOfTopCat,
     });
 });
 

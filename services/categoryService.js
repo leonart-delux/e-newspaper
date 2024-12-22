@@ -37,5 +37,20 @@ export default {
         });
 
         return tree;
+    },
+
+    getTopViewCategories(amount) {
+        return db('categories')
+            .leftJoin('articles_categories', 'categories.id', 'articles_categories.category_id')
+            .leftJoin('articles', 'articles.id', 'articles_categories.article_id')
+            .select(
+                'categories.id as category_id',
+                'categories.name as category_name'
+            )
+            .sum('articles.view_count as total_views')
+            .groupBy('categories.id', 'categories.name')
+            .orderBy('total_views', 'desc')
+            .limit(amount);
     }
+
 };
