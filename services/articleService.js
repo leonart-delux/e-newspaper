@@ -2,6 +2,7 @@ import db from "../utils/db.js";
 import categoryService from "./categoryService.js";
 import tagService from "./tagService.js";
 import helper from "../utils/helper.js";
+import { isPresent } from "openai/lib/chatCompletionUtils.mjs";
 
 let now = new Date().toISOString();
 export default {
@@ -115,7 +116,7 @@ export default {
         // Get articles's details
         const randomArticles = await db('articles')
             .whereIn('id', randomSameCatArticlesId)
-            .select('id', 'title', 'main_thumb', 'publish_date');
+            .select('id', 'title', 'main_thumb', 'is_premium', 'publish_date');
 
         return randomArticles;
     },
@@ -133,6 +134,7 @@ export default {
                 'articles.publish_date',
                 'articles.main_thumb',
                 'articles.view_count',
+                'articles.is_premium',
                 'categories.id as category_id',
                 'categories.name as category_name',
             );
@@ -149,6 +151,7 @@ export default {
                     title: row.title,
                     publish_date: row.publish_date,
                     main_thumb: row.main_thumb,
+                    is_premium: row.is_premium,
                     view_count: row.view_count,
                     categories: [],
                 };
@@ -178,6 +181,7 @@ export default {
                 'articles.title',
                 'articles.publish_date',
                 'articles.main_thumb',
+                'articles.is_premium',
                 'categories.id as category_id',
                 'categories.name as category_name',
             );
@@ -194,6 +198,7 @@ export default {
                     title: row.title,
                     publish_date: row.publish_date,
                     main_thumb: row.main_thumb,
+                    is_premium: row.is_premium,
                     categories: [],
                 };
             }
@@ -207,6 +212,23 @@ export default {
         });
 
         return Object.values(newstArticlesMap);
+    },
+
+    async getNewestArticleOfTopCats(amount) {
+        const topCats = await categoryService.getTopViewCategories(10);
+        let newestArticlesOfTopCat = await Promise.all(
+            topCats.map(async (cat) => {
+                if (cat.total_views !== null) {
+                    return {
+                        catId: cat.category_id,
+                        catName: cat.category_name,
+                        total_views: cat.total_views,
+                        article: await this.getNewestArticleByCat(cat.category_id)
+                    };
+                }
+            })
+        );
+        return newestArticlesOfTopCat.filter(cat => cat !== undefined);
     },
 
     async getNewestArticleByCat(catId) {
@@ -224,6 +246,69 @@ export default {
                 'articles.publish_date as publish_date',
                 'articles.is_premium as is_premium',
             );
+    },
+
+    async getTopWeekArticlesWithCat(amount) {
+        // Get ID of top week
+        const topWeekViewArticlesIdAndView = await db('views')
+            .where('vwDate', '<', db.raw('CURRENT_TIMESTAMP'))
+            .where('vwDate', '>=', db.raw('DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 7 DAY)'))
+            .select('article_id')
+            .sum('vwCounts as total_views')
+            .groupBy('article_id')
+            .orderBy('total_views', 'desc')
+            .limit(amount);
+
+        if (topWeekViewArticlesIdAndView.length === 0) {
+            return [];
+        }
+        
+        const articleIds = topWeekViewArticlesIdAndView.map(row => row.article_id);
+        // Fetch data TABLE
+        const rawData = await db('articles')
+            .where('is_available', '=', '1')
+            .where('publish_date', '<', db.raw('CURRENT_TIMESTAMP'))
+            .whereIn('articles.id', articleIds)
+            .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
+            .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
+            .select(
+                'articles.id',
+                'articles.title',
+                'articles.publish_date',
+                'articles.main_thumb',
+                'articles.is_premium',
+                'categories.id as category_id',
+                'categories.name as category_name',
+            );
+
+        // Group each row based on article ID
+        let groupedData = {};
+        rawData.forEach(row => {
+            if (!groupedData[row.id]) {
+                groupedData[row.id] = {
+                    id: row.id,
+                    title: row.title,
+                    publish_date: row.publish_date,
+                    main_thumb: row.main_thumb,
+                    is_premium: row.is_premium,
+                    categories: [],
+                };
+            }
+
+            if (row.category_id && !groupedData[row.id].categories.some(cat => cat.id === row.category_id)) {
+                groupedData[row.id].categories.push({
+                    id: row.category_id,
+                    name: row.category_name,
+                });
+            }
+        });
+
+        // Add views for each row
+        topWeekViewArticlesIdAndView.forEach(row => {
+            groupedData[row.article_id].total_views = row.total_views;
+        });
+
+        return Object.values(groupedData);
     },
 
     // =============================
