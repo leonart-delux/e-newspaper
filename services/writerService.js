@@ -1,3 +1,4 @@
+import { remove } from "fs-extra";
 import db from "../utils/db.js";
 
 export default {
@@ -7,6 +8,15 @@ export default {
         ret !== undefined ? user.pseudonym = ret.pseudonym : '';
         return user;
     },
+
+    addWriter(userId, entity) {
+        return db('writers').insert({ user_id: userId, ...entity });
+    },
+
+    removeWriter(userId) {
+        return db('writers').where('user_id', userId).del();
+    },
+
     updatePseudonym(userId, entity) {
         return db('writers').where('user_id', userId).update(entity);
     },

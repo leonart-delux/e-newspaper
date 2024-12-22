@@ -1,0 +1,48 @@
+<div class="container mt-4 p-4"
+    style="background-color: #ffffff; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h3 class="mb-4">Thêm người dùng mới</h3>
+    <form id="addUserForm" action="/admin/users/add" method="POST">
+        <!-- Trường nhập tên -->
+        <div class="mb-3">
+            <label for="userName" class="form-label">Tên</label>
+            <input type="text" id="userName" name="name" class="form-control" placeholder="Nhập tên người dùng" required>
+        </div>
+        
+        <!-- Trường nhập ngày sinh -->
+        <div class="mb-3">
+            <label for="birthDate" class="form-label">Ngày sinh</label>
+            <input type="date" id="birthDate" name="birth_date" class="form-control" required>
+        </div>
+
+        <!-- Trường nhập email -->
+        <div class="mb-3">
+            <label for="userEmail" class="form-label">Email</label>
+            <input type="email" id="userEmail" name="email" class="form-control" placeholder="Nhập email" required>
+        </div>
+        
+        <!-- Trường nhập mật khẩu -->
+        <div class="mb-3">
+            <label for="userPassword" class="form-label">Mật khẩu</label>
+            <input type="password" id="userPassword" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+        </div>
+
+        <!-- Trường chọn vai trò -->
+        <div class="mb-3">
+            <label for="userRole" class="form-label">Vai trò</label>
+            <select id="userRole" name="role" class="form-control" required>
+                <option value="" disabled selected>Chọn vai trò</option>
+                <option value="editor">Editor</option>
+                <option value="writer">Writer</option>
+                <option value="guest">Guest</option>
+            </select>
+        </div>
+
+        <!-- Nút hành động -->
+        <div class="text-end text-center">
+            <button type="submit" class="btn btn-primary" style="background: #dc3545; border: none;">Thêm người dùng</button>
+            <a href="/admin/users" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</div>
+
+
