@@ -61,6 +61,18 @@ export default {
         }
     },
 
+    splitDateAndTimeOutdatedTimeVipUsers(vipUser) {
+        const outdatedTime = vipUser.outdate_time
+        const momentTime = moment(outdatedTime, moment.ISO_8601);
+        const time = momentTime.format('h:mm');
+        const date = momentTime.format('YYYY-MM-DD');
+        vipUser.time = time;
+        vipUser.date = date;
+        vipUser.subscribe_time = moment(vipUser.subscribe_time).format('DD-MM-YYYY, h:mm: A');
+        return vipUser;
+
+    },
+
     // Delete redundant images in article folder
     deleteUnrelatedImages(directory, imagesToKeep) {
         fs.readdir(directory, (err, files) => {

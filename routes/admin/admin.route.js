@@ -21,7 +21,6 @@ router.use('/vip-users', adminVipUsersRoute);
 router.use('/users', adminUsersRoute);
 
 
-
 router.get('/', function (req, res) {
     res.render('vwAdmin/dashboard', {
         layout: 'admin',
