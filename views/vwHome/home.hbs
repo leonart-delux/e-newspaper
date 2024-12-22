@@ -1,217 +1,547 @@
-<div class="container-fluid mt-3" style="width: 1320px">
-    <div class="row d-flex justify-content-center">
+{{#section 'css'}}
+<style>
+    .wrapper {
+        width: 1320px;
+    }
 
+    #hotWeek .carousel-item img {
+        height: 400px;
+        object-fit: cover;
+        overflow: hidden;
+        border-radius: 5px;
+    }
+
+    #hotWeek .carousel-caption {
+        background: linear-gradient(to top, black 10%, transparent);
+        position: absolute;
+        bottom: 0%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: left;
+        width: 100%;
+    }
+
+    .hot-all-item {
+        overflow: hidden;
+    }
+
+    .hot-all-img {
+        height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
+{{/section}}
+
+<div class="wrapper mx-auto mt-4 mb-5 container">
+    <div class="row">
         <div class="col-8">
-            <div class="card" style="border-radius: 10px; border: none;">
-                <div class="card-body">
-                    <h2 class="card-title text-center" style="font-weight: bolder;">Bài viết nổi bật nhất trong tuần
-                    </h2>
-
-                    <div id="carouselIdhottest" class="carousel slide" data-ride="carousel" data-interval="3000">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <a href="#" class="list-group-item list-group-item-action d-flex"
-                                    style="background-color: transparent; text-decoration: none; border: none;">
-                                    <img src="/others/test.webp" alt="Photo"
-                                        style="object-fit: cover; width: 350px; height: 250px">
-
-                                    <div class="d-flex flex-column justify-content-between"
-                                        style="margin-left: 5px; max-width: 350px;">
-                                        <small>Chuyên mục</small>
-
-                                        <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề</h5>
-
-                                        <small>Ngày đăng</small>
-                                    </div>
-                                </a>
+            <div>
+                <h6 class="ml-3 mb-3 pl-2" style="border-left: 4px solid red;">
+                    Tin nổi bật trong tuần
+                </h6>
+                <div id="hotWeek" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="/static/images/articles/29/1734756555150-a114361e-8b89-4776-986c-110d6fd167a3.webp"
+                                class="d-block w-100 slide-img" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>First slide label</h5>
+                                <p>Some representative placeholder content for the first slide.</p>
                             </div>
-
-                            <div class="carousel-item">
-                                <a href="#" class="list-group-item list-group-item-action d-flex"
-                                    style="background-color: transparent; text-decoration: none; border: none;">
-                                    <img src="/others/test.webp" alt="Photo"
-                                        style="object-fit: cover; width: 350px; height: 250px">
-
-                                    <div class="d-flex flex-column justify-content-between"
-                                        style="margin-left: 5px; max-width: 350px;">
-                                        <small>Chuyên mục</small>
-
-                                        <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề 2</h5>
-
-                                        <small>Ngày đăng</small>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <button class="carousel-control-next" type="button" data-target="#carouselIdhottest"
-                                data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"
-                                    style="background-color: grey; border-radius: 50%; width: 30px; height: 30px;"></span>
-                                <span class="sr-only">Next</span>
-                            </button>
                         </div>
+                        <div class="carousel-item">
+                            <img src="/static/images/others/grandfather.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Second slide label</h5>
+                                <p>Some representative placeholder content for the second slide.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-target="#hotWeek" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#hotWeek" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </button>
+                </div>
+            </div>
+
+
+            <div>
+                <h6 class="ml-3 my-3 pl-2" style="border-left: 4px solid red;">
+                    Tin mới nhất
+                </h6>
+
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+                <div class="row mb-4" style="border-radius: 10px;">
+                    <div class="col-4">
+                        <a href="">
+                            <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg"
+                                class="rounded" style="object-fit:cover; height: 130px; width: 100%" />
+                        </a>
+                    </div>
+                    <div class="col-8 pl-0 pb-2 d-flex flex-column">
+                        <p class="mb-0 article-text d-flex">
+                            <a href="">Tới chơi</a>
+                        </p>
+                        {{!-- Thêm link vào bài viết sau nhe --}}
+                        <a class="font-weight-bold article-title" href="#">
+                            Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có
+                            tiêu đề quá dài
+                        </a>
+                        <small style="position:absolute; bottom: 0%">10:00 29/12/2024</small>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="">
+                        <i class="bi bi-arrow-bar-down" style="font-size: 20px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h6 class="ml-3 my-3 pl-2" style="border-left: 4px solid red;">
+                    Top chuyên mục
+                </h6>
+                <div class="row rounded">
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
+                    </div>
+                    <div class="col-6 article-card mt-1 px-3 p-0" style="">
+                        <h5 class="text-secondary text-center">
+                            Đời sống
+                        </h5>
+                        <img src="/static/images/others/test.webp" style="border-radius:10px; object-fit:cover; width:100%;" alt="">
+                        <h6 class="mt-2">
+                            Lại là một tiêu đề siêu dài tới chơi ehehe lí do thì vẫn như thường lệ mà thôi đề phòng cái
+                            tiêu đề nào đó dài vãi ò
+                        </h6>
+                        <small>10:00 27/10/2022</small>
                     </div>
                 </div>
             </div>
 
-            <div class="card" style="border-radius: 10px; border: none; margin-top: 20px;">
-                <div class="card-body">
-                    <h2 class="card-title text-center" style="font-weight: bolder;">Bài viết mới nhất
-                    </h2>
-
-                    <div id="carouselIdnewest" class="carousel slide" data-ride="carousel" data-interval="3000">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <a href="#" class="list-group-item list-group-item-action d-flex"
-                                    style="background-color: transparent; text-decoration: none; border: none;">
-                                    <img src="/others/test.webp" alt="Photo"
-                                        style="object-fit: cover; width: 350px; height: 250px">
-
-                                    <div class="d-flex flex-column justify-content-between"
-                                        style="margin-left: 5px; max-width: 350px;">
-                                        <small>Chuyên mục</small>
-
-                                        <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề</h5>
-
-                                        <small>Ngày đăng</small>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="carousel-item">
-                                <a href="#" class="list-group-item list-group-item-action d-flex"
-                                    style="background-color: transparent; text-decoration: none; border: none;">
-                                    <img src="/others/test.webp" alt="Photo"
-                                        style="object-fit: cover; width: 350px; height: 250px">
-
-                                    <div class="d-flex flex-column justify-content-between"
-                                        style="margin-left: 5px; max-width: 350px;">
-                                        <small>Chuyên mục</small>
-
-                                        <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề 2</h5>
-
-                                        <small>Ngày đăng</small>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <button class="carousel-control-next" type="button" data-target="#carouselIdnewest"
-                                data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"
-                                    style="background-color: grey; border-radius: 50%; width: 30px; height: 30px;"></span>
-                                <span class="sr-only">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="border-radius: 10px; border: none; margin-top: 20px;">
-                <div class="card-body">
-                    <h2 class="card-title text-center" style="font-weight: bolder;">Bài viết hot
-                    </h2>
-
-                    <div id="carouselIdhot" class="carousel slide" data-ride="carousel" data-interval="3000">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <a href="#" class="list-group-item list-group-item-action d-flex"
-                                    style="background-color: transparent; text-decoration: none; border: none;">
-                                    <img src="/others/test.webp" alt="Photo"
-                                        style="object-fit: cover; width: 350px; height: 250px">
-
-                                    <div class="d-flex flex-column justify-content-between"
-                                        style="margin-left: 5px; max-width: 350px;">
-                                        <small>Chuyên mục</small>
-
-                                        <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề</h5>
-
-                                        <small>Ngày đăng</small>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="carousel-item">
-                                <a href="#" class="list-group-item list-group-item-action d-flex"
-                                    style="background-color: transparent; text-decoration: none; border: none;">
-                                    <img src="/others/test.webp" alt="Photo"
-                                        style="object-fit: cover; width: 350px; height: 250px">
-
-                                    <div class="d-flex flex-column justify-content-between"
-                                        style="margin-left: 5px; max-width: 350px;">
-                                        <small>Chuyên mục</small>
-
-                                        <h5 class="mb-1">Tiêu đề Tiêu đề Tiêu đề 2</h5>
-
-                                        <small>Ngày đăng</small>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <button class="carousel-control-next" type="button" data-target="#carouselIdhot"
-                                data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"
-                                    style="background-color: grey; border-radius: 50%; width: 30px; height: 30px;"></span>
-                                <span class="sr-only">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="col-4">
-            <div class="card" style="border-radius: 10px; border: none;">
-                <div class="card-body">
-                    <h2 class="card-title text-center" style="font-weight: bolder;">Chuyên mục hot</h2>
+            <h6 class="ml-3 pl-2" style="border-left: 4px solid red;">
+                Tin nổi bật nhất mọi thời đại
+            </h6>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action d-flex"
-                            style="background-color: transparent; text-decoration: none; align-items: center">
-                            <img src="/others/test.webp" alt="Photo"
-                                style="object-fit: cover; width: 150px; height: 120px;">
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                            <div class="d-flex w-100 flex-column justify-content-between" style="margin-left: 5px;">
-                                <small style="font-weight: bolder; color: red">Chuyên mục</small>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                                <h5 class="mb-1" style="margin-top: 10px;">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu
-                                    đề</h5>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                                <small style="margin-top: 10px;">Ngày đăng</small>
-                            </div>
-                        </a>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                        <a href="#" class="list-group-item list-group-item-action d-flex"
-                            style="background-color: transparent; text-decoration: none; align-items: center">
-                            <img src="/others/test.webp" alt="Photo"
-                                style="object-fit: cover; width: 150px; height: 120px;">
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                            <div class="d-flex w-100 flex-column justify-content-between" style="margin-left: 5px;">
-                                <small style="font-weight: bolder; color: red">Chuyên mục</small>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                                <h5 class="mb-1" style="margin-top: 10px;">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu
-                                    đề</h5>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                                <small style="margin-top: 10px;">Ngày đăng</small>
-                            </div>
-                        </a>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
+            </div>
 
-                        <a href="#" class="list-group-item list-group-item-action d-flex"
-                            style="background-color: transparent; text-decoration: none; align-items: center">
-                            <img src="/others/test.webp" alt="Photo"
-                                style="object-fit: cover; width: 150px; height: 120px;">
-
-                            <div class="d-flex w-100 flex-column justify-content-between" style="margin-left: 5px;">
-                                <small style="font-weight: bolder; color: red">Chuyên mục</small>
-
-                                <h5 class="mb-1" style="margin-top: 10px;">Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu đề Tiêu
-                                    đề</h5>
-
-                                <small style="margin-top: 10px;">Ngày đăng</small>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+            <div class="hot-all-item mt-3">
+                <img src="/static/images/articles/22/1734670651878-Screenshot 2024-11-21 101557.jpg" alt=""
+                    class="hot-all-img">
+                <p class="mb-0">
+                    <small class="mr-2">Đời sống</small>
+                    <small>Sức khỏe</small>
+                </p>
+                <h6 class="mb-1">
+                    Tiêu đề siêu to khổng lồ nằm ở đây nè mọi người dài nó dài vl đề phòng trường hợp một tin có tiêu đề
+                    quá dài
+                </h6>
+                <small>10:00 27/12/2023</small>
             </div>
         </div>
     </div>
+
 </div>
