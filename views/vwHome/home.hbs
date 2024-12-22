@@ -5,6 +5,7 @@
 <div class="wrapper mx-auto mt-4 mb-5 container">
     <div class="row">
         <div class="col-8">
+
             <div>
                 <h6 class="ml-3 mb-3 pl-2" style="border-left: 4px solid red;">
                     Tin nổi bật trong tuần
@@ -12,20 +13,33 @@
                 <div id="hotWeek" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="/static/images/articles/29/1734756555150-a114361e-8b89-4776-986c-110d6fd167a3.webp"
-                                class="d-block w-100 slide-img" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
+                            <img src="/static/images/others/main_carosel.jpg" class="d-block w-100 slide-img" alt="...">
+                            <div class="carousel-caption d-none d-md-block text-center">
+                                <h5>BÁO TUỔI GIÀ: GIÀ NHƯNG KHÔNG ĐÃNG</h5>
+                                <p>Cung cấp nhiều thông tin hữu ích cho người già mỗi ngày.</p>
                             </div>
                         </div>
+                        {{#each this.topWeekArticles}}
                         <div class="carousel-item">
-                            <img src="/static/images/others/grandfather.png" class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Second slide label</h5>
-                                <p>Some representative placeholder content for the second slide.</p>
+                            <a href="/article?id={{id}}">
+                                <img src="{{main_thumb}}" class="d-block w-100" alt="...">
+                            </a>
+                            <div class="carousel-caption d-none d-md-block px-4 pb-2">
+                                {{#each categories}}
+                                <a href="/cat?catId={{id}}" class="cat-link text-light">
+                                    {{name}}
+                                </a>
+                                {{/each}}
+                                <a href="/article?id={{id}}" class="title-link text-light">
+                                    <h5>{{title}}</h5>
+                                </a>
+                                <p>
+                                    <i class="bi bi-calendar3"></i>
+                                    {{formatSimpleDatetime publish_date}}
+                                </p>
                             </div>
                         </div>
+                        {{/each}}
                     </div>
 
                     <button class="carousel-control-prev" type="button" data-target="#hotWeek" data-slide="prev">
@@ -39,12 +53,10 @@
                 </div>
             </div>
 
-
             <div>
                 <h6 class="ml-3 my-3 pl-2" style="border-left: 4px solid red;">
                     Tin mới nhất
                 </h6>
-
                 {{#each this.newestArticles}}
                 <div class="row mb-4" style="border-radius: 10px;">
                     <div class="col-4">
@@ -70,7 +82,6 @@
                     </div>
                 </div>
                 {{/each}}
-
                 <div class="text-center">
                     <a href="/newest" class="more-icon">
                         <i class="bi bi-arrow-bar-down" style="font-size: 20px;"></i>
@@ -82,31 +93,34 @@
                 <h6 class="ml-3 my-3 pl-2" style="border-left: 4px solid red;">
                     Top chuyên mục
                 </h6>
-                <div class="row rounded">
+                <div class="masonry-layout">
                     {{#each this.newestArticlesOfTopCat}}
-                    <div class="col-6 article-card mt-1 mb-2 px-3 p-0" style="">
-                        <h5 class="d-flex justify-content-between px-3">
-                            <a href="/cat?catId={{catId}}" class="cat-link">
-                                {{catName}}
+                    <div class="masonry-item">
+                        <div class="article-card px-2 pt-1 pb-3">
+                            <h5 class="d-flex justify-content-between px-3">
+                                <a href="/cat?catId={{catId}}" class="cat-link">
+                                    {{catName}}
+                                </a>
+                                <span class="text-secondary">
+                                    <i class="bi bi-eyeglasses"></i>
+                                    {{total_views}}
+                                </span>
+                            </h5>
                             </a>
-                            <span class="text-secondary">
-                                <i class="bi bi-eyeglasses"></i>
-                                {{total_views}}
-                            </span>
-                        </h5>
-                        </a>
-                        <a href="/aricle?id={{article.id}}">
-                            <img src="{{article.main_thumb}}" style="border-radius:10px; object-fit:cover; width:100%;">
-                        </a>
-                        <a href="/article?id={{article.id}}" class="title-link">
-                            <h6 class="mt-2">
-                                {{article.title}}
-                            </h6>
-                        </a>
-                        <small>
-                            <i class="bi bi-calendar3"></i>
-                            {{formatSimpleDatetime article.publish_date}}
-                        </small>
+                            <a href="/aricle?id={{article.id}}">
+                                <img src="{{article.main_thumb}}"
+                                    style="border-radius:10px; object-fit:cover; width:100%;">
+                            </a>
+                            <a href="/article?id={{article.id}}" class="title-link">
+                                <h6 class="mt-2">
+                                    {{article.title}}
+                                </h6>
+                            </a>
+                            <small>
+                                <i class="bi bi-calendar3"></i>
+                                {{formatSimpleDatetime article.publish_date}}
+                            </small>
+                        </div>
                     </div>
                     {{/each}}
                 </div>
@@ -115,6 +129,7 @@
         </div>
 
         <div class="col-4">
+
             <h6 class="ml-3 pl-2" style="border-left: 4px solid red;">
                 Tin nổi bật nhất mọi thời đại
             </h6>
