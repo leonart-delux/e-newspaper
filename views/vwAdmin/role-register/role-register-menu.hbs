@@ -1,209 +1,78 @@
 {{#section 'css'}}
 <style>
-    .table th {
-        text-align: center;
-        background-color: #f5f5f5;
+    #pills-tab button.nav-link.active {
+        background-color: #ED1C24;
+        color: white;
     }
 
-    .table td {
-        vertical-align: middle;
-        text-align: center;
+    .article-title {
+        color: black;
+        font-size: large;
     }
 
-    .badge-pending {
-        background-color: #ffc107;
-        color: #ffffff;
+    .article-title:hover {
+        color: black;
+        text-decoration: none;
     }
 
-    .badge-approved {
-        background-color: #28a745;
-        color: #ffffff;
+    .article-text {
+        color: #7E8299;
     }
 
-    .badge-rejected {
-        background-color: #dc3545;
-        color: #ffffff;
+    .category-link {
+        color: #7E8299;
     }
 
-    .btn {
-        border-radius: 20px;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #f9f9f9;
-    }
-
-    .nav-pills .nav-link.active {
-        background-color: #dc3545;
+    .category-link:hover {
+        text-decoration: none;
     }
 </style>
 {{/section}}
 
 <div class="container p-4 mt-4"
     style="background-color: #ffffff; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+
+    <!-- Tabs -->
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-reporter-tab" data-toggle="pill"
-                data-target="#pills-reporter-tab-content" type="button" role="tab" aria-controls="pills-reporter-tab-content"
-                aria-selected="true">
+            <button class="nav-link active" id="pills-reporter-tab" data-toggle="pill" data-target="#pills-reporter"
+                type="button" role="tab" aria-controls="pills-reporter" aria-selected="true">
                 <b>Ứng tuyển writer</b>
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-editor-tab" data-toggle="pill" data-target="#pills-editor-tab-content"
-                type="button" role="tab" aria-controls="pills-editor-tab-content" aria-selected="false">
+            <button class="nav-link" id="pills-editor-tab" data-toggle="pill" data-target="#pills-editor" type="button"
+                role="tab" aria-controls="pills-editor" aria-selected="false">
                 <b>Ứng tuyển editor</b>
             </button>
         </li>
     </ul>
 
+    <!-- Search và Filter -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm theo tên ứng viên...">
+        </div>
+        <div class="col-md-6">
+            <select id="statusFilter" class="form-control">
+                <option value="">Tất cả trạng thái</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+    </div>
+
     <div class="tab-content p-3" id="pills-tabContent">
         <!-- Tab ứng tuyển writer -->
-        <div class="tab-pane fade show active" id="pills-reporter-tab-content" role="tabpanel"
-            aria-labelledby="pills-reporter-tab">
-            <div class="d-flex justify-content-end mb-3">
-                <select id="writer-filter" class="form-control w-25">
-                    <option value="">Tất cả trạng thái</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                </select>
-            </div>
-            {{#if writerApplications.length}}
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>Tên</th>
-                        <th>Lý do</th>
-                        <th>Trạng thái</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody id="writer-table-body">
-                    {{#each writerApplications}}
-                    <tr data-status="{{this.status}}">
-                        <td>{{this.user_name}}</td>
-                        <td>
-                            <span class="d-inline-block text-truncate" style="max-width: 200px;" title="{{this.self_access}}">
-                                {{this.self_access}}
-                            </span>
-                        </td>
-                        <td><span class="badge badge-{{this.status}}">{{this.status}}</span></td>
-                        <td>
-                            {{#if (eq this.status 'pending')}}
-                            <button class="btn btn-success btn-sm"
-                                onclick="updateStatus('{{this.id}}', 'approved', '{{../writerRoleName}}')"><b>Duyệt</b></button>
-                            <button class="btn btn-danger btn-sm"
-                                onclick="updateStatus('{{this.id}}', 'rejected')"><b>Từ chối</b></button>
-                            {{else}}
-                            <span><b>Đã xử lý</b></span>
-                            {{/if}}
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-            {{else}}
-            <p class="text-center text-muted">Chưa có đơn đăng ký nào.</p>
-            {{/if}}
+        <div class="tab-pane fade show active" id="pills-reporter" role="tabpanel" aria-labelledby="pills-reporter-tab">
+
         </div>
 
         <!-- Tab ứng tuyển editor -->
-        <div class="tab-pane fade" id="pills-editor-tab-content" role="tabpanel" aria-labelledby="pills-editor-tab">
-            <div class="d-flex justify-content-end mb-3">
-                <select id="editor-filter" class="form-control w-25">
-                    <option value="">Tất cả trạng thái</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                </select>
-            </div>
-            {{#if editorApplications.length}}
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>Tên</th>
-                        <th>Lý do</th>
-                        <th>Trạng thái</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody id="editor-table-body">
-                    {{#each editorApplications}}
-                    <tr data-status="{{this.status}}">
-                        <td>{{this.user_name}}</td>
-                        <td>
-                            <span class="d-inline-block text-truncate" style="max-width: 200px;" title="{{this.self_access}}">
-                                {{this.self_access}}
-                            </span>
-                        </td>
-                        <td><span class="badge badge-{{this.status}}">{{this.status}}</span></td>
-                        <td>
-                            {{#if (eq this.status 'pending')}}
-                            <button class="btn btn-success btn-sm"
-                                onclick="updateStatus('{{this.id}}', 'approved', '{{../editorRoleName}}')"><b>Duyệt</b></button>
-                            <button class="btn btn-danger btn-sm"
-                                onclick="updateStatus('{{this.id}}', 'rejected')"><b>Từ chối</b></button>
-                            {{else}}
-                            <span><b>Đã xử lý</b></span>
-                            {{/if}}
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-            {{else}}
-            <p class="text-center text-muted"><b>Chưa có đơn đăng ký nào.</b></p>
-            {{/if}}
+        <div class="tab-pane fade" id="pills-editor" role="tabpanel" aria-labelledby="pills-editor-tab">
+            
         </div>
     </div>
 </div>
 
-<script>
-    // Function to filter rows by status
-    function filterTable(tableBodyId, filterValue) {
-        const rows = document.querySelectorAll(`#${tableBodyId} tr`);
-        rows.forEach(row => {
-            const status = row.getAttribute('data-status');
-            if (!filterValue || status === filterValue) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-
-    document.getElementById('writer-filter').addEventListener('change', function () {
-        filterTable('writer-table-body', this.value);
-    });
-
-    document.getElementById('editor-filter').addEventListener('change', function () {
-        filterTable('editor-table-body', this.value);
-    });
-
-    async function updateStatus(applicationId, newStatus, role = null) {
-        try {
-            const response = await fetch('/admin/role-registers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: applicationId,
-                    status: newStatus,
-                    role: role,
-                }),
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                location.reload(); // Reload lại trang để cập nhật bảng
-            } else {
-                alert('Cập nhật thất bại: ' + result.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Đã xảy ra lỗi, vui lòng thử lại.');
-        }
-    }
-</script>
