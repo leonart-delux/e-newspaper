@@ -17,9 +17,10 @@ export default {
         let articlesList = await db('articles')
             .where('articles.is_available', 1)
             .where('articles.publish_date', '<', now)
+            .orderBy('is_premium', 'desc')
             .join('articles_categories', 'articles.id', 'articles_categories.article_id')
             .whereIn('articles_categories.category_id', childCats)
-            .select('articles.id', 'articles.title', 'articles.abstract', 'articles.main_thumb', 'articles.id as article_id', 'articles.publish_date')
+            .select('articles.id', 'articles.title', 'articles.abstract', 'articles.main_thumb', 'articles.id as article_id', 'articles.publish_date', 'is_premium')
             .limit(limit).offset(offset);
         // Với mỗi aricle thì thêm category names và tag names cho nó
         return this.getCatsAndTagsForAnArticle(articlesList);
@@ -70,10 +71,11 @@ export default {
         let articlesList = await db('articles')
             .where('is_available', 1)
             .where('publish_date', '<', now)
+            .orderBy('is_premium', 'desc')
             .whereRaw('MATCH(title,content,abstract) against (? in natural language mode)', [keywords])
             .limit(limit)
             .offset(offset)
-            .select('id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date');
+            .select('id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date','is_premium');
         articlesList = await this.getCatsAndTagsForAnArticle(articlesList);
 
 
@@ -93,10 +95,11 @@ export default {
             .where('articles_tags.tag_id', tagId)
             .where('is_available', 1)
             .where('publish_date', '<', now)
+            .orderBy('is_premium', 'desc')
             .limit(limit)
             .offset(offset)
             .join('articles_tags', 'articles.id', 'articles_tags.article_id')
-            .select('articles.id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date');
+            .select('articles.id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date','is_premium');
         return this.getCatsAndTagsForAnArticle(articlesList);
     },
 
@@ -106,9 +109,10 @@ export default {
             .where('is_available', 1)
             .where('publish_date', '<', now)
             .orderBy('publish_date', 'desc')
+            .orderBy('is_premium', 'desc')
             .limit(limit)
             .offset(offset)
-            .select('id', 'title', 'abstract', 'main_thumb', 'articles.id as article_id', 'publish_date');
+            .select('id', 'title', 'abstract', 'main_thumb', 'articles.id as article_id', 'publish_date','is_premium');
         // Với mỗi aricle thì thêm category names và tag names cho nó
         return this.getCatsAndTagsForAnArticle(articlesList);
     },
