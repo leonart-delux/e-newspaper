@@ -33,9 +33,19 @@
                                 <a href="/article?id={{id}}" class="title-link text-light">
                                     <h5>{{title}}</h5>
                                 </a>
-                                <p>
-                                    <i class="bi bi-calendar3"></i>
-                                    {{formatSimpleDatetime publish_date}}
+                                <p class="d-flex">
+                                    <span>
+                                        <i class="bi bi-calendar3"></i>
+                                        {{formatSimpleDatetime publish_date}}
+                                    </span>
+                                    {{#if is_premium}}
+                                    <span class="badge badge-warning text-danger ml-auto d-flex align-items-center"
+                                        style="font-size: 12px;">
+                                        <img src="/static/images/others/diamond.png" alt="" style="width: 10px; height:10px"
+                                            class="mr-1">
+                                        Premium
+                                    </span>
+                                    {{/if}}
                                 </p>
                             </div>
                         </div>
@@ -53,7 +63,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="mt-4">
                 <h6 class="ml-3 my-3 pl-2" style="border-left: 4px solid red;">
                     Tin mới nhất
                 </h6>
@@ -62,23 +72,38 @@
                     <div class="col-4">
                         <a href="/article?id={{id}}">
                             <img src="{{main_thumb}}" class="rounded"
-                                style="object-fit:cover; height: 130px; width: 100%" />
+                                style="object-fit:cover; height: 180px; width: 100%" />
                         </a>
                     </div>
                     <div class="col-8 pl-0 pb-2 d-flex flex-column">
                         <p class="mb-0 article-text d-flex">
                             {{#each categories}}
-                            <a href="/cat?catId={{id}}" class="cat-link mr-2">{{name}}</a>
+                            <small>
+                                <a href="/cat?catId={{id}}" class="cat-link mr-2">{{name}}</a>
+                            </small>
                             {{/each}}
                         </p>
-                        <a class="font-weight-bold article-title title-link" href="/article?id={{id}}"
-                            style="font-size: large;">
-                            {{title}}
-                        </a>
-                        <small style="position:absolute; bottom: 0%">
-                            <i class="bi bi-calendar3"></i>
-                            {{formatSimpleDatetime publish_date}}
+                        <small class="mb-1">
+                            <a class="font-weight-bold article-title title-link" href="/article?id={{id}}">
+                                {{title}}
+                            </a>
                         </small>
+                        <small>
+                            {{abstract}}
+                        </small>
+                        <p class="mt-auto mb-0 d-flex justify-content-between">
+                            <small>
+                                <i class="bi bi-calendar3"></i>
+                                {{formatSimpleDatetime publish_date}}
+                            </small>
+                            {{#if is_premium}}
+                            <span class="badge badge-warning text-danger ml-auto d-flex align-items-center"
+                                style="font-size: 12px;">
+                                <img src="/static/images/others/diamond.png" alt="" style="width: 10px;" class="mr-1">
+                                Premium
+                            </span>
+                            {{/if}}
+                        </p>
                     </div>
                 </div>
                 {{/each}}
@@ -116,10 +141,21 @@
                                     {{article.title}}
                                 </h6>
                             </a>
-                            <small>
-                                <i class="bi bi-calendar3"></i>
-                                {{formatSimpleDatetime article.publish_date}}
-                            </small>
+                            <p class="mb-0 d-flex">
+                                <small>
+                                    <i class="bi bi-calendar3"></i>
+                                    {{formatSimpleDatetime article.publish_date}}
+                                </small>
+                                {{#if article.is_premium}}
+                                <span class="badge badge-warning text-danger ml-auto d-flex align-items-center"
+                                    style="font-size: 12px;">
+                                    <img src="/static/images/others/diamond.png" alt="" style="width: 10px;"
+                                        class="mr-1">
+                                    Premium
+                                </span>
+                                {{/if}}
+                            </p>
+
                         </div>
                     </div>
                     {{/each}}
@@ -139,12 +175,16 @@
                     <img src="{{main_thumb}}" alt="" class="hot-all-img">
                 </a>
                 <div class="px-1">
-                    <p class="mb-0">
+                    <p class="mb-0 d-flex pt-1">
                         {{#each categories}}
                         <a href="/cat?catId={{id}}">
                             <small class="mr-1 cat-link">{{name}}</small>
                         </a>
                         {{/each}}
+                        <span class="ml-auto">
+                            <i class="bi bi-eyeglasses"></i>
+                            {{view_count}}
+                        </span>
                     </p>
                     <a href="/article?id={{id}}">
                         <h6 class="mb-1 title-link">
@@ -156,10 +196,13 @@
                             <i class="bi bi-calendar3"></i>
                             {{formatSimpleDatetime publish_date}}
                         </span>
-                        <span>
-                            <i class="bi bi-eyeglasses"></i>
-                            {{view_count}}
+                        {{#if is_premium}}
+                        <span class="badge badge-warning text-danger ml-auto d-flex align-items-center ml-auto"
+                            style="font-size: 12px;">
+                            <img src="/static/images/others/diamond.png" alt="" style="width: 10px;" class="mr-1">
+                            Premium
                         </span>
+                        {{/if}}
                     </small>
                 </div>
             </div>
