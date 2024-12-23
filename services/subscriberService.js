@@ -2,9 +2,9 @@ import db from "../utils/db.js";
 import accountService from "./accountService.js";
 
 // let now = new Date().toISOString();
-let now = new Date();
 export default {
     async getVipStatus(userId) {
+        let now = new Date();
         const subscriber = await db('subscribers').where('user_id', userId).first();
         const user = await accountService.getUser(userId);
 
@@ -15,6 +15,11 @@ export default {
 
         if (subscriber.status === 'waiting') {
             user.vipStatus = 'waiting';
+            return user;
+        }
+
+        if (subscriber.outdate_time < now) {
+            user.vipStatus = 'outdated';
             return user;
         }
         user.vipStatus = 'active';
