@@ -204,6 +204,7 @@ export default {
                 'articles.title',
                 'articles.publish_date',
                 'articles.main_thumb',
+                'articles.abstract',
                 'articles.is_premium',
                 'categories.id as category_id',
                 'categories.name as category_name',
@@ -221,6 +222,7 @@ export default {
                     title: row.title,
                     publish_date: row.publish_date,
                     main_thumb: row.main_thumb,
+                    abstract: row.abstract,
                     is_premium: row.is_premium,
                     categories: [],
                 };
@@ -234,7 +236,7 @@ export default {
             }
         });
 
-        return Object.values(newstArticlesMap);
+        return Object.values(newstArticlesMap).sort((a, b) => new Date(b.publish_date) - new Date(a.publish_date));
     },
 
     async getNewestArticleOfTopCats(amount) {
@@ -285,7 +287,7 @@ export default {
         if (topWeekViewArticlesIdAndView.length === 0) {
             return [];
         }
-        
+
         const articleIds = topWeekViewArticlesIdAndView.map(row => row.article_id);
         // Fetch data TABLE
         const rawData = await db('articles')
