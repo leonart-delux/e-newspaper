@@ -1,3 +1,7 @@
+{{#section 'js'}}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{{/section}}
+
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
@@ -64,6 +68,10 @@
                     <input type="password" class="form-control" id="registerPassword" name="password"
                       placeholder="Nhập mật khẩu">
                   </div>
+                </div>
+                <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6LfPl6MqAAAAAOVE2Ll2IR4nR74MRCKf4asM7Nq5"
+                    data-callback="onRecaptchaSuccess"></div>
                 </div>
                 <button type="submit" id="registerSubmit" class="btn btn-success btn-block"><b>Đăng ký</b></button>
                 <div class="text-center mt-4">
@@ -249,6 +257,11 @@
       });
   });
 
+  let recaptchaResponse = "";
+
+  function onRecaptchaSuccess(token) {
+    recaptchaResponse = token;
+  }
 
   document.getElementById("registerForm").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -280,6 +293,15 @@
       return;
     }
 
+    if (!recaptchaResponse) {
+      Swal.fire({
+        icon: "warning",
+        title: "Vui lòng xác minh reCAPTCHA.",
+        confirmButtonColor: "#ffc107",
+      });
+      return;
+    }
+
     fetch("/login-register", {
       method: "POST",
       headers: {
@@ -289,6 +311,7 @@
         formType: "register",
         email: email,
         password: password,
+        recaptchaResponse: recaptchaResponse,
       }),
     })
       .then((response) => response.json())

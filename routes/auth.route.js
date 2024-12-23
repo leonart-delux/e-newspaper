@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import moment from "moment";
 import passport from "passport";
 
+import verifyRecaptcha from "../utils/reCaptcha.js";
 import authService from "../services/auth.service.js";
 import sendMail from "../utils/mailer.js";
 import db from "../utils/db.js";
@@ -46,12 +47,17 @@ router.post("/login-register", async (req, res) => {
     return res.json({ success: true, message: "Đăng nhập thành công!" });
   }
   if (formType === "register") {
-    const { email, password } = req.body;
+    const { email, password, recaptchaResponse } = req.body;
 
     const existingUser = await db("users").where({ email }).first();
 
     if (existingUser) {
       return res.json({ error: "Email đã được sử dụng." });
+    }
+
+    const isValid = await verifyRecaptcha(recaptchaResponse);
+    if (!isValid) {
+      return res.status(400).json({ message: 'Invalid reCAPTCHA token' });
     }
 
     const hash_password = bcrypt.hashSync(password, 8);
