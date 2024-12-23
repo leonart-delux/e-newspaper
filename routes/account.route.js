@@ -72,7 +72,7 @@ router.post('/premium', async function (req, res) {
         return;
     }
 
-    req.session.user = await subscriberService.getVipStatus(userId);
+    req.session.user = await subscriberService.getVipStatus(user.id);
 
     user = req.session.user;
 
