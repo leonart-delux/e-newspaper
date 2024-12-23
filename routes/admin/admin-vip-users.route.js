@@ -53,5 +53,4 @@ router.post('/renewVip', async function (req, res) {
     res.redirect('/admin/vip-users');
 
 });
-
 export default router;

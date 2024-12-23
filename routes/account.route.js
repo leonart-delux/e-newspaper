@@ -56,7 +56,7 @@ router.post('/premium', async function (req, res) {
 
     const subscribers = {
         user_id: user.id,
-        vipStatus: 'waiting',
+        status: 'waiting',
     }
 
     let ret = await subscriberService.addSubscriber(subscribers);
