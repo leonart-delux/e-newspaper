@@ -7,6 +7,7 @@ import moment from "moment";
 import helper from "../utils/helper.js";
 
 const router = express.Router();
+// Limit for each page
 const limit = 10;
 
 router.get('/', async function (req, res) {
@@ -18,8 +19,14 @@ router.get('/', async function (req, res) {
         isEditor = req.session.user.role === 'editor';
         isAdmin = req.session.user.role === 'admin';
     }
-    
+
+    // Data for homepage
     const categoryTree = await categoryService.getCategoryTree();
+    const topViewArticles = await articleService.getTopViewArticlesWithCat(10);
+    const newestArticles = await articleService.getNewestArticlesWithCat(10);
+    const newestArticlesOfTopCat = await articleService.getNewestArticleOfTopCats(10);
+    const topWeekArticles = await articleService.getTopWeekArticlesWithCat(4)
+
 
     res.render('vwHome/home', {
         layout: 'home',
@@ -30,6 +37,10 @@ router.get('/', async function (req, res) {
         isWriter: isWriter,
         isAdmin: isAdmin,
         categoryTree: categoryTree,
+        topViewArticles: topViewArticles,
+        newestArticles: newestArticles,
+        newestArticlesOfTopCat: newestArticlesOfTopCat,
+        topWeekArticles: topWeekArticles,
     });
 });
 
