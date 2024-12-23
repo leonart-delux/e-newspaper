@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="mt-4">
                 <h6 class="ml-3 my-3 pl-2" style="border-left: 4px solid red;">
                     Tin mới nhất
                 </h6>
@@ -62,19 +62,31 @@
                     <div class="col-4">
                         <a href="/article?id={{id}}">
                             <img src="{{main_thumb}}" class="rounded"
-                                style="object-fit:cover; height: 130px; width: 100%" />
+                                style="object-fit:cover; height: 180px; width: 100%" />
                         </a>
                     </div>
                     <div class="col-8 pl-0 pb-2 d-flex flex-column">
                         <p class="mb-0 article-text d-flex">
                             {{#each categories}}
-                            <a href="/cat?catId={{id}}" class="cat-link mr-2">{{name}}</a>
+                            <small>
+                                <a href="/cat?catId={{id}}" class="cat-link mr-2">{{name}}</a>
+                            </small>
                             {{/each}}
+                            {{#if is_premium}}
+                            <span class="badge badge-warning text-danger ml-auto d-flex align-items-center" style="font-size: 12px;">
+                                <img src="/static/images/others/diamond.png" alt="" style="width: 10px;" class="mr-1">
+                                Premium
+                            </span>
+                            {{/if}}
                         </p>
-                        <a class="font-weight-bold article-title title-link" href="/article?id={{id}}"
-                            style="font-size: large;">
-                            {{title}}
-                        </a>
+                        <small class="mb-1">
+                            <a class="font-weight-bold article-title title-link" href="/article?id={{id}}">
+                                {{title}}
+                            </a>
+                        </small>
+                        <small>
+                            {{abstract}}
+                        </small>
                         <small style="position:absolute; bottom: 0%">
                             <i class="bi bi-calendar3"></i>
                             {{formatSimpleDatetime publish_date}}
