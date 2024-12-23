@@ -5,6 +5,7 @@ import tagService from "../services/tagService.js";
 import commentService from "../services/commentService.js";
 import moment from "moment";
 import helper from "../utils/helper.js";
+import subscriberService from "../services/subscriberService.js";
 
 const router = express.Router();
 // Limit for each page
@@ -68,6 +69,18 @@ router.get('/article', async function (req, res) {
         </script>
         `;
         return res.send(script);
+    }
+    if (fullInfoArticle.is_premium) {
+        let user = await subscriberService.getVipStatus(req.session.user.id);
+        if (user.vipStatus !== 'active') {
+            const script = `
+        <script>
+            alert('Bạn không phải là thành viên Premium để đọc bài này.');
+            window.location.href = '/';
+        </script>
+    `;
+            return res.send(script);
+        }
     }
 
     // Get comments of article
