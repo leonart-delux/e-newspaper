@@ -18,24 +18,42 @@
             <div class="row mb-3 border-bottom py-3" style="border-radius: 10px; ">
                 <div class="col-3">
                     <a href="/article?id={{article_id}}">
-                        <img src="/others/{{main_thumb}}" class="rounded"
-                             style="object-fit:cover; width: 200px; height: 150px;"/>
+                    <img src="/others/{{main_thumb}}" class="rounded"
+                         style="object-fit:cover; width: 200px; height: 150px;"/>
                     </a>
                 </div>
                 <div class="col-9 px-2 pl-0 d-flex flex-column">
-                    <p class="mb-0 article-text d-flex">
-                        {{#each categoryList}}
-                            <a href="/cat?catId={{category_id}}" class="category-link mr-4">{{name}}</a>
-                        {{/each}}
-                    </p>
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0 article-text  d-flex">
+                            {{#each categoryList}}
+                                <a href="/cat?catId={{category_id}}" class="category-link mr-4">{{name}}</a>
+                            {{/each}}
+                        </p>
+                        {{#if is_premium}}
+                            <div class="px-2 d-flex align-items-center"
+                                 style="border-radius: 10px;background-color: #E0B01F">
+                                <img src="/others/service.png" class="mr-1" width="20" height="20"/>
+                                <span class="text-white font-weight-bold "> Premium</span>
+                            </div>
+                        {{/if}}
+                    </div>
+
                     {{!-- Thêm link vào bài viết sau nhe --}}
                     <a class="font-weight-bold article-title" href="/article?id={{article_id}}">{{title}}</a>
                     <div class="article-text mt-1">{{abstract}}</div>
-                    <p class="mb-0 article-text mt-auto">
-                        {{#each tagList}}
-                            <a href="/tag?tagId={{tag_id}}" class="badge badge-pill badge-light mr-2 mt-auto">{{name}}</a>
-                        {{/each}}
-                    </p>
+                    <div class="row mt-2">
+                        <p class="mb-0 col-7 article-text mt-auto">
+                            {{#each tagList}}
+                                <a href="/tag?tagId={{tag_id}}" class="badge badge-pill badge-light mr-2
+                                mt-auto">{{name}}</a>
+                            {{/each}}
+                        </p>
+                        <div class="col-5 px-1 mt-1">
+                            <div class="text-center  rounded" style="background-color: #D1D3D8; font-style: italic">
+                                {{this.publish_date}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         {{/each}}

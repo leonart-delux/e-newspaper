@@ -96,7 +96,7 @@ router.get('/article', async function (req, res) {
 });
 
 router.get('/cat', async function (req, res) {
-    const catId = +req.query.catId || 6;
+    const catId = +req.query.catId || 1;
 
     const page = +req.query.page || 1;
     const offset = (page - 1) * limit;
