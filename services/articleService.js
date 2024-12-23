@@ -2,7 +2,7 @@ import db from "../utils/db.js";
 import categoryService from "./categoryService.js";
 import tagService from "./tagService.js";
 import helper from "../utils/helper.js";
-import { isPresent } from "openai/lib/chatCompletionUtils.mjs";
+// import { isPresent } from "openai/lib/chatCompletionUtils.mjs";
 
 let now = new Date().toISOString();
 export default {
@@ -21,6 +21,7 @@ export default {
             .orderBy('is_premium', 'desc')
             .join('articles_categories', 'articles.id', 'articles_categories.article_id')
             .whereIn('articles_categories.category_id', childCats)
+            .distinct('articles.id')
             .select('articles.id', 'articles.title', 'articles.abstract', 'articles.main_thumb', 'articles.id as article_id', 'articles.publish_date', 'is_premium')
             .limit(limit).offset(offset);
         // Với mỗi aricle thì thêm category names và tag names cho nó
@@ -76,7 +77,7 @@ export default {
             .whereRaw('MATCH(title,content,abstract) against (? in natural language mode)', [keywords])
             .limit(limit)
             .offset(offset)
-            .select('id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date','is_premium');
+            .select('id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date', 'is_premium');
         articlesList = await this.getCatsAndTagsForAnArticle(articlesList);
 
 
@@ -100,7 +101,7 @@ export default {
             .limit(limit)
             .offset(offset)
             .join('articles_tags', 'articles.id', 'articles_tags.article_id')
-            .select('articles.id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date','is_premium');
+            .select('articles.id', 'title', 'abstract', 'main_thumb', 'content', 'articles.id as article_id', 'publish_date', 'is_premium');
         return this.getCatsAndTagsForAnArticle(articlesList);
     },
 
@@ -113,7 +114,7 @@ export default {
             .orderBy('is_premium', 'desc')
             .limit(limit)
             .offset(offset)
-            .select('id', 'title', 'abstract', 'main_thumb', 'articles.id as article_id', 'publish_date','is_premium');
+            .select('id', 'title', 'abstract', 'main_thumb', 'articles.id as article_id', 'publish_date', 'is_premium');
         // Với mỗi aricle thì thêm category names và tag names cho nó
         return this.getCatsAndTagsForAnArticle(articlesList);
     },
@@ -347,7 +348,7 @@ export default {
     async getAvailableOfWriterByWriterId(id) {
         // Available list along with category list of each article (each article can have many categories)
         const articlesWithCategories = await db('articles')
-            .where({ writer_id: id, is_available: 1 })
+            .where({writer_id: id, is_available: 1})
             .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
             .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
             .leftJoin('articles_tags', 'articles.id', 'articles_tags.article_id')
@@ -403,7 +404,7 @@ export default {
     async getDraftOfWriterByWriterId(id) {
         // Draft list along with category list of each article (each article can have many categories)
         const draftsWithCategories = await db('articles')
-            .where({ writer_id: id, is_available: 0 })
+            .where({writer_id: id, is_available: 0})
             .join('drafts', 'articles.id', 'drafts.article_id')
             .leftJoin('articles_categories', 'articles.id', 'articles_categories.article_id')
             .leftJoin('categories', 'articles_categories.category_id', 'categories.id')
@@ -557,11 +558,11 @@ export default {
 
         fullInfoArticle.forEach(row => {
             if (row.cat_id && !categorySet.has(row.cat_id)) {
-                article.categories.push({ id: row.cat_id, name: row.cat_name });
+                article.categories.push({id: row.cat_id, name: row.cat_name});
                 categorySet.add(row.cat_id);
             }
             if (row.tag_id && !tagSet.has(row.tag_id)) {
-                article.tags.push({ id: row.tag_id, name: row.tag_name });
+                article.tags.push({id: row.tag_id, name: row.tag_name});
                 tagSet.add(row.tag_id);
             }
         });
@@ -582,10 +583,10 @@ export default {
 
             // Add new article_tag and article_category 
             const addTags = tags.map(tag =>
-                db('articles_tags').insert({ article_id: id, tag_id: tag })
+                db('articles_tags').insert({article_id: id, tag_id: tag})
             );
             const addCategories = categories.map(cat =>
-                db('articles_categories').insert({ article_id: id, category_id: cat })
+                db('articles_categories').insert({article_id: id, category_id: cat})
             );
 
             // Update article
@@ -619,7 +620,7 @@ export default {
         let datetime = new Date();
         const formattedLocalTime = helper.formatFullDateTime(datetime);
 
-        const entity = { status: 'pending', date: formattedLocalTime };
+        const entity = {status: 'pending', date: formattedLocalTime};
         return db('drafts').where('article_id', id).update(entity);
     },
     async createNewDraft(writerId) {
